@@ -1,0 +1,33 @@
+{
+  "name": "gpamn",
+  "private": true,
+  "packageManager": "pnpm@10.6.5",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,json,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,json,css}\"",
+    "db:generate": "turbo run db:generate --filter=@repo/database",
+    "db:migrate": "turbo run db:migrate --filter=@repo/database",
+    "db:push": "turbo run db:push --filter=@repo/database",
+    "db:studio": "turbo run db:studio --filter=@repo/database",
+    "e2e": "turbo run e2e --filter=@repo/e2e"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.4",
+    "prettier": "3.8.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  }
+}
