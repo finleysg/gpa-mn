@@ -1,4 +1,5 @@
 name: Deploy
+run-name: "Deploy ${{ github.ref_name }}"
 
 on:
   push:
@@ -9,13 +10,14 @@ on:
 env:
   REGISTRY: ghcr.io
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-web:
     if: startsWith(github.ref_name, 'web-v')
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,9 +44,6 @@ jobs:
   build-admin:
     if: startsWith(github.ref_name, 'admin-v')
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -74,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to CapRover (web)
-        uses: caprover/deploy-from-github@v1.2.0
+        uses: caprover/deploy-from-github@v1.1.2
         with:
           server: ${{ vars.CAPROVER_SERVER }}
           app: ${{ vars.CAPROVER_APP_WEB }}
@@ -87,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to CapRover (admin)
-        uses: caprover/deploy-from-github@v1.2.0
+        uses: caprover/deploy-from-github@v1.1.2
         with:
           server: ${{ vars.CAPROVER_SERVER }}
           app: ${{ vars.CAPROVER_APP_ADMIN }}
