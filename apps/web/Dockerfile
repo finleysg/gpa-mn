@@ -1,4 +1,6 @@
 FROM node:24-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@10.6.5 --activate
 
 # Stage 1: Prune the monorepo
