@@ -76,7 +76,7 @@ jobs:
         uses: caprover/deploy-from-github@v1.1.2
         with:
           server: ${{ vars.CAPROVER_SERVER }}
-          app: ${{ vars.CAPROVER_API_WEB }}
+          app: ${{ vars.CAPROVER_APP_WEB }}
           token: ${{ secrets.CAPROVER_TOKEN_WEB }}
           image: ${{ env.REGISTRY }}/${{ github.repository }}/web:${{ github.ref_name }}
 
