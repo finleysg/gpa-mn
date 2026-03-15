@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to CapRover (web)
-        uses: caprover/deploy-from-github@v1.1.2
+        uses: caprover/deploy-from-github@v1.2.0
         with:
           server: ${{ vars.CAPROVER_SERVER }}
           app: ${{ vars.CAPROVER_APP_WEB }}
@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to CapRover (admin)
-        uses: caprover/deploy-from-github@v1.1.2
+        uses: caprover/deploy-from-github@v1.2.0
         with:
           server: ${{ vars.CAPROVER_SERVER }}
           app: ${{ vars.CAPROVER_APP_ADMIN }}
