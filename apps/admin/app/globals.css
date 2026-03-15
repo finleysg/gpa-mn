@@ -1,6 +1,5 @@
 @import "tailwindcss";
-@import "../../../node_modules/tw-animate-css/dist/tw-animate.css";
-@import "@repo/ui/styles/globals.css";
+@import "tw-animate-css";
+@import "../../../packages/ui/src/styles/globals.css";
 
-@source "../../packages/ui/src";
-@source "../app";
+@source "../../../packages/ui/src";
