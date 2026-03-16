@@ -18,7 +18,7 @@ export function SiteFooter() {
               alt="GPA-MN"
               width={160}
               height={64}
-              className="h-12 w-auto brightness-0 invert mb-3"
+              className="h-12 w-auto invert hue-rotate-180 mb-3"
             />
             <p className="text-sm text-white/60 leading-relaxed max-w-[300px]">
               Greyhound Pets of America — Minnesota. Finding loving homes for retired racing

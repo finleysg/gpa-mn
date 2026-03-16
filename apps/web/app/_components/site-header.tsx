@@ -2,18 +2,37 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { mainNav } from '@/app/_data/navigation';
+import { SearchIcon } from 'lucide-react';
+import {
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+} from '@repo/ui/components/command';
 import { ThemeToggle } from './theme-toggle';
 import { MobileNav } from './mobile-nav';
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
   }, []);
 
   return (
@@ -30,7 +49,7 @@ export function SiteHeader() {
             alt="GPA-MN"
             width={140}
             height={56}
-            className="h-10 w-auto"
+            className="h-10 w-auto dark:invert dark:hue-rotate-180"
             priority
           />
         </Link>
@@ -50,6 +69,28 @@ export function SiteHeader() {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="inline-flex items-center gap-2 rounded-full border border-input bg-muted/50 px-2.5 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors md:px-4"
+          >
+            <SearchIcon className="size-4" />
+            <span className="hidden md:inline">Search…</span>
+            <kbd className="pointer-events-none ml-2 hidden select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 md:inline-flex">
+              <span className="text-xs">⌘</span>K
+            </kbd>
+          </button>
+          <CommandDialog
+            open={searchOpen}
+            onOpenChange={setSearchOpen}
+            title="Search"
+            description="Search the site"
+          >
+            <CommandInput placeholder="Search…" />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+            </CommandList>
+          </CommandDialog>
           <ThemeToggle />
           <Link
             href="/adopt/available"
