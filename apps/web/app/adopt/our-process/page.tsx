@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { adoptionProcess } from '@/app/_data/adoption-process';
 import { PageHero } from '@/app/_components/page-hero';
 import { ProcessStep } from '@/app/_components/process-step';

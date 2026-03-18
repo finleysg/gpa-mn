@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { mainNav } from '@/app/_data/navigation';
 import { SearchIcon } from 'lucide-react';
 import {
@@ -11,6 +11,7 @@ import {
   CommandList,
   CommandEmpty,
 } from '@repo/ui/components/command';
+import { cn } from '@repo/ui/lib/utils';
 import { ThemeToggle } from './theme-toggle';
 import { MobileNav } from './mobile-nav';
 
@@ -38,9 +39,10 @@ export function SiteHeader() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 p-3">
       <div
-        className={`mx-auto max-w-[1200px] rounded-[32px] px-6 py-3 flex items-center justify-between transition-shadow duration-300 bg-background/92 backdrop-blur-xl border border-white/60 dark:border-white/10 ${
+        className={cn(
+          'mx-auto max-w-300 rounded-4xl px-6 py-3 flex items-center justify-between transition-shadow duration-300 bg-background/92 backdrop-blur-xl border border-white/60 dark:border-white/10',
           scrolled ? 'shadow-[0_4px_32px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_32px_rgba(0,0,0,0.3)]' : 'shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]'
-        }`}
+        )}
       >
         {/* Logo */}
         <Link href="/" className="shrink-0">

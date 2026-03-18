@@ -11,15 +11,14 @@ import {
   startOfMonth,
   endOfMonth,
   startOfWeek,
-  endOfWeek,
   addMonths,
   subMonths,
   isSunday,
   format,
-  getDay,
 } from 'date-fns';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { Badge } from '@repo/ui/components/badge';
+import { cn } from '@repo/ui/lib/utils';
 import type { Event } from '@/app/_data/events';
 
 // ── Types ──
@@ -76,17 +75,7 @@ function getEventsForMonth(events: Event[], month: Date): ParsedEvent[] {
 
 function buildCalendarDays(month: Date, parsedEvents: ParsedEvent[]): CalendarDay[][] {
   const monthStart = startOfMonth(month);
-  const monthEnd = endOfMonth(month);
   const calStart = startOfWeek(monthStart); // Sunday
-  const calEnd = endOfWeek(endOfWeek(addMonths(monthStart, 0))); // ensure we get enough weeks
-
-  // Build 6 weeks (42 days) to keep grid consistent
-  const allDays = eachDayOfInterval({
-    start: calStart,
-    end: eachDayOfInterval({ start: calStart, end: addMonths(calStart, 0) }).length >= 42
-      ? calStart
-      : calStart,
-  });
 
   // Generate exactly 42 days (6 weeks)
   const days: Date[] = [];
@@ -181,7 +170,7 @@ function CalendarEventLink({ event }: { event: ParsedEvent }) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className={`block rounded px-1.5 py-0.5 text-xs leading-tight font-medium truncate hover:opacity-80 transition-opacity ${getEventTypeColor(event.type)}`}
+      className={cn('block rounded px-1.5 py-0.5 text-xs leading-tight font-medium truncate hover:opacity-80 transition-opacity', getEventTypeColor(event.type))}
       title={`${event.title} — ${event.time}`}
     >
       {event.title}
@@ -210,16 +199,18 @@ function CalendarGrid({ weeks }: { weeks: CalendarDay[][] }) {
           {week.map((day) => (
             <div
               key={day.date.toISOString()}
-              className={`min-h-24 p-1.5 border-b border-r border-border last:border-r-0 ${
-                !day.isCurrentMonth ? 'bg-muted/30 opacity-40' : ''
-              }`}
+              className={cn(
+                'min-h-24 p-1.5 border-b border-r border-border last:border-r-0',
+                !day.isCurrentMonth && 'bg-muted/30 opacity-40'
+              )}
             >
               <div
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs mb-1 ${
+                className={cn(
+                  'w-6 h-6 rounded-full flex items-center justify-center text-xs mb-1',
                   day.isToday
                     ? 'bg-primary text-white font-bold'
                     : 'text-foreground'
-                }`}
+                )}
               >
                 {day.day}
               </div>

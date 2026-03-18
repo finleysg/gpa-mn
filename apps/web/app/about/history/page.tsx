@@ -1,6 +1,7 @@
 import { PageHero } from '@/app/_components/page-hero';
 import { FadeIn } from '@/app/_components/fade-in';
 import { SectionHeader } from '@/app/_components/section-header';
+import { cn } from '@repo/ui/lib/utils';
 
 const milestones = [
   { year: '1989', title: 'GPA-MN Founded', desc: 'Greyhound Pets of America — Minnesota chapter is established by a small group of dedicated greyhound enthusiasts in the Twin Cities.' },
@@ -44,7 +45,7 @@ export default function HistoryPage() {
                     <div className="absolute left-4.5 md:left-1/2 top-1 w-4 h-4 rounded-full bg-primary border-4 border-card md:-translate-x-1/2 z-10" />
 
                     {/* Content */}
-                    <div className={`${i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:col-start-2 md:pl-8'}`}>
+                    <div className={cn(i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:col-start-2 md:pl-8')}>
                       <span className="font-heading text-2xl text-primary tracking-wider">{m.year}</span>
                       <h3 className="font-heading text-xl tracking-wider uppercase mt-1 mb-1">{m.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
