@@ -14,8 +14,8 @@ export const mainNav: NavItem[] = [
       { label: 'Post-Adoption Support', href: '/adopt/support' },
     ],
   },
-  { label: 'Donate', href: '/donate' },
   { label: 'Volunteer', href: '/volunteer' },
+  { label: 'Donate', href: '/donate' },
   { label: 'Events', href: '/events' },
   {
     label: 'About',

@@ -1,29 +1,29 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Badge } from '@repo/ui/components/badge';
 import type { Event } from '@/app/_data/events';
 
-const gradients = [
-  'from-secondary/60 to-secondary/20',
-  'from-[#ffcfca] to-[#ff8f89]/30',
-  'from-[#f0ebe4] to-secondary/40',
-  'from-secondary/30 to-[#c7f8fd]/40',
-  'from-[#ffcfca]/40 to-[#f0ebe4]',
-  'from-[#c7f8fd]/30 to-secondary/50',
-];
-
-export function EventCard({ event, index = 0 }: { event: Event; index?: number }) {
-  const gradient = gradients[index % gradients.length];
-
+export function EventCard({ event }: { event: Event; index?: number }) {
   return (
     <Link
       href={`/events/${event.id}`}
       className="group block bg-card rounded-[24px] overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] border border-border hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all duration-300"
     >
-      <div
-        className={`h-40 bg-gradient-to-br ${gradient} flex items-center justify-center text-sm font-semibold text-[#2d7a81] dark:text-[#3a9da6]`}
-      >
-        {event.title} Photo
-      </div>
+      {event.image ? (
+        <div className="relative h-40 overflow-hidden">
+          <Image
+            src={event.image}
+            alt={event.title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          />
+        </div>
+      ) : (
+        <div className="h-40 bg-gradient-to-br from-secondary/60 to-secondary/20 flex items-center justify-center text-sm font-semibold text-[#2d7a81] dark:text-[#3a9da6]">
+          {event.title}
+        </div>
+      )}
 
       <div className="p-5 pt-4">
         <Badge

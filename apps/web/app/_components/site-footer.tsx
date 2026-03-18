@@ -14,7 +14,7 @@ export function SiteFooter() {
           {/* Brand */}
           <div>
             <Image
-              src="/gpa-logo.png"
+              src="/images/gpa-logo.png"
               alt="GPA-MN"
               width={160}
               height={64}
@@ -25,14 +25,25 @@ export function SiteFooter() {
               greyhounds since 1989.
             </p>
             <div className="flex gap-2.5 mt-4">
-              {['TT', 'IG', 'FB', 'X'].map((label) => (
+              {[
+                { label: 'Facebook', icon: '/images/social/Facebook_Logo_Primary.png' },
+                { label: 'Instagram', icon: '/images/social/Instagram_Glyph_Gradient.png' },
+                { label: 'TikTok', icon: '/images/social/TikTok_Icon_Black_Circle.png', invert: true },
+                { label: 'Bluesky', icon: '/images/social/bluesky-icon.webp' },
+              ].map((social) => (
                 <a
-                  key={label}
+                  key={social.label}
                   href="#"
-                  className="w-10 h-10 rounded-xl bg-white/8 border border-white/6 flex items-center justify-center text-xs font-bold text-white/60 hover:bg-primary hover:text-white transition-all hover:-translate-y-0.5"
-                  aria-label={label}
+                  className="w-10 h-10 rounded-xl bg-white/8 border border-white/6 flex items-center justify-center hover:bg-primary transition-all hover:-translate-y-0.5"
+                  aria-label={social.label}
                 >
-                  {label}
+                  <Image
+                    src={social.icon}
+                    alt={social.label}
+                    width={20}
+                    height={20}
+                    className={social.invert ? 'invert' : ''}
+                  />
                 </a>
               ))}
             </div>

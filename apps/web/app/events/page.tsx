@@ -1,6 +1,8 @@
 import { events } from '@/app/_data/events';
 import { PageHero } from '@/app/_components/page-hero';
 import { EventCard } from '@/app/_components/event-card';
+import { EventCalendar } from '@/app/_components/event-calendar';
+import { SectionHeader } from '@/app/_components/section-header';
 import { FadeIn } from '@/app/_components/fade-in';
 
 export default function EventsPage() {
@@ -22,6 +24,17 @@ export default function EventsPage() {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+      {/* Calendar */}
+      <section className="py-20 px-5 md:py-24 bg-card">
+        <div className="max-w-[1200px] mx-auto">
+          <SectionHeader
+            label="At a Glance"
+            title="Event Calendar"
+            className="mb-10"
+          />
+          <EventCalendar events={events} />
         </div>
       </section>
     </>

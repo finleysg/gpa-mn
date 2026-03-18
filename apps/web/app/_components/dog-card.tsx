@@ -1,27 +1,23 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Badge } from '@repo/ui/components/badge';
 import type { Dog } from '@/app/_data/dogs';
 
-const gradients = [
-  'from-secondary/60 to-secondary/20',
-  'from-[#ffcfca] to-[#ff8f89]/30',
-  'from-[#f0ebe4] to-secondary/40',
-  'from-secondary/30 to-[#c7f8fd]/40',
-];
-
-export function DogCard({ dog, index = 0 }: { dog: Dog; index?: number }) {
-  const gradient = gradients[index % gradients.length];
-
+export function DogCard({ dog }: { dog: Dog; index?: number }) {
   return (
     <Link
       href={`/adopt/available/${dog.id}`}
       className="group block bg-card rounded-[24px] overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] border border-border hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all duration-300"
     >
-      {/* Placeholder image */}
-      <div
-        className={`h-48 bg-gradient-to-br ${gradient} flex items-center justify-center text-sm font-semibold text-[#2d7a81] dark:text-[#3a9da6]`}
-      >
-        {dog.name}&apos;s Photo
+      {/* Dog photo */}
+      <div className="relative h-48 overflow-hidden">
+        <Image
+          src={dog.image}
+          alt={dog.name}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+        />
       </div>
 
       {/* Body */}

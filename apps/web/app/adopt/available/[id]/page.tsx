@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { dogs } from '@/app/_data/dogs';
 import { Badge } from '@repo/ui/components/badge';
@@ -20,8 +21,15 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
       {/* Hero image */}
       <section className="relative pt-28 pb-0 overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-5">
-          <div className="h-64 md:h-96 bg-gradient-to-br from-secondary/60 to-secondary/20 dark:from-[#1a3a3e] dark:to-[#253e42] rounded-[32px] flex items-center justify-center text-lg font-semibold text-[#2d7a81] dark:text-[#3a9da6] shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-            {dog.name}&apos;s Photo
+          <div className="relative h-64 md:h-96 rounded-[32px] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
+            <Image
+              src={dog.image}
+              alt={dog.name}
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 1200px) 100vw, 1200px"
+            />
           </div>
         </div>
       </section>

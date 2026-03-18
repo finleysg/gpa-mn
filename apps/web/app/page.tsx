@@ -8,6 +8,7 @@ import { DogCard } from './_components/dog-card';
 import { EventCard } from './_components/event-card';
 import { FadeIn } from './_components/fade-in';
 import { BlobDecoration } from './_components/blob-decoration';
+import { HeroImage } from './_components/hero-image';
 import {
   Carousel,
   CarouselContent,
@@ -55,9 +56,7 @@ export default function HomePage() {
 
           {/* Hero image + stats */}
           <div>
-            <div className="h-80 md:h-100 lg:h-115 bg-linear-to-br from-secondary/60 to-secondary/20 dark:from-[#1a3a3e] dark:to-[#253e42] rounded-3xl flex items-center justify-center text-sm font-semibold text-[#2d7a81] dark:text-[#3a9da6] shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-              Greyhound Photo
-            </div>
+            <HeroImage />
 
             {/* Mobile-only action buttons (below image) */}
             <div className="flex flex-wrap gap-3 justify-center mt-6 md:hidden">

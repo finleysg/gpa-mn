@@ -14,11 +14,11 @@ export const volunteerRoles: VolunteerRole[] = [
     commitment: 'Varies (typically 2–8 weeks)',
   },
   {
-    title: 'Transport',
+    title: 'Special Events',
     description:
-      'Help drive greyhounds to vet appointments, foster homes, adoption events, and their new forever homes across the Twin Cities area.',
-    icon: '🚗',
-    commitment: 'As needed',
+      'Help plan and run events like Greyfest, Pride, and Race to Raise. From setup and teardown to greeting visitors and managing booths, every hand makes a difference.',
+    icon: '🎪',
+    commitment: '4–6 hours per event',
   },
   {
     title: 'Events & Fundraising',
@@ -44,7 +44,7 @@ export const volunteerRoles: VolunteerRole[] = [
   {
     title: 'Board Member',
     description:
-      'Serve on the GPA-MN Board of Directors. Help shape organizational strategy, oversee operations, and guide the future of greyhound rescue in Minnesota.',
+      'Serve on the GPA-MN Board of Directors. Help shape organizational strategy, oversee operations, and guide the future of greyhound adoption in Minnesota.',
     icon: '📋',
     commitment: '2-year elected term',
   },

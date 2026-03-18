@@ -43,6 +43,28 @@ export default function ContactPage() {
                   />
                 </div>
                 <div>
+                  <label htmlFor="category" className="block text-sm font-semibold mb-1.5">
+                    Category
+                  </label>
+                  <select
+                    id="category"
+                    defaultValue=""
+                    className="w-full rounded-xl border border-border bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  >
+                    <option value="" disabled>
+                      Select a category…
+                    </option>
+                    <option value="general">General Inquiry</option>
+                    <option value="fostering">Fostering</option>
+                    <option value="volunteer">Volunteer</option>
+                    <option value="vet-care">Vet Care</option>
+                    <option value="meet-and-greet">Meet &amp; Greet</option>
+                    <option value="lost-hounds">Lost Hounds</option>
+                    <option value="returns">Returns</option>
+                    <option value="whistle-blower">Whistle Blower</option>
+                  </select>
+                </div>
+                <div>
                   <label htmlFor="subject" className="block text-sm font-semibold mb-1.5">
                     Subject
                   </label>

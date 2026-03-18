@@ -16,7 +16,7 @@ export const donationMethods: DonationMethod[] = [
   {
     title: 'Monthly Sustaining',
     description:
-      'Become a monthly sustainer at $10, $25, $50, or $100 per month. Recurring gifts provide steady, reliable support that helps us plan ahead and rescue more greyhounds.',
+      'Become a monthly sustainer at $10, $25, $50, or $100 per month. Recurring gifts provide steady, reliable support that helps us plan ahead and place more greyhounds.',
     icon: '🔄',
   },
   {

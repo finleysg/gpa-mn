@@ -4,7 +4,7 @@ import { SectionHeader } from '@/app/_components/section-header';
 
 const milestones = [
   { year: '1989', title: 'GPA-MN Founded', desc: 'Greyhound Pets of America — Minnesota chapter is established by a small group of dedicated greyhound enthusiasts in the Twin Cities.' },
-  { year: '1992', title: 'First 100 Placements', desc: 'Within three years, GPA-MN reaches 100 successful adoptions, establishing itself as a trusted resource for greyhound rescue in the region.' },
+  { year: '1992', title: 'First 100 Placements', desc: 'Within three years, GPA-MN reaches 100 successful adoptions, establishing itself as a trusted resource for greyhound adoption in the region.' },
   { year: '1998', title: 'First Greyfest', desc: 'GPA-MN hosts the inaugural Greyfest, bringing together greyhound families for a day of celebration. It quickly becomes the organization\'s signature annual event.' },
   { year: '2005', title: '1,000th Placement', desc: 'A major milestone as GPA-MN places its 1,000th retired racing greyhound in a loving forever home.' },
   { year: '2010', title: 'Race to Raise Launched', desc: 'The first annual Race to Raise 5K fundraiser takes place at Lake Harriet, adding a fun new way to support the organization\'s mission.' },
@@ -20,7 +20,7 @@ export default function HistoryPage() {
         badge="Our History"
         title="35+ Years of Saving Lives"
         highlight="Saving Lives"
-        description="From a small group of greyhound enthusiasts to one of Minnesota's most respected rescue organizations, here's our journey."
+        description="From a small group of greyhound enthusiasts to one of Minnesota's most respected adoption organizations, here's our journey."
       />
 
       <section className="py-20 px-5 md:py-24 bg-card">

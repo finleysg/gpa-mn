@@ -45,7 +45,7 @@ export function SiteHeader() {
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Image
-            src="/gpa-logo.png"
+            src="/images/gpa-logo.png"
             alt="GPA-MN"
             width={140}
             height={56}
