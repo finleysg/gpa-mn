@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const HERO_IMAGES = [
   'BinoComo.jpg',
@@ -22,20 +22,24 @@ const HERO_IMAGES = [
 ];
 
 export function HeroImage() {
-  const [src] = useState(
-    () => `/images/hero/${HERO_IMAGES[Math.floor(Math.random() * HERO_IMAGES.length)]}`
-  );
+  const [src, setSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSrc(`/images/hero/${HERO_IMAGES[Math.floor(Math.random() * HERO_IMAGES.length)]}`);
+  }, []);
 
   return (
     <div className="relative h-80 md:h-100 lg:h-115 rounded-3xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-      <Image
-        src={src}
-        alt="A greyhound"
-        fill
-        priority
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, 50vw"
-      />
+      {src && (
+        <Image
+          src={src}
+          alt="A greyhound"
+          fill
+          priority
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+      )}
     </div>
   );
 }
