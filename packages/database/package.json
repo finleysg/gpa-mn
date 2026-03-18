@@ -10,7 +10,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/seed.ts"
   },
   "exports": {
     ".": {
@@ -31,6 +32,7 @@
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^24.0.3",
     "drizzle-kit": "^0.31.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.3"
   }
 }
