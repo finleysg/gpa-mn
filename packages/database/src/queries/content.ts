@@ -1,16 +1,19 @@
 import { and, asc, desc, eq, max, sql } from 'drizzle-orm';
-import { db } from '../index.js';
-import { contentItems, contentVersions } from '../schema/content.js';
+import { db } from '../index';
+import { contentItems, contentVersions } from '../schema/content';
 
 type ContentType = (typeof contentItems.$inferSelect)['contentType'];
 
-export async function getLatestVersions(contentType: ContentType) {
+function withLatestVersion(filter?: ReturnType<typeof eq>) {
   const latestVersions = db
     .select({
       contentItemId: contentVersions.contentItemId,
       maxVersion: max(contentVersions.version).as('maxVersion'),
     })
     .from(contentVersions)
+    .$dynamic();
+
+  const subquery = (filter ? latestVersions.where(filter) : latestVersions)
     .groupBy(contentVersions.contentItemId)
     .as('latestVersions');
 
@@ -20,43 +23,24 @@ export async function getLatestVersions(contentType: ContentType) {
       version: contentVersions,
     })
     .from(contentItems)
-    .innerJoin(latestVersions, eq(contentItems.id, latestVersions.contentItemId))
+    .innerJoin(subquery, eq(contentItems.id, subquery.contentItemId))
     .innerJoin(
       contentVersions,
       and(
-        eq(contentVersions.contentItemId, latestVersions.contentItemId),
-        eq(contentVersions.version, sql`${latestVersions.maxVersion}`),
+        eq(contentVersions.contentItemId, subquery.contentItemId),
+        eq(contentVersions.version, sql`${subquery.maxVersion}`),
       ),
-    )
+    );
+}
+
+export async function getLatestVersions(contentType: ContentType) {
+  return withLatestVersion()
     .where(and(eq(contentItems.contentType, contentType), eq(contentItems.archived, false)))
     .orderBy(asc(contentItems.sortOrder));
 }
 
 export async function getContentItem(id: number) {
-  const latestVersions = db
-    .select({
-      contentItemId: contentVersions.contentItemId,
-      maxVersion: max(contentVersions.version).as('maxVersion'),
-    })
-    .from(contentVersions)
-    .where(eq(contentVersions.contentItemId, id))
-    .groupBy(contentVersions.contentItemId)
-    .as('latestVersions');
-
-  const [result] = await db
-    .select({
-      item: contentItems,
-      version: contentVersions,
-    })
-    .from(contentItems)
-    .innerJoin(latestVersions, eq(contentItems.id, latestVersions.contentItemId))
-    .innerJoin(
-      contentVersions,
-      and(
-        eq(contentVersions.contentItemId, latestVersions.contentItemId),
-        eq(contentVersions.version, sql`${latestVersions.maxVersion}`),
-      ),
-    )
+  const [result] = await withLatestVersion(eq(contentVersions.contentItemId, id))
     .where(eq(contentItems.id, id));
 
   return result;
@@ -94,19 +78,21 @@ export async function updateContentItem(
   createdBy: string,
   changeNote?: string,
 ) {
-  const [latest] = await db
-    .select({ version: max(contentVersions.version) })
-    .from(contentVersions)
-    .where(eq(contentVersions.contentItemId, contentItemId));
+  await db.transaction(async (tx) => {
+    const [latest] = await tx
+      .select({ version: max(contentVersions.version) })
+      .from(contentVersions)
+      .where(eq(contentVersions.contentItemId, contentItemId));
 
-  const nextVersion = (latest?.version ?? 0) + 1;
+    const nextVersion = (latest?.version ?? 0) + 1;
 
-  await db.insert(contentVersions).values({
-    contentItemId,
-    version: nextVersion,
-    data,
-    createdBy,
-    changeNote: changeNote ?? null,
+    await tx.insert(contentVersions).values({
+      contentItemId,
+      version: nextVersion,
+      data,
+      createdBy,
+      changeNote: changeNote ?? null,
+    });
   });
 }
 

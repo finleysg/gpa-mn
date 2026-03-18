@@ -1,3 +1,4 @@
-export * from './events.js';
-export * from './content.js';
-export * from './photos.js';
+export * from './auth';
+export * from './events';
+export * from './content';
+export * from './photos';

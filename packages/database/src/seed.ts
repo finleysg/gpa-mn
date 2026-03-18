@@ -1,7 +1,8 @@
 import 'dotenv/config';
+import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/mysql2';
-import { events } from './schema/events.js';
-import { contentItems, contentVersions } from './schema/content.js';
+import { events } from './schema/events';
+import { contentItems, contentVersions } from './schema/content';
 
 type ContentType = (typeof contentItems.$inferSelect)['contentType'];
 
@@ -10,7 +11,8 @@ const db = drizzle(process.env.DATABASE_URL!);
 const eventsData = [
   {
     title: 'Greyfest 2026',
-    date: 'September 12, 2026',
+    startDate: '2026-09-12',
+    recurrence: 'once' as const,
     time: '10:00 AM – 4:00 PM',
     location: 'Elm Creek Park Reserve, Maple Grove, MN',
     type: 'Annual' as const,
@@ -18,11 +20,11 @@ const eventsData = [
       'Our biggest event of the year! Join greyhound lovers for a day of fun, food, vendors, contests, and hound parades.',
     longDescription:
       "Greyfest is GPA-MN's signature annual event, bringing together hundreds of greyhound families and fans for a full day of celebration. Enjoy vendor booths, a silent auction, hound costume contests, a blessing of the hounds, memorial walk, and plenty of greyhound socializing. Whether you're a longtime adopter or simply curious about the breed, Greyfest is the place to be. Food trucks, raffle prizes, and greyhound merchandise round out this beloved tradition. All proceeds support GPA-MN's adoption mission.",
-    sortOrder: 0,
   },
   {
     title: 'Race to Raise 5K',
-    date: 'June 20, 2026',
+    startDate: '2026-06-20',
+    recurrence: 'once' as const,
     time: '8:00 AM – 11:00 AM',
     location: 'Lake Harriet, Minneapolis, MN',
     type: 'Fundraiser' as const,
@@ -30,11 +32,11 @@ const eventsData = [
       'A fun run and walk fundraiser where humans and hounds race together to support greyhound adoption efforts.',
     longDescription:
       "Lace up your running shoes and bring your hound for GPA-MN's annual Race to Raise 5K! This family-friendly event welcomes runners, walkers, and greyhounds of all speeds. The scenic course loops around beautiful Lake Harriet. Registration includes a commemorative t-shirt, goodie bag, and post-race refreshments. Awards are given for top finishers and best greyhound costume. All proceeds go directly to funding veterinary care, transportation, and foster support for retired racing greyhounds.",
-    sortOrder: 1,
   },
   {
     title: "Meet & Greet at Chuck & Don's",
-    date: 'March 22, 2026',
+    startDate: '2026-03-22',
+    recurrence: 'monthly' as const,
     time: '11:00 AM – 2:00 PM',
     location: "Chuck & Don's, Woodbury, MN",
     type: 'Monthly' as const,
@@ -42,11 +44,11 @@ const eventsData = [
       'Come meet adoptable greyhounds in person! Chat with experienced owners and learn about the breed.',
     longDescription:
       "Our monthly Meet & Greets are the perfect opportunity to meet greyhounds up close and personal. Adoptable greyhounds will be on hand along with experienced GPA-MN volunteers and adopters who can answer all your questions about the breed. Learn about their gentle temperament, exercise needs, and what makes greyhounds such wonderful pets. No appointment necessary — just stop by! These events are held at pet-friendly retail locations across the Twin Cities metro area.",
-    sortOrder: 2,
   },
   {
     title: 'Sunday Como Walk',
-    date: 'Every Sunday',
+    startDate: '2026-03-22',
+    recurrence: 'weekly' as const,
     time: '10:00 AM',
     location: 'Como Park, Saint Paul, MN',
     type: 'Weekly' as const,
@@ -54,11 +56,11 @@ const eventsData = [
       'Join fellow greyhound families for a relaxed Sunday stroll through beautiful Como Park.',
     longDescription:
       "Every Sunday morning, greyhound families gather at Como Park for a leisurely group walk. It's a wonderful way to socialize your greyhound, meet other adopters, and enjoy the beautiful surroundings of Como Park. The walk is casual and self-paced — perfect for greyhounds of all energy levels. New adopters especially are encouraged to join as it's a great way to connect with the GPA-MN community and get tips from experienced greyhound owners. Meet at the main parking lot near the Pavilion.",
-    sortOrder: 3,
   },
   {
     title: 'Spring Plant Sale',
-    date: 'May 16, 2026',
+    startDate: '2026-05-16',
+    recurrence: 'once' as const,
     time: '9:00 AM – 1:00 PM',
     location: "Bachman's, Minneapolis, MN",
     type: 'Seasonal' as const,
@@ -66,11 +68,12 @@ const eventsData = [
       'Shop beautiful plants while supporting greyhound adoption. A beloved spring tradition!',
     longDescription:
       "GPA-MN's annual Spring Plant Sale is a beloved tradition that combines two great things: beautiful plants and greyhound adoption! Browse a curated selection of annuals, perennials, herbs, and hanging baskets. All proceeds support GPA-MN's mission. Adoptable greyhounds will be on hand, and volunteers will be available to answer questions about the organization and the adoption process. It's a wonderful way to welcome spring while making a difference for retired racing greyhounds.",
-    sortOrder: 4,
   },
   {
     title: 'Twin Cities Pride Festival',
-    date: 'June 27–28, 2026',
+    startDate: '2026-06-27',
+    endDate: '2026-06-28',
+    recurrence: 'once' as const,
     time: '10:00 AM – 6:00 PM',
     location: 'Loring Park, Minneapolis, MN',
     type: 'Annual' as const,
@@ -78,7 +81,6 @@ const eventsData = [
       'Visit the GPA-MN booth at Twin Cities Pride! Meet greyhounds, grab merch, and celebrate with us.',
     longDescription:
       "GPA-MN is proud to participate in the Twin Cities Pride Festival at Loring Park! Stop by our booth to meet adoptable greyhounds, chat with volunteers, and pick up greyhound-themed merchandise. Our greyhound ambassadors are always a crowd favorite, drawing hundreds of visitors who fall in love with the breed. Pride is a wonderful celebration of community, and we're honored to be part of it. All merchandise proceeds support GPA-MN's adoption mission.",
-    sortOrder: 5,
   },
 ];
 
@@ -95,7 +97,7 @@ const contentData: ContentSeedItem[] = [
     {
       slug: 'learn-about-greyhounds',
       sortOrder: 0,
-      data: {
+        data: {
         step: 1,
         title: 'Learn About Greyhounds',
         description: 'Research the greyhound breed and attend one of our Meet & Greet events to interact with greyhounds in person.',
@@ -111,7 +113,7 @@ const contentData: ContentSeedItem[] = [
     {
       slug: 'submit-application',
       sortOrder: 1,
-      data: {
+        data: {
         step: 2,
         title: 'Submit Your Application',
         description: 'Complete our online adoption application and participate in an interview with our Adoption Coordinator.',
@@ -127,7 +129,7 @@ const contentData: ContentSeedItem[] = [
     {
       slug: 'the-match',
       sortOrder: 2,
-      data: {
+        data: {
         step: 3,
         title: 'The Match',
         description: 'Our experienced coordinators identify the greyhound that best fits your family, lifestyle, and preferences.',
@@ -143,7 +145,7 @@ const contentData: ContentSeedItem[] = [
     {
       slug: 'welcome-home',
       sortOrder: 3,
-      data: {
+        data: {
         step: 4,
         title: 'Welcome Home',
         description: 'Meet your new greyhound, sign the adoption contract, and bring your new family member home!',
@@ -180,6 +182,13 @@ const contentData: ContentSeedItem[] = [
 ];
 
 async function seed() {
+  console.log('Clearing existing data...');
+  await db.execute(sql`SET FOREIGN_KEY_CHECKS = 0`);
+  await db.delete(contentVersions);
+  await db.delete(contentItems);
+  await db.delete(events);
+  await db.execute(sql`SET FOREIGN_KEY_CHECKS = 1`);
+
   console.log('Seeding events...');
   await db.insert(events).values(eventsData);
   console.log(`  Inserted ${eventsData.length} events`);

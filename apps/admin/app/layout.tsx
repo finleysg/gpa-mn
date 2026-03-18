@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Bebas_Neue, Lora, Geist_Mono } from 'next/font/google';
+import { Toaster } from '@repo/ui/components/sonner';
 import './globals.css';
 
 const bebasNeue = Bebas_Neue({
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${bebasNeue.variable} ${lora.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <Toaster position="top-center" />
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 import { and, asc, eq } from 'drizzle-orm';
-import { db } from '../index.js';
-import { photos } from '../schema/photos.js';
+import { db } from '../index';
+import { photos } from '../schema/photos';
 
 type PhotoType = (typeof photos.$inferSelect)['photoType'];
 

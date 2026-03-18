@@ -11,7 +11,7 @@ function parseConnectionUrl(connectionUrl: string) {
 
 export default defineConfig({
   out: './drizzle',
-  schema: ['./src/schema/events.ts', './src/schema/content.ts', './src/schema/photos.ts'],
+  schema: ['./src/schema/auth.ts', './src/schema/events.ts', './src/schema/content.ts', './src/schema/photos.ts'],
   dialect: 'mysql',
   dbCredentials: parseConnectionUrl(process.env.DATABASE_URL!),
   verbose: true,

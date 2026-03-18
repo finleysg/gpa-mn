@@ -1,9 +1,9 @@
 import { eq, asc } from 'drizzle-orm';
-import { db } from '../index.js';
-import { events } from '../schema/events.js';
+import { db } from '../index';
+import { events } from '../schema/events';
 
 export async function getEvents() {
-  return db.select().from(events).where(eq(events.archived, false)).orderBy(asc(events.sortOrder));
+  return db.select().from(events).where(eq(events.archived, false)).orderBy(asc(events.startDate));
 }
 
 export async function getEvent(id: number) {
@@ -22,12 +22,4 @@ export async function updateEvent(id: number, data: Partial<Omit<typeof events.$
 
 export async function archiveEvent(id: number) {
   await db.update(events).set({ archived: true }).where(eq(events.id, id));
-}
-
-export async function reorderEvents(orderedIds: number[]) {
-  await db.transaction(async (tx) => {
-    for (let i = 0; i < orderedIds.length; i++) {
-      await tx.update(events).set({ sortOrder: i }).where(eq(events.id, orderedIds[i]!));
-    }
-  });
 }
