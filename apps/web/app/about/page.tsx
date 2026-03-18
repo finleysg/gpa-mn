@@ -17,7 +17,7 @@ export default function AboutPage() {
       {/* Overview */}
       <section className="py-20 px-5 md:py-24 bg-card relative overflow-hidden">
         <BlobDecoration color="teal" size={350} className="-top-20 -right-20 opacity-20 dark:opacity-6" />
-        <div className="relative z-10 max-w-[800px] mx-auto">
+        <div className="relative z-10 max-w-200 mx-auto">
           <FadeIn>
             <div className="prose prose-lg max-w-none text-muted-foreground leading-relaxed space-y-6">
               <p>
@@ -39,7 +39,7 @@ export default function AboutPage() {
 
       {/* Links */}
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[800px] mx-auto">
+        <div className="max-w-200 mx-auto">
           <SectionHeader
             label="Learn More"
             title="Explore Our Story"
@@ -54,7 +54,7 @@ export default function AboutPage() {
               <FadeIn key={link.href}>
                 <Link
                   href={link.href}
-                  className="block bg-card rounded-[24px] p-8 text-center border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all"
+                  className="block bg-card rounded-3xl p-8 text-center border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all"
                 >
                   <div className="text-3xl mb-4">{link.icon}</div>
                   <h3 className="font-heading text-2xl tracking-wider uppercase mb-2">{link.title}</h3>

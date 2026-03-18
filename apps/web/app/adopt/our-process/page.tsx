@@ -20,7 +20,7 @@ export default function OurProcessPage() {
       {/* Process steps */}
       <section className="py-20 px-5 md:py-24 bg-card relative overflow-hidden">
         <BlobDecoration color="teal" size={400} className="-top-24 -right-24 opacity-15 dark:opacity-5" />
-        <div className="relative z-10 max-w-[800px] mx-auto">
+        <div className="relative z-10 max-w-200 mx-auto">
           <SectionHeader
             label="Four Steps"
             title="From Application to Adoption Day"
@@ -39,9 +39,9 @@ export default function OurProcessPage() {
 
       {/* Important notes */}
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[800px] mx-auto">
+        <div className="max-w-200 mx-auto">
           <FadeIn>
-            <div className="bg-card rounded-[24px] p-8 md:p-10 border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+            <div className="bg-card rounded-3xl p-8 md:p-10 border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               <SectionHeader
                 label="Good to Know"
                 title="Before You Apply"

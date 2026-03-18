@@ -16,7 +16,7 @@ export default function EventsPage() {
       />
 
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-300 mx-auto">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {events.map((event, i) => (
               <FadeIn key={event.id} delay={i * 60}>
@@ -28,7 +28,7 @@ export default function EventsPage() {
       </section>
       {/* Calendar */}
       <section className="py-20 px-5 md:py-24 bg-card">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-300 mx-auto">
           <SectionHeader
             label="At a Glance"
             title="Event Calendar"

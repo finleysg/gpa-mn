@@ -28,7 +28,7 @@ export function SectionHeader({
       {description && (
         <p
           className={cn(
-            'text-[1.05rem] text-muted-foreground leading-relaxed max-w-[600px]',
+            'text-[1.05rem] text-muted-foreground leading-relaxed max-w-150',
             align === 'center' && 'mx-auto'
           )}
         >

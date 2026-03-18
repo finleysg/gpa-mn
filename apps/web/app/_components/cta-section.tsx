@@ -28,7 +28,7 @@ export function CTASection({
       className={cn(
         'relative overflow-hidden py-20 px-5 md:py-24',
         variant === 'default' && 'bg-[#FAF5F0] dark:bg-[#1a1715]',
-        variant === 'warm' && 'bg-gradient-to-br from-[#FAF5F0] via-[#f5ece3] to-[#f0e8df] dark:from-[#1a1715] dark:via-[#1e1b17] dark:to-[#201d19]',
+        variant === 'warm' && 'bg-linear-to-br from-[#FAF5F0] via-[#f5ece3] to-[#f0e8df] dark:from-[#1a1715] dark:via-[#1e1b17] dark:to-[#201d19]',
         variant === 'teal' && '',
         className
       )}
@@ -40,9 +40,9 @@ export function CTASection({
         </>
       )}
 
-      <div className="relative z-10 max-w-[1200px] mx-auto">
+      <div className="relative z-10 max-w-300 mx-auto">
         {variant === 'teal' ? (
-          <div className="bg-gradient-to-br from-[#00444b] via-[#005a63] to-[#2d7a81] dark:from-[#0a2e32] dark:via-[#0e3a40] dark:to-[#0c3438] rounded-[32px] p-10 md:p-14 lg:p-16 text-white relative overflow-hidden shadow-[0_8px_40px_rgba(0,68,75,0.25)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.3)] border border-white/6">
+          <div className="bg-linear-to-br from-[#00444b] via-[#005a63] to-[#2d7a81] dark:from-[#0a2e32] dark:via-[#0e3a40] dark:to-[#0c3438] rounded-4xl p-10 md:p-14 lg:p-16 text-white relative overflow-hidden shadow-[0_8px_40px_rgba(0,68,75,0.25)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.3)] border border-white/6">
             <BlobDecoration color="teal" size={300} className="-bottom-24 -right-24 opacity-15 dark:opacity-8" />
             <BlobDecoration color="salmon" size={200} className="-top-16 -left-16 opacity-10 dark:opacity-5" />
 
@@ -55,7 +55,7 @@ export function CTASection({
               <h2 className="font-heading text-[clamp(2rem,4vw,3rem)] leading-[1.1] tracking-wider uppercase text-white mb-3">
                 {title}
               </h2>
-              <p className="text-[1.05rem] text-white/80 leading-relaxed max-w-[500px] mb-7">
+              <p className="text-[1.05rem] text-white/80 leading-relaxed max-w-125 mb-7">
                 {description}
               </p>
 
@@ -84,8 +84,8 @@ export function CTASection({
             </div>
           </div>
         ) : (
-          <div className="bg-card rounded-[32px] p-10 md:p-14 text-center shadow-[0_6px_28px_rgba(156,47,48,0.08)] dark:shadow-[0_6px_28px_rgba(0,0,0,0.2)] relative overflow-hidden border border-border">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ff8f89] via-primary to-[#ff8f89]" />
+          <div className="bg-card rounded-4xl p-10 md:p-14 text-center shadow-[0_6px_28px_rgba(156,47,48,0.08)] dark:shadow-[0_6px_28px_rgba(0,0,0,0.2)] relative overflow-hidden border border-border">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-[#ff8f89] via-primary to-[#ff8f89]" />
 
             <div className="relative z-10">
               {label && (
@@ -96,7 +96,7 @@ export function CTASection({
               <h2 className="font-heading text-[clamp(2rem,4vw,3rem)] leading-[1.1] tracking-wider uppercase text-foreground mb-3">
                 {title}
               </h2>
-              <p className="text-[1.05rem] text-muted-foreground leading-relaxed max-w-[500px] mx-auto mb-7">
+              <p className="text-[1.05rem] text-muted-foreground leading-relaxed max-w-125 mx-auto mb-7">
                 {description}
               </p>
 

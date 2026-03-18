@@ -24,7 +24,7 @@ export default function HistoryPage() {
       />
 
       <section className="py-20 px-5 md:py-24 bg-card">
-        <div className="max-w-[800px] mx-auto">
+        <div className="max-w-200 mx-auto">
           <SectionHeader
             label="Timeline"
             title="Key Milestones"
@@ -41,7 +41,7 @@ export default function HistoryPage() {
                 <FadeIn key={m.year} delay={i * 80}>
                   <div className="relative pl-16 md:pl-0 md:grid md:grid-cols-2 md:gap-8">
                     {/* Dot */}
-                    <div className="absolute left-[18px] md:left-1/2 top-1 w-4 h-4 rounded-full bg-primary border-4 border-card md:-translate-x-1/2 z-10" />
+                    <div className="absolute left-4.5 md:left-1/2 top-1 w-4 h-4 rounded-full bg-primary border-4 border-card md:-translate-x-1/2 z-10" />
 
                     {/* Content */}
                     <div className={`${i % 2 === 0 ? 'md:text-right md:pr-8' : 'md:col-start-2 md:pl-8'}`}>

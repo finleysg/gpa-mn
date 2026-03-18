@@ -7,9 +7,9 @@ export function SiteFooter() {
   return (
     <footer className="bg-[#111111] text-white pt-0 relative overflow-hidden">
       {/* Gradient top border */}
-      <div className="h-1 bg-gradient-to-r from-primary via-[#ff8f89] to-secondary" />
+      <div className="h-1 bg-linear-to-r from-primary via-[#ff8f89] to-secondary" />
 
-      <div className="max-w-[1200px] mx-auto px-5 pt-16 pb-8 md:px-8 lg:px-10">
+      <div className="max-w-300 mx-auto px-5 pt-16 pb-8 md:px-8 lg:px-10">
         <div className="grid gap-10 mb-10 md:grid-cols-3 lg:grid-cols-4">
           {/* Brand */}
           <div>
@@ -20,7 +20,7 @@ export function SiteFooter() {
               height={64}
               className="h-12 w-auto invert hue-rotate-180 mb-3"
             />
-            <p className="text-sm text-white/60 leading-relaxed max-w-[300px]">
+            <p className="text-sm text-white/60 leading-relaxed max-w-75">
               Greyhound Pets of America — Minnesota. Finding loving homes for retired racing
               greyhounds since 1989.
             </p>

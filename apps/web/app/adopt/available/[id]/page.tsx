@@ -20,8 +20,8 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
     <>
       {/* Hero image */}
       <section className="relative pt-28 pb-0 overflow-hidden">
-        <div className="max-w-[1200px] mx-auto px-5">
-          <div className="relative h-64 md:h-96 rounded-[32px] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
+        <div className="max-w-300 mx-auto px-5">
+          <div className="relative h-64 md:h-96 rounded-4xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
             <Image
               src={dog.image}
               alt={dog.name}
@@ -37,7 +37,7 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
       {/* Dog info */}
       <section className="py-12 px-5 md:py-16 bg-card relative overflow-hidden">
         <BlobDecoration color="teal" size={300} className="-top-16 -right-16 opacity-15 dark:opacity-5" />
-        <div className="relative z-10 max-w-[1200px] mx-auto md:grid md:grid-cols-[1fr_320px] md:gap-12">
+        <div className="relative z-10 max-w-300 mx-auto md:grid md:grid-cols-[1fr_320px] md:gap-12">
           <div>
             <Link
               href="/adopt/available"
@@ -74,7 +74,7 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
 
           {/* Details sidebar */}
           <div className="mt-8 md:mt-0">
-            <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-[24px] p-6 border border-border">
+            <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 border border-border">
               <h2 className="font-heading text-xl tracking-wider uppercase mb-4">Details</h2>
               <dl className="space-y-3">
                 {[

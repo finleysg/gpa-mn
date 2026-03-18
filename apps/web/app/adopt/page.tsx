@@ -45,7 +45,7 @@ export default function AdoptPage() {
       {/* Why Adopt */}
       <section className="py-20 px-5 md:py-24 bg-card relative overflow-hidden">
         <BlobDecoration color="teal" size={350} className="-top-20 -right-20 opacity-20 dark:opacity-6" />
-        <div className="relative z-10 max-w-[1200px] mx-auto">
+        <div className="relative z-10 max-w-300 mx-auto">
           <SectionHeader
             label="Why Greyhounds?"
             title="The Perfect Family Companion"
@@ -56,7 +56,7 @@ export default function AdoptPage() {
           <div className="grid gap-6 sm:grid-cols-2">
             {features.map((f, i) => (
               <FadeIn key={f.title} delay={i * 80}>
-                <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-[24px] p-6 flex gap-4 items-start border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)]">
+                <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 flex gap-4 items-start border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)]">
                   <div className="w-12 h-12 min-w-12 rounded-2xl bg-card dark:bg-[#242019] flex items-center justify-center text-xl shadow-sm">
                     {f.icon}
                   </div>
@@ -73,7 +73,7 @@ export default function AdoptPage() {
 
       {/* Quick Links */}
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-300 mx-auto">
           <SectionHeader
             label="Get Started"
             title="Ready to Adopt?"
@@ -85,7 +85,7 @@ export default function AdoptPage() {
               <FadeIn key={link.href} delay={i * 80}>
                 <Link
                   href={link.href}
-                  className="block bg-card rounded-[24px] p-8 text-center border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all"
+                  className="block bg-card rounded-3xl p-8 text-center border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all"
                 >
                   <div className="text-3xl mb-4">{link.icon}</div>
                   <h3 className="font-heading text-2xl tracking-wider uppercase mb-2">{link.title}</h3>

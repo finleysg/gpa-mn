@@ -2,7 +2,7 @@ import type { VolunteerRole } from '@/app/_data/volunteer-roles';
 
 export function VolunteerRoleCard({ role }: { role: VolunteerRole }) {
   return (
-    <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-[24px] p-6 flex items-start gap-4 transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_4px_24px_rgba(0,0,0,0.2)] shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] border border-border">
+    <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 flex items-start gap-4 transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_4px_24px_rgba(0,0,0,0.2)] shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] border border-border">
       <div className="w-11 h-11 min-w-11 rounded-xl bg-card dark:bg-[#242019] flex items-center justify-center text-xl">
         {role.icon}
       </div>

@@ -7,7 +7,7 @@ export function EventCard({ event }: { event: Event; index?: number }) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="group block bg-card rounded-[24px] overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] border border-border hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all duration-300"
+      className="group block bg-card rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] border border-border hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all duration-300"
     >
       {event.image ? (
         <div className="relative h-40 overflow-hidden">
@@ -20,7 +20,7 @@ export function EventCard({ event }: { event: Event; index?: number }) {
           />
         </div>
       ) : (
-        <div className="h-40 bg-gradient-to-br from-secondary/60 to-secondary/20 flex items-center justify-center text-sm font-semibold text-[#2d7a81] dark:text-[#3a9da6]">
+        <div className="h-40 bg-linear-to-br from-secondary/60 to-secondary/20 flex items-center justify-center text-sm font-semibold text-[#2d7a81] dark:text-[#3a9da6]">
           {event.title}
         </div>
       )}

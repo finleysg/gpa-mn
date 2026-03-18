@@ -37,7 +37,7 @@ export default function LostHoundPage() {
 
       {/* Emergency banner */}
       <section className="bg-primary text-white py-6 px-5">
-        <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-center gap-4 text-center md:text-left">
+        <div className="max-w-300 mx-auto flex flex-col md:flex-row items-center justify-center gap-4 text-center md:text-left">
           <AlertTriangle className="size-8 shrink-0" />
           <div>
             <p className="font-heading text-2xl tracking-wider uppercase">Call us immediately</p>
@@ -56,7 +56,7 @@ export default function LostHoundPage() {
       {/* Immediate steps */}
       <section className="py-20 px-5 md:py-24 bg-card relative overflow-hidden">
         <BlobDecoration color="primary" size={300} className="-top-16 -right-16 opacity-10 dark:opacity-5" />
-        <div className="relative z-10 max-w-[800px] mx-auto">
+        <div className="relative z-10 max-w-200 mx-auto">
           <FadeIn>
             <SectionHeader
               label="Act Now"
@@ -78,7 +78,7 @@ export default function LostHoundPage() {
 
       {/* Prevention */}
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-300 mx-auto">
           <SectionHeader
             label="Prevention"
             title="Keep Your Hound Safe"
@@ -90,7 +90,7 @@ export default function LostHoundPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {preventionTips.map((tip, i) => (
               <FadeIn key={tip.title} delay={i * 60}>
-                <div className="bg-card rounded-[24px] p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full">
+                <div className="bg-card rounded-3xl p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full">
                   <div className="text-2xl mb-3">{tip.icon}</div>
                   <h3 className="font-heading text-xl tracking-wider uppercase mb-2">{tip.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{tip.desc}</p>

@@ -19,7 +19,7 @@ export default function DonatePage() {
         <BlobDecoration color="salmon" size={350} className="-top-20 -left-20 opacity-15 dark:opacity-4" />
         <BlobDecoration color="teal" size={300} className="-bottom-20 -right-20 opacity-20 dark:opacity-4" />
 
-        <div className="relative z-10 max-w-[1200px] mx-auto">
+        <div className="relative z-10 max-w-300 mx-auto">
           <SectionHeader
             label="Ways to Give"
             title="Choose How to Help"
@@ -31,7 +31,7 @@ export default function DonatePage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {donationMethods.map((method, i) => (
               <FadeIn key={method.title} delay={i * 60}>
-                <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-[24px] p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all">
+                <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all">
                   <div className="text-2xl mb-3">{method.icon}</div>
                   <h3 className="font-heading text-xl tracking-wider uppercase mb-2">{method.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{method.description}</p>
@@ -44,10 +44,10 @@ export default function DonatePage() {
 
       {/* Tax info */}
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[600px] mx-auto text-center">
+        <div className="max-w-150 mx-auto text-center">
           <FadeIn>
-            <div className="bg-card rounded-[32px] p-10 border border-border shadow-[0_6px_28px_rgba(156,47,48,0.08)] dark:shadow-[0_6px_28px_rgba(0,0,0,0.2)] relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ff8f89] via-primary to-[#ff8f89]" />
+            <div className="bg-card rounded-4xl p-10 border border-border shadow-[0_6px_28px_rgba(156,47,48,0.08)] dark:shadow-[0_6px_28px_rgba(0,0,0,0.2)] relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-[#ff8f89] via-primary to-[#ff8f89]" />
               <div className="text-4xl mb-4">🩺</div>
               <h2 className="font-heading text-[clamp(1.8rem,4vw,2.5rem)] tracking-wider uppercase mb-3">
                 Heal a Hound Fund

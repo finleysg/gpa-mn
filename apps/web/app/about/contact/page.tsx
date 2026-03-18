@@ -14,10 +14,10 @@ export default function ContactPage() {
       />
 
       <section className="py-20 px-5 md:py-24 bg-card">
-        <div className="max-w-[1200px] mx-auto md:grid md:grid-cols-2 md:gap-12">
+        <div className="max-w-300 mx-auto md:grid md:grid-cols-2 md:gap-12">
           {/* Contact form */}
           <FadeIn>
-            <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-[32px] p-8 md:p-10 border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+            <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-4xl p-8 md:p-10 border border-border shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
               <SectionHeader label="Send a Message" title="Drop Us a Line" />
               <form className="mt-6 space-y-5" action="#">
                 <div>

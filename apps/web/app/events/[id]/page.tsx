@@ -20,9 +20,9 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
     <>
       {/* Hero image */}
       <section className="relative pt-28 pb-0 overflow-hidden">
-        <div className="max-w-[1200px] mx-auto px-5">
+        <div className="max-w-300 mx-auto px-5">
           {event.image ? (
-            <div className="relative h-48 md:h-80 rounded-[32px] overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
+            <div className="relative h-48 md:h-80 rounded-4xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
               <Image
                 src={event.image}
                 alt={event.title}
@@ -33,7 +33,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               />
             </div>
           ) : (
-            <div className="h-48 md:h-80 bg-gradient-to-br from-secondary/60 to-secondary/20 dark:from-[#1a3a3e] dark:to-[#253e42] rounded-[32px] flex items-center justify-center text-lg font-semibold text-[#2d7a81] dark:text-[#3a9da6] shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
+            <div className="h-48 md:h-80 bg-linear-to-br from-secondary/60 to-secondary/20 dark:from-[#1a3a3e] dark:to-[#253e42] rounded-4xl flex items-center justify-center text-lg font-semibold text-[#2d7a81] dark:text-[#3a9da6] shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
               {event.title}
             </div>
           )}
@@ -43,7 +43,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       {/* Event info */}
       <section className="py-12 px-5 md:py-16 bg-card relative overflow-hidden">
         <BlobDecoration color="teal" size={300} className="-top-16 -right-16 opacity-15 dark:opacity-5" />
-        <div className="relative z-10 max-w-[1200px] mx-auto md:grid md:grid-cols-[1fr_320px] md:gap-12">
+        <div className="relative z-10 max-w-300 mx-auto md:grid md:grid-cols-[1fr_320px] md:gap-12">
           <div>
             <Link
               href="/events"
@@ -77,7 +77,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
           {/* Details sidebar */}
           <div className="mt-8 md:mt-0">
-            <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-[24px] p-6 border border-border">
+            <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 border border-border">
               <h2 className="font-heading text-xl tracking-wider uppercase mb-4">Event Details</h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">

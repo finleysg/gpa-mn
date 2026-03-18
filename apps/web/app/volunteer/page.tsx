@@ -19,9 +19,9 @@ export default function VolunteerPage() {
       {/* Fostering highlight */}
       <section className="py-20 px-5 md:py-24 bg-card relative overflow-hidden">
         <BlobDecoration color="salmon" size={400} className="-top-24 -right-24 opacity-12 dark:opacity-4" />
-        <div className="relative z-10 max-w-[1200px] mx-auto">
+        <div className="relative z-10 max-w-300 mx-auto">
           <FadeIn>
-            <div className="bg-gradient-to-br from-[#FAF5F0] dark:from-[#1e1b17] to-[#fdf8f3] dark:to-[#222019] rounded-[32px] p-8 md:p-12 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] border border-border relative overflow-hidden">
+            <div className="bg-linear-to-br from-[#FAF5F0] dark:from-[#1e1b17] to-[#fdf8f3] dark:to-[#222019] rounded-4xl p-8 md:p-12 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] border border-border relative overflow-hidden">
               <BlobDecoration color="pink" size={200} className="-bottom-16 -right-16 opacity-30 dark:opacity-6" />
               <div className="relative z-10">
                 <SectionHeader
@@ -58,7 +58,7 @@ export default function VolunteerPage() {
 
       {/* All roles */}
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-300 mx-auto">
           <SectionHeader
             label="Volunteer Roles"
             title="Find Your Role"

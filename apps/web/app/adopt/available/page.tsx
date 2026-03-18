@@ -15,7 +15,7 @@ export default function AvailableDogsPage() {
       />
 
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-300 mx-auto">
           {/* Filter pills (visual only) */}
           <div className="flex flex-wrap gap-2 mb-10 justify-center">
             <Badge variant="outline" className="rounded-full px-4 py-1.5 text-sm cursor-pointer hover:bg-accent">All Dogs</Badge>

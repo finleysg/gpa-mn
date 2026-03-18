@@ -23,7 +23,7 @@ export default function SupportPage() {
       />
 
       <section className="py-20 px-5 md:py-24 bg-card">
-        <div className="max-w-[1200px] mx-auto">
+        <div className="max-w-300 mx-auto">
           <SectionHeader
             label="Resources"
             title="Everything You Need"
@@ -35,7 +35,7 @@ export default function SupportPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {resources.map((r, i) => (
               <FadeIn key={r.title} delay={i * 60}>
-                <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-[24px] p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full">
+                <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full">
                   <div className="text-2xl mb-3">{r.icon}</div>
                   <h3 className="font-heading text-xl tracking-wider uppercase mb-2">{r.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
