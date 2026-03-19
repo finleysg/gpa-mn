@@ -10,6 +10,7 @@ import type { ContentType } from '@repo/types';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { contentTypeConfigs } from '../_lib/content-config';
+import { revalidateWeb } from '../_lib/revalidate-web';
 
 const HARDCODED_USER = 'admin';
 
@@ -26,10 +27,8 @@ const webPathMap: Record<ContentType, string[]> = {
   whyGreyhound: ['/adopt'],
 };
 
-function revalidateWebPaths(contentType: ContentType) {
-  for (const path of webPathMap[contentType]) {
-    revalidatePath(path);
-  }
+async function revalidateWebPaths(contentType: ContentType) {
+  await revalidateWeb(webPathMap[contentType]);
 }
 
 function slugify(title: string): string {
