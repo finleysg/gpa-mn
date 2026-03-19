@@ -5,12 +5,32 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import Underline from '@tiptap/extension-underline';
 import { Markdown } from 'tiptap-markdown';
-import { Bold, Italic, Strikethrough, Link as LinkIcon } from 'lucide-react';
+import {
+  Bold,
+  Italic,
+  Underline as UnderlineIcon,
+  Strikethrough,
+  Code,
+  RemoveFormatting,
+  Link as LinkIcon,
+  ChevronDown,
+  Check,
+  Type,
+  Heading1,
+  Heading2,
+  Heading3,
+  List,
+  ListOrdered,
+  Quote,
+  CodeSquare,
+} from 'lucide-react';
 import { cn } from '@repo/ui/lib/utils';
 import { Label } from '@repo/ui/components/label';
 import { Switch } from '@repo/ui/components/switch';
 import { Textarea } from '@repo/ui/components/textarea';
+import { Popover, PopoverTrigger, PopoverContent } from '@repo/ui/components/popover';
 import type { Editor } from '@tiptap/react';
 
 interface MarkdownEditorProps {
@@ -34,12 +54,72 @@ function ToolbarButton({
       type="button"
       onClick={onClick}
       className={cn(
-        'rounded px-1.5 py-1 text-xs font-medium text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-white',
-        active && 'bg-zinc-700 text-white',
+        'rounded px-1.5 py-1 text-xs font-medium text-popover-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
+        active && 'bg-accent text-accent-foreground',
       )}
     >
       {children}
     </button>
+  );
+}
+
+const blockTypes = [
+  { label: 'Text', icon: Type, isActive: (e: Editor) => e.isActive('paragraph'), action: (e: Editor) => e.chain().focus().setParagraph().run() },
+  { label: 'Heading 1', icon: Heading1, isActive: (e: Editor) => e.isActive('heading', { level: 1 }), action: (e: Editor) => e.chain().focus().toggleHeading({ level: 1 }).run() },
+  { label: 'Heading 2', icon: Heading2, isActive: (e: Editor) => e.isActive('heading', { level: 2 }), action: (e: Editor) => e.chain().focus().toggleHeading({ level: 2 }).run() },
+  { label: 'Heading 3', icon: Heading3, isActive: (e: Editor) => e.isActive('heading', { level: 3 }), action: (e: Editor) => e.chain().focus().toggleHeading({ level: 3 }).run() },
+  { label: 'Bulleted list', icon: List, isActive: (e: Editor) => e.isActive('bulletList'), action: (e: Editor) => e.chain().focus().toggleBulletList().run() },
+  { label: 'Numbered list', icon: ListOrdered, isActive: (e: Editor) => e.isActive('orderedList'), action: (e: Editor) => e.chain().focus().toggleOrderedList().run() },
+  { label: 'Quote', icon: Quote, isActive: (e: Editor) => e.isActive('blockquote'), action: (e: Editor) => e.chain().focus().toggleBlockquote().run() },
+  { label: 'Code block', icon: CodeSquare, isActive: (e: Editor) => e.isActive('codeBlock'), action: (e: Editor) => e.chain().focus().toggleCodeBlock().run() },
+];
+
+function BlockTypeDropdown({ editor }: { editor: Editor }) {
+  const [open, setOpen] = useState(false);
+  const activeType = blockTypes.find((t) => t.isActive(editor)) ?? blockTypes[0]!;
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="flex items-center gap-1 rounded px-1.5 py-1 text-xs font-medium text-popover-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+        >
+          {activeType.label}
+          <ChevronDown className="size-3" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        side="bottom"
+        align="start"
+        sideOffset={8}
+        className="w-48 rounded-lg bg-popover p-1"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
+        {blockTypes.map((type) => {
+          const Icon = type.icon;
+          const active = type.isActive(editor);
+          return (
+            <button
+              key={type.label}
+              type="button"
+              onClick={() => {
+                type.action(editor);
+                setOpen(false);
+              }}
+              className={cn(
+                'flex w-full items-center gap-2 rounded px-2 py-1.5 text-sm text-popover-foreground transition-colors hover:bg-accent hover:text-accent-foreground',
+                active && 'text-accent-foreground',
+              )}
+            >
+              <Icon className="size-4" />
+              {type.label}
+              {active && <Check className="ml-auto size-4" />}
+            </button>
+          );
+        })}
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -56,7 +136,9 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
   }
 
   return (
-    <div className="flex items-center gap-0.5 rounded-lg bg-zinc-900 px-1 py-1 shadow-lg">
+    <div className="flex items-center gap-0.5 rounded-lg border bg-popover px-1 py-1 shadow-md">
+      <BlockTypeDropdown editor={editor} />
+      <div className="mx-0.5 h-5 w-px bg-border" />
       <ToolbarButton
         active={editor.isActive('bold')}
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -70,25 +152,29 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
         <Italic className="size-4" />
       </ToolbarButton>
       <ToolbarButton
+        active={editor.isActive('underline')}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+      >
+        <UnderlineIcon className="size-4" />
+      </ToolbarButton>
+      <ToolbarButton
         active={editor.isActive('strike')}
         onClick={() => editor.chain().focus().toggleStrike().run()}
       >
         <Strikethrough className="size-4" />
       </ToolbarButton>
-      <div className="mx-0.5 h-5 w-px bg-zinc-700" />
       <ToolbarButton
-        active={editor.isActive('heading', { level: 2 })}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        active={editor.isActive('code')}
+        onClick={() => editor.chain().focus().toggleCode().run()}
       >
-        H2
+        <Code className="size-4" />
       </ToolbarButton>
       <ToolbarButton
-        active={editor.isActive('heading', { level: 3 })}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        onClick={() => editor.chain().focus().unsetAllMarks().run()}
       >
-        H3
+        <RemoveFormatting className="size-4" />
       </ToolbarButton>
-      <div className="mx-0.5 h-5 w-px bg-zinc-700" />
+      <div className="mx-0.5 h-5 w-px bg-border" />
       <ToolbarButton active={editor.isActive('link')} onClick={handleLinkToggle}>
         <LinkIcon className="size-4" />
       </ToolbarButton>
@@ -105,6 +191,7 @@ export function MarkdownEditor({ name, label, value, onChange }: MarkdownEditorP
     extensions: [
       StarterKit,
       Link.configure({ openOnClick: false }),
+      Underline,
       Markdown,
     ],
     content: value,

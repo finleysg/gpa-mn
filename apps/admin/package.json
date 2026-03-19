@@ -20,6 +20,7 @@
     "@repo/ui": "workspace:*",
     "@tiptap/extension-bubble-menu": "^3.20.4",
     "@tiptap/extension-link": "^3.20.4",
+    "@tiptap/extension-underline": "^3.20.4",
     "@tiptap/react": "^3.20.4",
     "@tiptap/starter-kit": "^3.20.4",
     "better-auth": "^1.5.5",
