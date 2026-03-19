@@ -41,33 +41,6 @@ export default function DonatePage() {
           </div>
         </div>
       </section>
-
-      {/* Tax info */}
-      <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
-        <div className="max-w-150 mx-auto text-center">
-          <FadeIn>
-            <div className="bg-card rounded-4xl p-10 border border-border shadow-[0_6px_28px_rgba(156,47,48,0.08)] dark:shadow-[0_6px_28px_rgba(0,0,0,0.2)] relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-[#ff8f89] via-primary to-[#ff8f89]" />
-              <div className="text-4xl mb-4">🩺</div>
-              <h2 className="font-heading text-[clamp(1.8rem,4vw,2.5rem)] tracking-wider uppercase mb-3">
-                Heal a Hound Fund
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Some greyhounds arrive with injuries or medical conditions that require extraordinary care. The Heal a Hound Fund covers these special veterinary expenses so no greyhound is left behind.
-              </p>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 rounded-full bg-primary text-white px-8 py-3.5 font-semibold hover:bg-primary/90 transition-colors shadow-[0_4px_16px_rgba(156,47,48,0.25)]"
-              >
-                Contribute to Heal a Hound
-              </a>
-              <p className="text-xs text-muted-foreground mt-6">
-                GPA-MN is a 501(c)(3) nonprofit organization. All donations are 100% tax-deductible.
-              </p>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
     </>
   );
 }

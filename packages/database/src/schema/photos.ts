@@ -6,6 +6,7 @@ export const photos = mysqlTable(
     id: int().primaryKey().autoincrement(),
     photoType: mysqlEnum(['event', 'content']).notNull(),
     parentId: int().notNull(),
+    variant: mysqlEnum(['desktop', 'mobile', 'default']).notNull().default('default'),
     s3Key: varchar({ length: 512 }).notNull(),
     originalFilename: varchar({ length: 255 }).notNull(),
     contentType: varchar({ length: 100 }).notNull(),
@@ -13,5 +14,5 @@ export const photos = mysqlTable(
     createdAt: timestamp().notNull().defaultNow(),
     updatedAt: timestamp().notNull().defaultNow().onUpdateNow(),
   },
-  (table) => [index('photoType_parentId_idx').on(table.photoType, table.parentId)],
+  (table) => [index('photoType_parentId_variant_idx').on(table.photoType, table.parentId, table.variant)],
 );

@@ -5,7 +5,7 @@ export const contentItems = mysqlTable(
   'contentItems',
   {
     id: int().primaryKey().autoincrement(),
-    contentType: mysqlEnum(['sectionHeader', 'adoptionStep', 'volunteerRole', 'donationOption']).notNull(),
+    contentType: mysqlEnum(['sectionHeader', 'pageHeader', 'adoptionStep', 'volunteerRole', 'donationOption', 'aboutPage', 'beforeYouApply', 'postAdoptionSupport', 'lostHoundSuggestion', 'whyGreyhound']).notNull(),
     slug: varchar({ length: 255 }).notNull(),
     sortOrder: int().notNull().default(0),
     archived: boolean().notNull().default(false),

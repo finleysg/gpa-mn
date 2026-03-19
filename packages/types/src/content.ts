@@ -22,6 +22,16 @@ export interface SectionHeaderData {
   label?: string;
   title: string;
   description?: string;
+  location?: string;
+}
+
+export interface PageHeaderData {
+  badge?: string;
+  title: string;
+  highlight?: string;
+  description?: string;
+  variant?: 'default' | 'urgent';
+  location?: string;
 }
 
 export interface AdoptionStepData {
@@ -45,11 +55,46 @@ export interface DonationOptionData {
   icon: string;
 }
 
+export interface AboutPageData {
+  title: string;
+  body: string;
+}
+
+export interface BeforeYouApplyData {
+  label: string;
+  title: string;
+  text: string;
+}
+
+export interface PostAdoptionSupportData {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface LostHoundSuggestionData {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface WhyGreyhoundData {
+  title: string;
+  description: string;
+  icon: string;
+}
+
 export interface ContentTypeMap {
   sectionHeader: SectionHeaderData;
+  pageHeader: PageHeaderData;
   adoptionStep: AdoptionStepData;
   volunteerRole: VolunteerRoleData;
   donationOption: DonationOptionData;
+  aboutPage: AboutPageData;
+  beforeYouApply: BeforeYouApplyData;
+  postAdoptionSupport: PostAdoptionSupportData;
+  lostHoundSuggestion: LostHoundSuggestionData;
+  whyGreyhound: WhyGreyhoundData;
 }
 
 export type ContentType = keyof ContentTypeMap;

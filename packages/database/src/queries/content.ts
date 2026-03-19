@@ -39,6 +39,14 @@ export async function getLatestVersions(contentType: ContentType) {
     .orderBy(asc(contentItems.sortOrder));
 }
 
+export async function getContentItemBySlug(contentType: ContentType, slug: string) {
+  const [result] = await db
+    .select()
+    .from(contentItems)
+    .where(and(eq(contentItems.contentType, contentType), eq(contentItems.slug, slug)));
+  return result;
+}
+
 export async function getContentItem(id: number) {
   const [result] = await withLatestVersion(eq(contentVersions.contentItemId, id))
     .where(eq(contentItems.id, id));

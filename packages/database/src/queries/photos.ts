@@ -3,6 +3,7 @@ import { db } from '../index';
 import { photos } from '../schema/photos';
 
 type PhotoType = (typeof photos.$inferSelect)['photoType'];
+type PhotoVariant = (typeof photos.$inferSelect)['variant'];
 
 export async function getPhotos(photoType: PhotoType, parentId: number) {
   return db
@@ -23,6 +24,14 @@ export async function deletePhoto(id: number) {
 
 export async function getPhoto(id: number) {
   const [photo] = await db.select().from(photos).where(eq(photos.id, id));
+  return photo;
+}
+
+export async function getPhotoByVariant(photoType: PhotoType, parentId: number, variant: PhotoVariant) {
+  const [photo] = await db
+    .select()
+    .from(photos)
+    .where(and(eq(photos.photoType, photoType), eq(photos.parentId, parentId), eq(photos.variant, variant)));
   return photo;
 }
 

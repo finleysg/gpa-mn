@@ -8,6 +8,7 @@ import { Input } from '@repo/ui/components/input';
 import { Label } from '@repo/ui/components/label';
 import { Switch } from '@repo/ui/components/switch';
 import { Textarea } from '@repo/ui/components/textarea';
+import { MarkdownEditor } from './markdown-editor';
 import {
   Select,
   SelectContent,
@@ -127,16 +128,7 @@ export function EventForm({ event, action }: EventFormProps) {
         <Textarea id="description" name="description" defaultValue={event?.description} required rows={3} />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="longDescription">Long Description</Label>
-        <Textarea
-          id="longDescription"
-          name="longDescription"
-          defaultValue={event?.longDescription}
-          required
-          rows={8}
-        />
-      </div>
+      <MarkdownEditor name="longDescription" label="Long Description" value={event?.longDescription ?? ''} />
 
       <div className="flex gap-3">
         <Button type="submit">{event ? 'Save Changes' : 'Create Event'}</Button>
