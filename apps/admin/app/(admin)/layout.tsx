@@ -1,6 +1,8 @@
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@repo/ui/components/sidebar';
 import { AppSidebar } from '@/app/_components/app-sidebar';
 
+export const dynamic = 'force-dynamic';
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
