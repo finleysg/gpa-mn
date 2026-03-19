@@ -7,7 +7,6 @@ import { Button } from '@repo/ui/components/button';
 import { Input } from '@repo/ui/components/input';
 import { Label } from '@repo/ui/components/label';
 import { Switch } from '@repo/ui/components/switch';
-import { Textarea } from '@repo/ui/components/textarea';
 import { MarkdownEditor } from './markdown-editor';
 import {
   Select,
@@ -123,10 +122,7 @@ export function EventForm({ event, action }: EventFormProps) {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Short Description</Label>
-        <Textarea id="description" name="description" defaultValue={event?.description} required rows={3} />
-      </div>
+      <MarkdownEditor name="description" label="Short Description" value={event?.description ?? ''} />
 
       <MarkdownEditor name="longDescription" label="Long Description" value={event?.longDescription ?? ''} />
 

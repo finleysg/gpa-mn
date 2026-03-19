@@ -1,18 +1,18 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Badge } from '@repo/ui/components/badge';
-import type { Event } from '@/app/_data/events';
+import type { WebEvent } from '@/app/_lib/content';
 
-export function EventCard({ event }: { event: Event; index?: number }) {
+export function EventCard({ event }: { event: WebEvent; index?: number }) {
   return (
     <Link
       href={`/events/${event.id}`}
       className="group block bg-card rounded-3xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] border border-border hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all duration-300"
     >
-      {event.image ? (
+      {(event.mobileImage ?? event.image) ? (
         <div className="relative h-40 overflow-hidden">
           <Image
-            src={event.image}
+            src={(event.mobileImage ?? event.image)!}
             alt={event.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"

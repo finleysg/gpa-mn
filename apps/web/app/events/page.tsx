@@ -1,18 +1,27 @@
-import { events } from '@/app/_data/events';
+import { getEvents, getPageHeader, getSectionHeader } from '@/app/_lib/content';
 import { PageHero } from '@/app/_components/page-hero';
 import { EventCard } from '@/app/_components/event-card';
 import { EventCalendar } from '@/app/_components/event-calendar';
 import { SectionHeader } from '@/app/_components/section-header';
 import { FadeIn } from '@/app/_components/fade-in';
 
-export default function EventsPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function EventsPage() {
+  const [events, pageHeader, calendarHeader] = await Promise.all([
+    getEvents(),
+    getPageHeader('Events'),
+    getSectionHeader('Events — Calendar'),
+  ]);
+
   return (
     <>
       <PageHero
-        badge="Join Us"
-        title="Upcoming Events"
-        highlight="Events"
-        description="From our signature fundraiser to casual weekend walks, there are plenty of ways to connect with our community and the greyhounds."
+        badge={pageHeader.badge}
+        title={pageHeader.title}
+        highlight={pageHeader.highlight}
+        description={pageHeader.description}
+        variant={pageHeader.variant}
       />
 
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
@@ -30,8 +39,8 @@ export default function EventsPage() {
       <section className="py-20 px-5 md:py-24 bg-card">
         <div className="max-w-300 mx-auto">
           <SectionHeader
-            label="At a Glance"
-            title="Event Calendar"
+            label={calendarHeader.label}
+            title={calendarHeader.title}
             className="mb-10"
           />
           <EventCalendar events={events} />

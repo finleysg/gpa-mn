@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { dogs } from './_data/dogs';
-import { events } from './_data/events';
-import { volunteerRoles } from './_data/volunteer-roles';
+import { getEvents, getVolunteerRoles, getSectionHeader } from './_lib/content';
 import { SectionHeader } from './_components/section-header';
 import { StatCard } from './_components/stat-card';
 import { DogCard } from './_components/dog-card';
@@ -17,7 +16,24 @@ import {
   CarouselNext,
 } from '@repo/ui/components/carousel';
 
-export default function HomePage() {
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const [events, volunteerRoles, dogsSectionHeader, eventsSectionHeader, volunteerSectionHeader] = await Promise.all([
+    getEvents(),
+    getVolunteerRoles(),
+    getSectionHeader('Homepage — Available Greyhounds'),
+    getSectionHeader('Homepage — Events'),
+    getSectionHeader('Homepage — Volunteer'),
+  ]);
+
+  const shuffledRoles = [...volunteerRoles];
+  for (let i = shuffledRoles.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledRoles[i], shuffledRoles[j]] = [shuffledRoles[j]!, shuffledRoles[i]!];
+  }
+  shuffledRoles.splice(4);
+
   return (
     <>
       {/* ── HERO ── */}
@@ -89,9 +105,9 @@ export default function HomePage() {
         <div className="relative z-10 max-w-300 mx-auto">
           <div className="flex items-end justify-between mb-10">
             <SectionHeader
-              label="Adopt"
-              title="Meet Our Available Greyhounds"
-              description="Each of these gentle souls is looking for their forever home. Could it be yours?"
+              label={dogsSectionHeader.label}
+              title={dogsSectionHeader.title}
+              description={dogsSectionHeader.description}
             />
             <Link
               href="/adopt/available"
@@ -135,9 +151,9 @@ export default function HomePage() {
         <BlobDecoration color="teal" size={450} className="-bottom-36 -right-36 opacity-15 dark:opacity-4" />
         <div className="relative z-10 max-w-300 mx-auto">
           <SectionHeader
-            label="Events"
-            title="Come Meet the Hounds"
-            description="From our signature fundraiser to casual weekend walks, there are plenty of ways to connect with our community and the greyhounds."
+            label={eventsSectionHeader.label}
+            title={eventsSectionHeader.title}
+            description={eventsSectionHeader.description}
             align="center"
             className="mb-10"
           />
@@ -172,13 +188,13 @@ export default function HomePage() {
               <div className="relative z-10 md:grid md:grid-cols-2 md:gap-10 md:items-center">
                 <div>
                   <p className="font-sans font-bold text-xs uppercase tracking-[2.5px] text-secondary mb-3">
-                    Volunteer
+                    {volunteerSectionHeader.label}
                   </p>
                   <h2 className="font-heading text-[clamp(2rem,4vw,3rem)] leading-[1.1] tracking-wider uppercase text-white mb-3">
-                    Join Our Pack
+                    {volunteerSectionHeader.title}
                   </h2>
                   <p className="text-[1.05rem] text-white/80 leading-relaxed max-w-125 mb-7">
-                    GPA-MN is powered entirely by volunteers like you. Whether you have a few hours a month or want to be deeply involved, there is a role for you.
+                    {volunteerSectionHeader.description}
                   </p>
                   <Link
                     href="/volunteer"
@@ -189,7 +205,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-8 md:mt-0">
-                  {volunteerRoles.slice(0, 4).map((role) => (
+                  {shuffledRoles.map((role) => (
                     <div
                       key={role.title}
                       className="bg-white/10 rounded-2xl p-4 text-center border border-white/10 hover:bg-white/15 hover:-translate-y-0.5 transition-all"

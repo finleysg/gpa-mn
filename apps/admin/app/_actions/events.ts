@@ -6,6 +6,7 @@ import {
   archiveEvent as dbArchiveEvent,
 } from '@repo/database';
 import type { events } from '@repo/database';
+import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { validateEventData } from './validate-event';
 
@@ -36,6 +37,7 @@ export async function createEventAction(formData: FormData) {
   }
 
   const result = await dbCreateEvent(data);
+  revalidatePath('/events');
   redirect(`/events/${result.id}`);
 }
 
@@ -48,10 +50,12 @@ export async function updateEventAction(id: number, formData: FormData) {
   }
 
   await dbUpdateEvent(id, data);
+  revalidatePath('/events');
   return { success: true as const };
 }
 
 export async function archiveEventAction(id: number) {
   await dbArchiveEvent(id);
+  revalidatePath('/events');
   redirect('/events');
 }

@@ -19,11 +19,11 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { Badge } from '@repo/ui/components/badge';
 import { cn } from '@repo/ui/lib/utils';
-import type { Event } from '@/app/_data/events';
+import type { WebEvent } from '@/app/_lib/content';
 
 // ── Types ──
 
-type ParsedEvent = Event & { dates: Date[] };
+type ParsedEvent = WebEvent & { dates: Date[] };
 
 type CalendarDay = {
   date: Date;
@@ -35,7 +35,7 @@ type CalendarDay = {
 
 // ── Date parsing (unchanged) ──
 
-function parseEventDates(event: Event, displayMonth: Date): Date[] {
+function parseEventDates(event: WebEvent, displayMonth: Date): Date[] {
   const dateStr = event.date;
 
   if (dateStr.toLowerCase().startsWith('every sunday')) {
@@ -62,7 +62,7 @@ function parseEventDates(event: Event, displayMonth: Date): Date[] {
   return [];
 }
 
-function getEventsForMonth(events: Event[], month: Date): ParsedEvent[] {
+function getEventsForMonth(events: WebEvent[], month: Date): ParsedEvent[] {
   return events
     .map((event) => ({
       ...event,
@@ -109,7 +109,7 @@ function buildCalendarDays(month: Date, parsedEvents: ParsedEvent[]): CalendarDa
 
 // ── Event type colors ──
 
-function getEventTypeColor(type: Event['type']): string {
+function getEventTypeColor(type: WebEvent['type']): string {
   switch (type) {
     case 'Annual':
       return 'bg-primary/20 text-primary dark:bg-primary/30';
@@ -229,7 +229,7 @@ function CalendarGrid({ weeks }: { weeks: CalendarDay[][] }) {
 
 // ── Main component ──
 
-export function EventCalendar({ events }: { events: Event[] }) {
+export function EventCalendar({ events }: { events: WebEvent[] }) {
   const [month, setMonth] = useState(() => new Date(2026, 2)); // March 2026 to match demo data
 
   const monthEvents = useMemo(() => getEventsForMonth(events, month), [events, month]);

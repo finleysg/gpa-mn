@@ -1,8 +1,12 @@
 import { Phone, AlertTriangle } from 'lucide-react';
+import { getLostHoundSuggestions, getPageHeader, getSectionHeader } from '@/app/_lib/content';
 import { PageHero } from '@/app/_components/page-hero';
 import { SectionHeader } from '@/app/_components/section-header';
 import { FadeIn } from '@/app/_components/fade-in';
 import { BlobDecoration } from '@/app/_components/blob-decoration';
+import { MarkdownContent } from '@/app/_components/markdown-content';
+
+export const dynamic = 'force-dynamic';
 
 const immediateSteps = [
   'Stay calm. Greyhounds can sense panic and may run further.',
@@ -15,24 +19,22 @@ const immediateSteps = [
   'Put up flyers with a clear photo in the surrounding neighborhood.',
 ];
 
-const preventionTips = [
-  { icon: '🏷️', title: 'ID Tags', desc: 'Always keep current ID tags on your greyhound\'s collar with your phone number. Consider a GPS tracking collar.' },
-  { icon: '🔗', title: 'Martingale Collar', desc: 'Use a properly fitted martingale collar — greyhounds can slip out of regular collars due to their narrow heads.' },
-  { icon: '🚪', title: 'Door Safety', desc: 'Be vigilant about doors and gates. Greyhounds are fast and can bolt before you realize it. Consider baby gates as backup.' },
-  { icon: '🏡', title: 'Secure Fencing', desc: 'Check your yard fencing regularly for gaps. Greyhounds can squeeze through surprisingly small spaces and can jump fences under 5 feet.' },
-  { icon: '📱', title: 'Microchip', desc: 'Ensure your greyhound\'s microchip registration is up to date with your current contact information.' },
-  { icon: '⚡', title: 'Leash Always', desc: 'Never let your greyhound off-leash in an unfenced area. Their prey drive can override all training in an instant.' },
-];
+export default async function LostHoundPage() {
+  const [preventionTips, pageHeader, stepsHeader, preventionHeader] = await Promise.all([
+    getLostHoundSuggestions(),
+    getPageHeader('Lost Hound'),
+    getSectionHeader('Lost Hound — Act Now'),
+    getSectionHeader('Lost Hound — Prevention'),
+  ]);
 
-export default function LostHoundPage() {
   return (
     <>
       <PageHero
-        variant="urgent"
-        badge="Emergency"
-        title="Lost Hound!"
-        highlight="Lost Hound!"
-        description="If your greyhound has gotten loose, time is critical. Follow these steps immediately."
+        variant={pageHeader.variant}
+        badge={pageHeader.badge}
+        title={pageHeader.title}
+        highlight={pageHeader.highlight}
+        description={pageHeader.description}
       />
 
       {/* Emergency banner */}
@@ -59,8 +61,8 @@ export default function LostHoundPage() {
         <div className="relative z-10 max-w-200 mx-auto">
           <FadeIn>
             <SectionHeader
-              label="Act Now"
-              title="What to Do Immediately"
+              label={stepsHeader.label}
+              title={stepsHeader.title}
             />
             <ol className="mt-8 space-y-4">
               {immediateSteps.map((step, i) => (
@@ -80,9 +82,9 @@ export default function LostHoundPage() {
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
         <div className="max-w-300 mx-auto">
           <SectionHeader
-            label="Prevention"
-            title="Keep Your Hound Safe"
-            description="The best way to handle a lost greyhound is to prevent it from happening. These tips will help keep your hound safe."
+            label={preventionHeader.label}
+            title={preventionHeader.title}
+            description={preventionHeader.description}
             align="center"
             className="mb-12"
           />
@@ -93,7 +95,7 @@ export default function LostHoundPage() {
                 <div className="bg-card rounded-3xl p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full">
                   <div className="text-2xl mb-3">{tip.icon}</div>
                   <h3 className="font-heading text-xl tracking-wider uppercase mb-2">{tip.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{tip.desc}</p>
+                  <MarkdownContent content={tip.description} className="text-sm text-muted-foreground leading-relaxed [&>p]:mb-0" />
                 </div>
               </FadeIn>
             ))}

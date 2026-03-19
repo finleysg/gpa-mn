@@ -1,5 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "../../../packages/ui/src/styles/globals.css";
+@plugin "@tailwindcss/typography";
 
 @source "../../../packages/ui/src";
+
+.prose ul > li::marker,
+.prose ol > li::marker {
+  color: var(--color-primary);
+}

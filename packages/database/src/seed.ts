@@ -96,6 +96,7 @@ const contentData: ContentSeedItem[] = [
   ...[
     { slug: 'home-adopt', sortOrder: 0, data: { label: 'Adopt', title: 'Meet Our Available Greyhounds', description: 'Each of these gentle souls is looking for their forever home. Could it be yours?', location: 'Homepage — Available Greyhounds' } },
     { slug: 'home-events', sortOrder: 1, data: { label: 'Events', title: 'Come Meet the Hounds', description: 'From our signature fundraiser to casual weekend walks, there are plenty of ways to connect with our community and the greyhounds.', location: 'Homepage — Events' } },
+    { slug: 'home-volunteer', sortOrder: 2, data: { label: 'Volunteer', title: 'Join Our Pack', description: 'GPA-MN is powered entirely by volunteers like you. Whether you have a few hours a month or want to be deeply involved, there is a role for you.', location: 'Homepage — Volunteer' } },
     { slug: 'adopt-why', sortOrder: 2, data: { label: 'Why Greyhounds?', title: 'The Perfect Family Companion', description: 'Retired racing greyhounds adapt beautifully to home life. Here\'s what makes them such special pets.', location: 'Adopt — Why Greyhounds?' } },
     { slug: 'adopt-get-started', sortOrder: 3, data: { label: 'Get Started', title: 'Ready to Adopt?', location: 'Adopt — Get Started' } },
     { slug: 'about-explore', sortOrder: 4, data: { label: 'Learn More', title: 'Explore Our Story', location: 'About — Learn More' } },
@@ -104,6 +105,7 @@ const contentData: ContentSeedItem[] = [
     { slug: 'donate-ways', sortOrder: 7, data: { label: 'Ways to Give', title: 'Choose How to Help', description: 'There are many ways to support GPA-MN\'s mission. Every contribution makes a difference in the lives of retired racing greyhounds.', location: 'Donate — Ways to Give' } },
     { slug: 'events-calendar', sortOrder: 8, data: { label: 'At a Glance', title: 'Event Calendar', location: 'Events — Calendar' } },
     { slug: 'lost-hound-act', sortOrder: 9, data: { label: 'Act Now', title: 'What to Do Immediately', location: 'Lost Hound — Act Now' } },
+    { slug: 'lost-hound-prevention', sortOrder: 16, data: { label: 'Prevention', title: 'Keep Your Hound Safe', description: 'The best way to handle a lost greyhound is to prevent it from happening. These tips will help keep your hound safe.', location: 'Lost Hound — Prevention' } },
     { slug: 'adopt-process-steps', sortOrder: 10, data: { label: 'Four Steps', title: 'From Application to Adoption Day', location: 'Adopt / Our Process — Steps' } },
     { slug: 'adopt-process-before', sortOrder: 11, data: { label: 'Good to Know', title: 'Before You Apply', location: 'Adopt / Our Process — Before You Apply' } },
     { slug: 'adopt-support-resources', sortOrder: 12, data: { label: 'Resources', title: 'Everything You Need', description: 'These resources will help you and your greyhound adjust to life together. Don\'t hesitate to reach out to the GPA-MN community with questions.', location: 'Adopt / Support — Resources' } },

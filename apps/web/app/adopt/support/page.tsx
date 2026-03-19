@@ -1,33 +1,35 @@
+import { getPostAdoptionSupport, getPageHeader, getSectionHeader } from '@/app/_lib/content';
 import { PageHero } from '@/app/_components/page-hero';
 import { SectionHeader } from '@/app/_components/section-header';
 import { FadeIn } from '@/app/_components/fade-in';
 import { CTASection } from '@/app/_components/cta-section';
+import { MarkdownContent } from '@/app/_components/markdown-content';
 
-const resources = [
-  { icon: '📖', title: "New Hound Owner's Manual", desc: 'Everything you need to know about bringing your greyhound home — from the first night to establishing routines.' },
-  { icon: '💊', title: 'Heartworm Prescription Note', desc: 'Information about heartworm prevention and how to obtain prescriptions for your adopted greyhound.' },
-  { icon: '🔒', title: 'Preventing Escapes', desc: 'Tips and best practices for preventing your greyhound from getting loose, including collar and leash recommendations.' },
-  { icon: '🤝', title: 'Stay Connected', desc: 'Join the MN Greyhound Playdates, Outings, Hijinks, Chat and Support Facebook group for ongoing community support.' },
-  { icon: '🍽️', title: 'Feeding Guidelines', desc: 'Recommended food brands, portion sizes, and feeding schedules tailored specifically for retired racing greyhounds.' },
-  { icon: '🏥', title: 'Veterinary Care', desc: 'Greyhound-specific health information including dental care, anesthesia sensitivities, and recommended vet practices in the Twin Cities.' },
-];
+export const dynamic = 'force-dynamic';
 
-export default function SupportPage() {
+export default async function SupportPage() {
+  const [resources, pageHeader, resourcesHeader] = await Promise.all([
+    getPostAdoptionSupport(),
+    getPageHeader('Adopt / Support'),
+    getSectionHeader('Adopt / Support — Resources'),
+  ]);
+
   return (
     <>
       <PageHero
-        badge="Post-Adoption"
-        title="Post-Adoption Support"
-        highlight="Support"
-        description="Congratulations on your new family member! We're here to help you and your greyhound thrive together."
+        badge={pageHeader.badge}
+        title={pageHeader.title}
+        highlight={pageHeader.highlight}
+        description={pageHeader.description}
+        variant={pageHeader.variant}
       />
 
       <section className="py-20 px-5 md:py-24 bg-card">
         <div className="max-w-300 mx-auto">
           <SectionHeader
-            label="Resources"
-            title="Everything You Need"
-            description="These resources will help you and your greyhound adjust to life together. Don't hesitate to reach out to the GPA-MN community with questions."
+            label={resourcesHeader.label}
+            title={resourcesHeader.title}
+            description={resourcesHeader.description}
             align="center"
             className="mb-12"
           />
@@ -38,7 +40,7 @@ export default function SupportPage() {
                 <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full">
                   <div className="text-2xl mb-3">{r.icon}</div>
                   <h3 className="font-heading text-xl tracking-wider uppercase mb-2">{r.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
+                  <MarkdownContent content={r.description} className="text-sm text-muted-foreground leading-relaxed [&>p]:mb-0" />
                 </div>
               </FadeIn>
             ))}

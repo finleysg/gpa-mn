@@ -1,6 +1,6 @@
 import { Input } from '@repo/ui/components/input';
 import { Label } from '@repo/ui/components/label';
-import { Textarea } from '@repo/ui/components/textarea';
+import { MarkdownEditor } from '../markdown-editor';
 
 interface SectionHeaderFieldsProps {
   data?: Record<string, unknown>;
@@ -29,15 +29,7 @@ export function SectionHeaderFields({ data }: SectionHeaderFieldsProps) {
         />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          name="description"
-          defaultValue={(data?.description as string) ?? ''}
-          rows={3}
-        />
-      </div>
+      <MarkdownEditor name="description" label="Description" value={(data?.description as string) ?? ''} />
     </>
   );
 }

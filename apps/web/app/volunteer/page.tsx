@@ -1,4 +1,4 @@
-import { volunteerRoles } from '@/app/_data/volunteer-roles';
+import { getVolunteerRoles, getPageHeader, getSectionHeader } from '@/app/_lib/content';
 import { PageHero } from '@/app/_components/page-hero';
 import { SectionHeader } from '@/app/_components/section-header';
 import { VolunteerRoleCard } from '@/app/_components/volunteer-role-card';
@@ -6,14 +6,24 @@ import { FadeIn } from '@/app/_components/fade-in';
 import { CTASection } from '@/app/_components/cta-section';
 import { BlobDecoration } from '@/app/_components/blob-decoration';
 
-export default function VolunteerPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function VolunteerPage() {
+  const [volunteerRoles, pageHeader, fosteringHeader, rolesHeader] = await Promise.all([
+    getVolunteerRoles(),
+    getPageHeader('Volunteer'),
+    getSectionHeader('Volunteer — Fostering'),
+    getSectionHeader('Volunteer — Roles'),
+  ]);
+
   return (
     <>
       <PageHero
-        badge="Make a Difference"
-        title="Volunteer with GPA-MN"
-        highlight="Volunteer"
-        description="GPA-MN is powered entirely by volunteers like you. Whether you have a few hours a month or want to be deeply involved, there is a role for you."
+        badge={pageHeader.badge}
+        title={pageHeader.title}
+        highlight={pageHeader.highlight}
+        description={pageHeader.description}
+        variant={pageHeader.variant}
       />
 
       {/* Fostering highlight */}
@@ -25,9 +35,9 @@ export default function VolunteerPage() {
               <BlobDecoration color="pink" size={200} className="-bottom-16 -right-16 opacity-30 dark:opacity-6" />
               <div className="relative z-10">
                 <SectionHeader
-                  label="Fostering"
-                  title="The Lifeblood of GPA-MN"
-                  description="We foster every dog rather than kennel them. Foster families provide a safe, loving environment where greyhounds learn about home life — stairs, glass doors, couches, and the simple joy of being a pet."
+                  label={fosteringHeader.label}
+                  title={fosteringHeader.title}
+                  description={fosteringHeader.description}
                 />
                 <div className="mt-6 space-y-3">
                   {[
@@ -60,9 +70,9 @@ export default function VolunteerPage() {
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
         <div className="max-w-300 mx-auto">
           <SectionHeader
-            label="Volunteer Roles"
-            title="Find Your Role"
-            description="There are many ways to get involved with GPA-MN. Find the volunteer opportunity that fits your skills and schedule."
+            label={rolesHeader.label}
+            title={rolesHeader.title}
+            description={rolesHeader.description}
             align="center"
             className="mb-12"
           />

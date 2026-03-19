@@ -7,6 +7,7 @@ export interface ContentTypeConfig {
   plural: string;
   tableColumns: { key: string; label: string }[];
   allowCreate?: boolean;
+  sortBy?: string;
 }
 
 export const contentTypeConfigs: Record<ContentType, ContentTypeConfig> = {
@@ -16,6 +17,7 @@ export const contentTypeConfigs: Record<ContentType, ContentTypeConfig> = {
     singular: 'Section Header',
     plural: 'Section Headers',
     allowCreate: false,
+    sortBy: 'location',
     tableColumns: [
       { key: 'label', label: 'Label' },
       { key: 'title', label: 'Title' },
@@ -28,6 +30,7 @@ export const contentTypeConfigs: Record<ContentType, ContentTypeConfig> = {
     singular: 'Page Header',
     plural: 'Page Headers',
     allowCreate: false,
+    sortBy: 'location',
     tableColumns: [
       { key: 'badge', label: 'Badge' },
       { key: 'title', label: 'Title' },

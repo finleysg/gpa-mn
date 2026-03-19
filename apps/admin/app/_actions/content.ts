@@ -13,6 +13,25 @@ import { contentTypeConfigs } from '../_lib/content-config';
 
 const HARDCODED_USER = 'admin';
 
+const webPathMap: Record<ContentType, string[]> = {
+  sectionHeader: ['/'],
+  pageHeader: ['/'],
+  adoptionStep: ['/adopt/our-process'],
+  volunteerRole: ['/', '/volunteer'],
+  donationOption: ['/donate'],
+  aboutPage: ['/about'],
+  beforeYouApply: ['/adopt/our-process'],
+  postAdoptionSupport: ['/adopt/support'],
+  lostHoundSuggestion: ['/lost-hound'],
+  whyGreyhound: ['/adopt'],
+};
+
+function revalidateWebPaths(contentType: ContentType) {
+  for (const path of webPathMap[contentType]) {
+    revalidatePath(path);
+  }
+}
+
 function slugify(title: string): string {
   return title
     .toLowerCase()
@@ -114,6 +133,7 @@ export async function updateContentAction(
 
   await updateContentItem(contentItemId, data, HARDCODED_USER, changeNote);
   revalidatePath(`/${config.slug}/${contentItemId}`);
+  revalidateWebPaths(contentType);
   return { success: true as const };
 }
 
@@ -131,4 +151,5 @@ export async function revertContentAction(
   const config = contentTypeConfigs[contentType];
   await revertToVersion(contentItemId, targetVersionId, HARDCODED_USER);
   revalidatePath(`/${config.slug}/${contentItemId}`);
+  revalidateWebPaths(contentType);
 }

@@ -1,18 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { events } from '@/app/_data/events';
+import { getEvent } from '@/app/_lib/content';
 import { Badge } from '@repo/ui/components/badge';
 import { MapPin, Clock, Calendar } from 'lucide-react';
 import { BlobDecoration } from '@/app/_components/blob-decoration';
+import { MarkdownContent } from '@/app/_components/markdown-content';
 
-export function generateStaticParams() {
-  return events.map((event) => ({ id: event.id }));
-}
+export const dynamic = 'force-dynamic';
 
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const event = events.find((e) => e.id === id);
+  const event = await getEvent(Number(id));
 
   if (!event) notFound();
 
@@ -21,17 +20,33 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       {/* Hero image */}
       <section className="relative pt-28 pb-0 overflow-hidden">
         <div className="max-w-300 mx-auto px-5">
-          {event.image ? (
-            <div className="relative h-48 md:h-80 rounded-4xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-              <Image
-                src={event.image}
-                alt={event.title}
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 1200px) 100vw, 1200px"
-              />
-            </div>
+          {(event.image || event.mobileImage) ? (
+            <>
+              {/* Mobile image */}
+              {event.mobileImage && (
+                <div className="relative h-48 rounded-4xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)] md:hidden">
+                  <Image
+                    src={event.mobileImage}
+                    alt={event.title}
+                    fill
+                    priority
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                </div>
+              )}
+              {/* Desktop image */}
+              <div className={`relative h-48 md:h-80 rounded-4xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)] ${event.mobileImage ? 'hidden md:block' : ''}`}>
+                <Image
+                  src={event.image ?? event.mobileImage!}
+                  alt={event.title}
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 1200px) 100vw, 1200px"
+                />
+              </div>
+            </>
           ) : (
             <div className="h-48 md:h-80 bg-linear-to-br from-secondary/60 to-secondary/20 dark:from-[#1a3a3e] dark:to-[#253e42] rounded-4xl flex items-center justify-center text-lg font-semibold text-[#2d7a81] dark:text-[#3a9da6] shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
               {event.title}
@@ -63,9 +78,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
               {event.title}
             </h1>
 
-            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              {event.longDescription}
-            </p>
+            <MarkdownContent
+              content={event.longDescription}
+              className="text-lg text-muted-foreground leading-relaxed mb-8 prose prose-lg max-w-none"
+            />
 
             <a
               href="#"

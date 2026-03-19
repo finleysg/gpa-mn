@@ -1,17 +1,27 @@
-import { donationMethods } from '@/app/_data/donation-options';
+import { getDonationOptions, getPageHeader, getSectionHeader } from '@/app/_lib/content';
 import { PageHero } from '@/app/_components/page-hero';
 import { SectionHeader } from '@/app/_components/section-header';
 import { FadeIn } from '@/app/_components/fade-in';
 import { BlobDecoration } from '@/app/_components/blob-decoration';
+import { MarkdownContent } from '@/app/_components/markdown-content';
 
-export default function DonatePage() {
+export const dynamic = 'force-dynamic';
+
+export default async function DonatePage() {
+  const [donationOptions, pageHeader, waysHeader] = await Promise.all([
+    getDonationOptions(),
+    getPageHeader('Donate'),
+    getSectionHeader('Donate — Ways to Give'),
+  ]);
+
   return (
     <>
       <PageHero
-        badge="Support Our Mission"
-        title="Help Us Save More Greyhounds"
-        highlight="Save More Greyhounds"
-        description="Your generous donation helps cover veterinary care, foster supplies, transportation, and everything needed to give these gentle dogs a second chance at life."
+        badge={pageHeader.badge}
+        title={pageHeader.title}
+        highlight={pageHeader.highlight}
+        description={pageHeader.description}
+        variant={pageHeader.variant}
       />
 
       {/* Donation methods */}
@@ -21,20 +31,20 @@ export default function DonatePage() {
 
         <div className="relative z-10 max-w-300 mx-auto">
           <SectionHeader
-            label="Ways to Give"
-            title="Choose How to Help"
-            description="There are many ways to support GPA-MN's mission. Every contribution makes a difference in the lives of retired racing greyhounds."
+            label={waysHeader.label}
+            title={waysHeader.title}
+            description={waysHeader.description}
             align="center"
             className="mb-12"
           />
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {donationMethods.map((method, i) => (
+            {donationOptions.map((method, i) => (
               <FadeIn key={method.title} delay={i * 60}>
                 <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)] h-full hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all">
                   <div className="text-2xl mb-3">{method.icon}</div>
                   <h3 className="font-heading text-xl tracking-wider uppercase mb-2">{method.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{method.description}</p>
+                  <MarkdownContent content={method.description} className="text-sm text-muted-foreground leading-relaxed [&>p]:mb-0" />
                 </div>
               </FadeIn>
             ))}

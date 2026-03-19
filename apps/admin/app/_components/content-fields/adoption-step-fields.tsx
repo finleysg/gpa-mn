@@ -1,6 +1,6 @@
 import { Input } from '@repo/ui/components/input';
 import { Label } from '@repo/ui/components/label';
-import { Textarea } from '@repo/ui/components/textarea';
+import { MarkdownEditor } from '../markdown-editor';
 import { StringListInput } from '../string-list-input';
 
 interface AdoptionStepFieldsProps {
@@ -33,16 +33,7 @@ export function AdoptionStepFields({ data }: AdoptionStepFieldsProps) {
         <Input id="title" name="title" defaultValue={(data?.title as string) ?? ''} required />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          name="description"
-          defaultValue={(data?.description as string) ?? ''}
-          rows={3}
-          required
-        />
-      </div>
+      <MarkdownEditor name="description" label="Description" value={(data?.description as string) ?? ''} />
 
       <StringListInput
         name="details"

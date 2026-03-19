@@ -19,7 +19,14 @@ interface ContentListPageProps {
 }
 
 export async function ContentListPage({ config }: ContentListPageProps) {
-  const items = await getLatestVersions(config.contentType);
+  const rawItems = await getLatestVersions(config.contentType);
+  const items = config.sortBy
+    ? [...rawItems].sort((a, b) => {
+        const aVal = String((a.version.data as Record<string, unknown>)[config.sortBy!] ?? '');
+        const bVal = String((b.version.data as Record<string, unknown>)[config.sortBy!] ?? '');
+        return aVal.localeCompare(bVal);
+      })
+    : rawItems;
 
   return (
     <div>

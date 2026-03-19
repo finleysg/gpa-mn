@@ -1,15 +1,12 @@
 import Link from 'next/link';
+import { getWhyGreyhounds, getPageHeader, getSectionHeader } from '@/app/_lib/content';
 import { PageHero } from '@/app/_components/page-hero';
 import { SectionHeader } from '@/app/_components/section-header';
 import { FadeIn } from '@/app/_components/fade-in';
 import { BlobDecoration } from '@/app/_components/blob-decoration';
+import { MarkdownContent } from '@/app/_components/markdown-content';
 
-const features = [
-  { icon: '🛋️', title: 'Gentle Temperament', desc: 'Greyhounds are known for being calm, quiet, and surprisingly low-energy in the home. They are the ultimate couch companion.' },
-  { icon: '👨‍👩‍👧', title: 'Great with Families', desc: 'Most greyhounds are wonderful with children and adapt well to family life. Their gentle nature makes them patient and loving pets.' },
-  { icon: '✂️', title: 'Low Grooming Needs', desc: 'With short coats and minimal shedding, greyhounds are easy to groom. A weekly brush and occasional bath is all they need.' },
-  { icon: '🏡', title: 'Calm House Dogs', desc: 'Despite being the fastest dog breed, greyhounds are surprisingly lazy at home. They typically sleep 16–18 hours a day.' },
-];
+export const dynamic = 'force-dynamic';
 
 const links = [
   { href: '/adopt/available', title: 'Available Dogs', desc: 'Browse our current greyhounds looking for forever homes.', icon: '🐾' },
@@ -17,14 +14,22 @@ const links = [
   { href: '/adopt/support', title: 'Post-Adoption Support', desc: 'Resources and community support for after you bring your greyhound home.', icon: '💛' },
 ];
 
-export default function AdoptPage() {
+export default async function AdoptPage() {
+  const [whyGreyhounds, pageHeader, whyHeader, linksHeader] = await Promise.all([
+    getWhyGreyhounds(),
+    getPageHeader('Adopt'),
+    getSectionHeader('Adopt — Why Greyhounds?'),
+    getSectionHeader('Adopt — Get Started'),
+  ]);
+
   return (
     <>
       <PageHero
-        badge="Adopt a Greyhound"
-        title="Your New Best Friend is Waiting"
-        highlight="Best Friend"
-        description="Greyhounds make wonderful family pets. They are gentle, affectionate, and surprisingly low-energy couch companions. Ready to open your heart and home?"
+        badge={pageHeader.badge}
+        title={pageHeader.title}
+        highlight={pageHeader.highlight}
+        description={pageHeader.description}
+        variant={pageHeader.variant}
       >
         <div className="flex flex-wrap gap-3 justify-center">
           <Link
@@ -47,14 +52,14 @@ export default function AdoptPage() {
         <BlobDecoration color="teal" size={350} className="-top-20 -right-20 opacity-20 dark:opacity-6" />
         <div className="relative z-10 max-w-300 mx-auto">
           <SectionHeader
-            label="Why Greyhounds?"
-            title="The Perfect Family Companion"
-            description="Retired racing greyhounds adapt beautifully to home life. Here's what makes them such special pets."
+            label={whyHeader.label}
+            title={whyHeader.title}
+            description={whyHeader.description}
             align="center"
             className="mb-12"
           />
           <div className="grid gap-6 sm:grid-cols-2">
-            {features.map((f, i) => (
+            {whyGreyhounds.map((f, i) => (
               <FadeIn key={f.title} delay={i * 80}>
                 <div className="bg-[#FAF5F0] dark:bg-[#1a1715] rounded-3xl p-6 flex gap-4 items-start border border-border shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)]">
                   <div className="w-12 h-12 min-w-12 rounded-2xl bg-card dark:bg-[#242019] flex items-center justify-center text-xl shadow-sm">
@@ -62,7 +67,7 @@ export default function AdoptPage() {
                   </div>
                   <div>
                     <h3 className="font-heading text-xl tracking-wider uppercase mb-1">{f.title}</h3>
-                    <p className="text-[0.95rem] text-muted-foreground leading-relaxed">{f.desc}</p>
+                    <MarkdownContent content={f.description} className="text-[0.95rem] text-muted-foreground leading-relaxed [&>p]:mb-0" />
                   </div>
                 </div>
               </FadeIn>
@@ -75,8 +80,8 @@ export default function AdoptPage() {
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
         <div className="max-w-300 mx-auto">
           <SectionHeader
-            label="Get Started"
-            title="Ready to Adopt?"
+            label={linksHeader.label}
+            title={linksHeader.title}
             align="center"
             className="mb-12"
           />
