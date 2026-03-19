@@ -1,9 +1,11 @@
+import { parse, format, isSameMonth } from 'date-fns';
 import {
   getLatestVersions,
   getEvents as dbGetEvents,
   getEvent as dbGetEvent,
   getPhotos,
   getPhotoByVariant,
+  getContentItemBySlug,
 } from '@repo/database';
 import type {
   SectionHeaderData,
@@ -45,6 +47,33 @@ export type WebEvent = {
 
 type DbEvent = Awaited<ReturnType<typeof dbGetEvents>>[number];
 
+function formatIsoDate(iso: string): string {
+  const d = parse(iso, 'yyyy-MM-dd', new Date());
+  return format(d, 'MMMM d, yyyy');
+}
+
+function buildDisplayDate(event: DbEvent): string {
+  const start = parse(event.startDate, 'yyyy-MM-dd', new Date());
+
+  if (event.recurrence === 'weekly') {
+    return `Every ${format(start, 'EEEE')}`;
+  }
+
+  if (event.recurrence === 'monthly') {
+    return `Monthly on the ${format(start, 'do')}`;
+  }
+
+  if (event.endDate) {
+    const end = parse(event.endDate, 'yyyy-MM-dd', new Date());
+    if (isSameMonth(start, end)) {
+      return `${format(start, 'MMMM')} ${format(start, 'd')}–${format(end, 'd')}, ${format(start, 'yyyy')}`;
+    }
+    return `${format(start, 'MMMM d')}–${format(end, 'MMMM d')}, ${format(end, 'yyyy')}`;
+  }
+
+  return format(start, 'MMMM d, yyyy');
+}
+
 async function toWebEvent(event: DbEvent): Promise<WebEvent> {
   const [eventPhotos, mobilePhoto] = await Promise.all([
     getPhotos('event', event.id),
@@ -54,9 +83,9 @@ async function toWebEvent(event: DbEvent): Promise<WebEvent> {
   return {
     id: event.id,
     title: event.title,
-    date: event.startDate,
-    startDate: event.startDate,
-    endDate: event.endDate,
+    date: buildDisplayDate(event),
+    startDate: formatIsoDate(event.startDate),
+    endDate: event.endDate ? formatIsoDate(event.endDate) : null,
     recurrence: event.recurrence,
     time: event.time,
     location: event.location,
@@ -78,6 +107,15 @@ export async function getEvent(id: number): Promise<WebEvent | undefined> {
   const event = await dbGetEvent(id);
   if (!event) return undefined;
   return toWebEvent(event);
+}
+
+// ── Hero images ──
+
+export async function getHeroImages(): Promise<string[]> {
+  const homeItem = await getContentItemBySlug('pageHeader', 'home');
+  if (!homeItem) return [];
+  const photos = await getPhotos('content', homeItem.id);
+  return photos.map((p) => getPhotoUrl(p.s3Key));
 }
 
 // ── Versioned content helpers ──

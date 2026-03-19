@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { dogs } from './_data/dogs';
-import { getEvents, getVolunteerRoles, getSectionHeader } from './_lib/content';
+import { getEvents, getVolunteerRoles, getSectionHeader, getHeroImages } from './_lib/content';
 import { SectionHeader } from './_components/section-header';
 import { StatCard } from './_components/stat-card';
 import { DogCard } from './_components/dog-card';
@@ -19,9 +19,10 @@ import {
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const [events, volunteerRoles, dogsSectionHeader, eventsSectionHeader, volunteerSectionHeader] = await Promise.all([
+  const [events, volunteerRoles, heroImages, dogsSectionHeader, eventsSectionHeader, volunteerSectionHeader] = await Promise.all([
     getEvents(),
     getVolunteerRoles(),
+    getHeroImages(),
     getSectionHeader('Homepage — Available Greyhounds'),
     getSectionHeader('Homepage — Events'),
     getSectionHeader('Homepage — Volunteer'),
@@ -72,7 +73,7 @@ export default async function HomePage() {
 
           {/* Hero image + stats */}
           <div>
-            <HeroImage />
+            <HeroImage images={heroImages} />
 
             {/* Mobile-only action buttons (below image) */}
             <div className="flex flex-wrap gap-3 justify-center mt-6 md:hidden">
@@ -158,9 +159,9 @@ export default async function HomePage() {
             className="mb-10"
           />
 
-          <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4">
-            {events.slice(0, 4).map((event, i) => (
-              <FadeIn key={event.id} delay={i * 80} className="min-w-70 snap-start sm:min-w-0">
+          <div className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory -mx-5 px-5 md:mx-0 md:px-0 md:justify-center md:flex-wrap md:overflow-visible md:pb-0">
+            {events.filter((e) => e.showUpcoming).slice(0, 4).map((event, i) => (
+              <FadeIn key={event.id} delay={i * 80} className="min-w-70 snap-start md:min-w-0 md:w-70">
                 <EventCard event={event} index={i} />
               </FadeIn>
             ))}

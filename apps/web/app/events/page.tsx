@@ -26,9 +26,9 @@ export default async function EventsPage() {
 
       <section className="py-20 px-5 md:py-24 bg-[#FAF5F0] dark:bg-[#1a1715]">
         <div className="max-w-300 mx-auto">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {events.map((event, i) => (
-              <FadeIn key={event.id} delay={i * 60}>
+          <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory -mx-5 px-5 md:mx-0 md:px-0 md:justify-center md:flex-wrap md:overflow-visible md:pb-0">
+            {events.filter((e) => e.showUpcoming).map((event, i) => (
+              <FadeIn key={event.id} delay={i * 60} className="min-w-70 snap-start md:min-w-0 md:w-80">
                 <EventCard event={event} index={i} />
               </FadeIn>
             ))}

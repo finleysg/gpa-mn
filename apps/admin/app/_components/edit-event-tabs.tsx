@@ -36,7 +36,7 @@ export function EditEventTabs({
         <EventForm event={event} action={action} />
       </TabsContent>
 
-      <TabsContent value="photos">
+      <TabsContent value="photos" forceMount className="data-[state=inactive]:hidden">
         <div className="max-w-2xl space-y-8 pt-2">
           <PhotoUpload
             photoType="event"
