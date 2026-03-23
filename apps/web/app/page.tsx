@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { dogs } from './_data/dogs';
-import { getEvents, getVolunteerRoles, getSectionHeader, getHeroImages } from './_lib/content';
+import { getEvents, getVolunteerRoles, getSectionHeader, getPageHeader, getHeroImages } from './_lib/content';
 import { SectionHeader } from './_components/section-header';
 import { StatCard } from './_components/stat-card';
 import { DogCard } from './_components/dog-card';
@@ -19,10 +19,11 @@ import {
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const [events, volunteerRoles, heroImages, dogsSectionHeader, eventsSectionHeader, volunteerSectionHeader] = await Promise.all([
+  const [events, volunteerRoles, heroImages, pageHeader, dogsSectionHeader, eventsSectionHeader, volunteerSectionHeader] = await Promise.all([
     getEvents(),
     getVolunteerRoles(),
     getHeroImages(),
+    getPageHeader('Home'),
     getSectionHeader('Homepage — Available Greyhounds'),
     getSectionHeader('Homepage — Events'),
     getSectionHeader('Homepage — Volunteer'),
@@ -47,12 +48,22 @@ export default async function HomePage() {
           <div className="text-center md:text-left">
 
             <h1 className="font-heading text-[clamp(2.8rem,7vw,4.8rem)] leading-[1.1] tracking-wider uppercase text-foreground mb-5">
-              Finding <em className="not-italic text-primary">Loving Homes</em> for Retired Racing Greyhounds
+              {pageHeader.highlight ? (
+                <>
+                  {pageHeader.title.split(pageHeader.highlight)[0]}
+                  <em className="not-italic text-primary">{pageHeader.highlight}</em>
+                  {pageHeader.title.split(pageHeader.highlight)[1]}
+                </>
+              ) : (
+                pageHeader.title
+              )}
             </h1>
 
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-130 mx-auto md:mx-0 mb-8">
-              Every greyhound deserves a soft bed, a warm home, and a family to call their own. GPA-MN has been making that happen for over 35 years.
-            </p>
+            {pageHeader.description && (
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-130 mx-auto md:mx-0 mb-8">
+                {pageHeader.description}
+              </p>
+            )}
 
             {/* Desktop-only action buttons */}
             <div className="hidden md:flex flex-wrap gap-3 md:justify-start">
