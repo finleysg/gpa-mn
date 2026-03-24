@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getContentItemBySlug, getContentItem, getAllVersions } from '@repo/database';
+import { getContentItemBySlug, getAllVersions } from '@repo/database';
 import { EditContentTabs } from '@/app/_components/edit-content-tabs';
 import { updateContentAction, revertContentAction } from '@/app/_actions/content';
 import type { ContentType } from '@repo/types';
@@ -26,12 +26,9 @@ export default async function ContentBySlugPage({
     notFound();
   }
 
-  const [item, versions] = await Promise.all([
-    getContentItem(contentItem.id),
-    getAllVersions(contentItem.id),
-  ]);
-
-  if (!item) {
+  const versions = await getAllVersions(contentItem.id);
+  const latestVersion = versions[0];
+  if (!latestVersion) {
     notFound();
   }
 
@@ -44,12 +41,12 @@ export default async function ContentBySlugPage({
       <h1 className="mb-6 text-2xl font-bold">Edit {label}</h1>
       <EditContentTabs
         contentType={contentType}
-        data={item.version.data as Record<string, unknown>}
+        data={latestVersion.data as Record<string, unknown>}
         versions={versions}
-        currentVersion={item.version.version}
+        currentVersion={latestVersion.version}
         formAction={formAction}
         revertAction={revertAction}
-        backHref={`/content/${type}/${slug}`}
+        backHref="/"
       />
     </div>
   );
