@@ -4,11 +4,13 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  AlertTriangle,
+  BookOpen,
   Calendar,
   ChevronRight,
-  FileText,
+  HandCoins,
+  Heart,
   Home,
-  LayoutGrid,
   PawPrint,
 } from 'lucide-react';
 import {
@@ -34,8 +36,8 @@ interface NavItem {
 
 interface NavGroup {
   title: string;
-  icon: React.ComponentType<{ className?: string }>;
-  children: NavItem[];
+  icon?: React.ComponentType<{ className?: string }>;
+  children: NavEntry[];
 }
 
 type NavEntry = NavItem | NavGroup;
@@ -44,38 +46,132 @@ function isGroup(entry: NavEntry): entry is NavGroup {
   return 'children' in entry;
 }
 
+function isActive(pathname: string, entry: NavEntry): boolean {
+  if (isGroup(entry)) {
+    return entry.children.some((c) => isActive(pathname, c));
+  }
+  return pathname.startsWith(entry.href);
+}
+
 const navEntries: NavEntry[] = [
-  { title: 'Home', href: '/home', icon: Home },
-  { title: 'Events', href: '/events', icon: Calendar },
   {
-    title: 'Pages',
-    icon: FileText,
+    title: 'Home',
+    icon: Home,
     children: [
-      { title: 'Page Headers', href: '/page-headers' },
-      { title: 'Section Headers', href: '/section-headers' },
-      { title: 'About Page', href: '/about-page' },
-      { title: 'Before You Apply', href: '/before-you-apply' },
+      { title: 'Page Header', href: '/home' },
+      { title: 'Available Greyhounds', href: '/content/section-header/home-adopt' },
+      { title: 'Events', href: '/content/section-header/home-events' },
+      { title: 'Volunteer', href: '/content/section-header/home-volunteer' },
     ],
   },
   {
-    title: 'Adoption',
+    title: 'Adopt',
     icon: PawPrint,
     children: [
-      { title: 'Adoption Steps', href: '/adoption-steps' },
-      { title: 'Volunteer Roles', href: '/volunteer-roles' },
+      { title: 'Page Header', href: '/content/page-header/adopt' },
+      { title: 'Why Greyhounds', href: '/content/section-header/adopt-why' },
+      { title: 'Why Greyhounds Cards', href: '/why-greyhounds' },
+      { title: 'Get Started', href: '/content/section-header/adopt-get-started' },
+      {
+        title: 'Our Process',
+        children: [
+          { title: 'Page Header', href: '/content/page-header/adopt-process' },
+          { title: 'Steps Header', href: '/content/section-header/adopt-process-steps' },
+          { title: 'Adoption Steps List', href: '/adoption-steps' },
+          { title: 'Before You Apply', href: '/before-you-apply' },
+        ],
+      },
+      {
+        title: 'Support',
+        children: [
+          { title: 'Page Header', href: '/content/page-header/adopt-support' },
+          { title: 'Resources Header', href: '/content/section-header/adopt-support-resources' },
+          { title: 'Support Resources Cards', href: '/post-adoption-support' },
+        ],
+      },
     ],
   },
   {
-    title: 'Card Lists',
-    icon: LayoutGrid,
+    title: 'Volunteer',
+    icon: Heart,
     children: [
+      { title: 'Page Header', href: '/content/page-header/volunteer' },
+      { title: 'Fostering', href: '/content/section-header/volunteer-fostering' },
+      { title: 'Roles Header', href: '/content/section-header/volunteer-roles' },
+      { title: 'Volunteer Role Cards', href: '/volunteer-roles' },
+    ],
+  },
+  {
+    title: 'Donate',
+    icon: HandCoins,
+    children: [
+      { title: 'Page Header', href: '/content/page-header/donate' },
+      { title: 'Ways to Give', href: '/content/section-header/donate-ways' },
       { title: 'Donation Options', href: '/donation-options' },
-      { title: 'Post Adoption Support', href: '/post-adoption-support' },
-      { title: 'Suggestions', href: '/lost-hound-suggestions' },
-      { title: 'Why Greyhounds', href: '/why-greyhounds' },
+    ],
+  },
+  { title: 'Events', href: '/events', icon: Calendar },
+  {
+    title: 'About',
+    icon: BookOpen,
+    children: [
+      { title: 'Page Header', href: '/content/page-header/about' },
+      { title: 'About Page', href: '/about-page' },
+      { title: 'Learn More', href: '/content/section-header/about-explore' },
+    ],
+  },
+  {
+    title: 'Lost Hound',
+    icon: AlertTriangle,
+    children: [
+      { title: 'Page Header', href: '/content/page-header/lost-hound' },
+      { title: 'Act Now Lists', href: '/content/section-header/lost-hound-act' },
+      { title: 'Prevention Header', href: '/content/section-header/lost-hound-prevention' },
+      { title: 'Prevention Suggestions', href: '/lost-hound-suggestions' },
     ],
   },
 ];
+
+function NavSubGroup({
+  group,
+  pathname,
+}: {
+  group: NavGroup;
+  pathname: string;
+}) {
+  const childActive = isActive(pathname, group);
+  const [open, setOpen] = useState(childActive);
+
+  return (
+    <SidebarMenuSubItem>
+      <SidebarMenuSubButton
+        onClick={() => setOpen(!open)}
+        className="cursor-pointer"
+        isActive={childActive}
+      >
+        <span>{group.title}</span>
+        <ChevronRight
+          className={`ml-auto size-3 transition-transform ${open ? 'rotate-90' : ''}`}
+        />
+      </SidebarMenuSubButton>
+      {open && (
+        <SidebarMenuSub>
+          {group.children.map((child) =>
+            isGroup(child) ? (
+              <NavSubGroup key={child.title} group={child} pathname={pathname} />
+            ) : (
+              <SidebarMenuSubItem key={child.href}>
+                <SidebarMenuSubButton asChild isActive={pathname.startsWith(child.href)}>
+                  <Link href={child.href}>{child.title}</Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            ),
+          )}
+        </SidebarMenuSub>
+      )}
+    </SidebarMenuSubItem>
+  );
+}
 
 function NavGroupItem({
   group,
@@ -84,13 +180,13 @@ function NavGroupItem({
   group: NavGroup;
   pathname: string;
 }) {
-  const isChildActive = group.children.some((c) => pathname.startsWith(c.href));
-  const [open, setOpen] = useState(isChildActive);
+  const childActive = isActive(pathname, group);
+  const [open, setOpen] = useState(childActive);
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton onClick={() => setOpen(!open)} isActive={isChildActive}>
-        <group.icon />
+      <SidebarMenuButton onClick={() => setOpen(!open)} isActive={childActive}>
+        {group.icon && <group.icon />}
         <span>{group.title}</span>
         <ChevronRight
           className={`ml-auto size-4 transition-transform ${open ? 'rotate-90' : ''}`}
@@ -98,13 +194,17 @@ function NavGroupItem({
       </SidebarMenuButton>
       {open && (
         <SidebarMenuSub>
-          {group.children.map((child) => (
-            <SidebarMenuSubItem key={child.href}>
-              <SidebarMenuSubButton asChild isActive={pathname.startsWith(child.href)}>
-                <Link href={child.href}>{child.title}</Link>
-              </SidebarMenuSubButton>
-            </SidebarMenuSubItem>
-          ))}
+          {group.children.map((child) =>
+            isGroup(child) ? (
+              <NavSubGroup key={child.title} group={child} pathname={pathname} />
+            ) : (
+              <SidebarMenuSubItem key={child.href}>
+                <SidebarMenuSubButton asChild isActive={pathname.startsWith(child.href)}>
+                  <Link href={child.href}>{child.title}</Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            ),
+          )}
         </SidebarMenuSub>
       )}
     </SidebarMenuItem>
