@@ -47,11 +47,19 @@ export function SiteHeader() {
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Image
-            src="/images/gpa-logo.png"
+            src="/images/gpa-logo-light.png"
             alt="GPA-MN"
             width={140}
             height={56}
-            className="h-10 w-auto dark:invert dark:hue-rotate-180"
+            className="h-10 w-auto dark:hidden"
+            priority
+          />
+          <Image
+            src="/images/gpa-logo-dark.png"
+            alt="GPA-MN"
+            width={140}
+            height={56}
+            className="h-10 w-auto hidden dark:block"
             priority
           />
         </Link>

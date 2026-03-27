@@ -14,11 +14,11 @@ export function SiteFooter() {
           {/* Brand */}
           <div>
             <Image
-              src="/images/gpa-logo.png"
+              src="/images/gpa-logo-footer.png"
               alt="GPA-MN"
               width={160}
               height={64}
-              className="h-12 w-auto invert hue-rotate-180 mb-3"
+              className="h-12 w-auto mb-3"
             />
             <p className="text-sm text-white/60 leading-relaxed max-w-75">
               Greyhound Pets of America — Minnesota. Finding loving homes for retired racing

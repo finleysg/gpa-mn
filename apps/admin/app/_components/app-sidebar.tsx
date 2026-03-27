@@ -217,8 +217,12 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="border-b px-4 py-3">
-        <Link href="/" className="font-heading text-xl">
-          GPA-MN Admin
+        <Link href="/">
+          <img
+            src="/images/gpa-logo-light.png"
+            alt="GPA-MN Admin"
+            className="h-9 w-auto"
+          />
         </Link>
       </SidebarHeader>
       <SidebarContent>
