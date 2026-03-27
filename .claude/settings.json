@@ -1,0 +1,15 @@
+{
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Write|Edit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "jq -r '.tool_response.filePath // .tool_input.file_path' | { read -r f; case \"$f\" in *.ts|*.tsx|*.js|*.jsx) dir=\"$f\"; while [ \"$dir\" != \"/\" ]; do dir=$(dirname \"$dir\"); [ -f \"$dir/eslint.config.js\" ] && break; done; [ -f \"$dir/eslint.config.js\" ] && (cd \"$dir\" && pnpm exec eslint --fix \"$f\");; esac; pnpm exec prettier --write \"$f\"; } 2>/dev/null || true"
+                    }
+                ]
+            }
+        ]
+    }
+}
