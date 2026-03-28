@@ -390,6 +390,17 @@ const contentData: ContentSeedItem[] = [
                 location: "Home",
             },
         },
+        {
+            slug: "adopt-why-gpa-mn",
+            sortOrder: 12,
+            data: {
+                title: "Why Choose GPA\u2011MN?",
+                highlight: "GPA\u2011MN",
+                description:
+                    "A responsible, NGA-endorsed adoption organization dedicated to finding the perfect match for every greyhound.",
+                location: "Adopt / Why GPA-MN",
+            },
+        },
     ].map((item) => ({ ...item, contentType: "pageHeader" as const })),
 
     // Adoption steps
@@ -612,6 +623,32 @@ We are a foster-home based organization, meaning every greyhound in our care liv
 Our organization runs entirely on the dedication of volunteers who share a passion for these gentle, elegant dogs. From fostering and transport to events and fundraising, every aspect of GPA‑MN is powered by people who care deeply about greyhound welfare.
 
 Over the past three decades, we have placed approximately 2,000 greyhounds with families across the Twin Cities and beyond. Each placement is a success story, and we remain committed to supporting our adopters throughout the lifetime of their greyhound.`,
+        },
+    },
+
+    // Why choose us
+    {
+        contentType: "whyChooseUs" as const,
+        slug: "why-choose-us",
+        sortOrder: 0,
+        data: {
+            title: "Why Choose GPA\u2011MN?",
+            body: `GPA\u2011MN is a proud member of Greyhound Pets of America (GPA), the oldest and largest greyhound adoption organization in the United States. We are endorsed by the National Greyhound Association (NGA) as a responsible adoption organization committed to finding loving homes for retired racing greyhounds.
+
+Our primary obligation is to the dogs entrusted to our care. Every greyhound adopted through GPA\u2011MN receives comprehensive vetting and supplies before going to their forever home.
+
+## What Every Dog Receives
+
+- **Microchip** for permanent identification
+- **Full physical exam** by a licensed veterinarian
+- **4DX blood & fecal antigen tests** to check for and treat parasites and disease
+- **Parasite preventatives** while in foster care
+- **Spay/neuter** surgery
+- **Dental cleaning** (and extractions as needed)
+- **Vaccinations** updated to current standards
+- **Any other veterinary concerns** covered while the dog is in foster care
+- **New basket muzzle, martingale collar, ID collar, and leash**
+- **Lifetime support** in a welcoming local greyhound adoption community`,
         },
     },
 

@@ -22,6 +22,12 @@ const links = [
         icon: "📋",
     },
     {
+        href: "/adopt/why-gpa-mn",
+        title: "Why GPA-MN?",
+        desc: "Learn what makes GPA-MN a trusted, NGA-endorsed adoption organization.",
+        icon: "⭐",
+    },
+    {
         href: "/adopt/support",
         title: "Post-Adoption Support",
         desc: "Resources and community support for after you bring your greyhound home.",
@@ -102,7 +108,7 @@ export default async function AdoptPage() {
             <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
                 <div className="mx-auto max-w-300">
                     <SectionHeader title={linksHeader.title} align="center" className="mb-12" />
-                    <div className="grid gap-6 md:grid-cols-3">
+                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                         {links.map((link, i) => (
                             <FadeIn key={link.href} delay={i * 80}>
                                 <Link

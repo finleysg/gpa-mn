@@ -25,6 +25,7 @@ const webPathMap: Record<ContentType, string[]> = {
     postAdoptionSupport: ["/adopt/support"],
     lostHoundSuggestion: ["/lost-hound"],
     whyGreyhound: ["/adopt"],
+    whyChooseUs: ["/adopt/why-gpa-mn"],
 }
 
 async function revalidateWebPaths(contentType: ContentType) {
@@ -89,6 +90,7 @@ function parseContentFormData(
                 icon: formData.get("icon") as string,
             }
         case "aboutPage":
+        case "whyChooseUs":
             return {
                 title: formData.get("title") as string,
                 body: formData.get("body") as string,

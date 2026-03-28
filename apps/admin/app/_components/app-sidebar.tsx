@@ -73,6 +73,13 @@ const navEntries: NavEntry[] = [
             { title: "Why Greyhounds Cards", href: "/why-greyhounds" },
             { title: "Get Started", href: "/content/section-header/adopt-get-started" },
             {
+                title: "Why GPA-MN",
+                children: [
+                    { title: "Page Header", href: "/content/page-header/adopt-why-gpa-mn" },
+                    { title: "Why Choose Us Content", href: "/why-choose-us" },
+                ],
+            },
+            {
                 title: "Our Process",
                 children: [
                     { title: "Page Header", href: "/content/page-header/adopt-process" },

@@ -18,6 +18,7 @@ import type {
     PostAdoptionSupportData,
     LostHoundSuggestionData,
     WhyGreyhoundData,
+    WhyChooseUsData,
 } from "@repo/types"
 
 function getPhotoUrl(s3Key: string): string {
@@ -236,4 +237,9 @@ export async function getAboutPage(): Promise<AboutPageData | undefined> {
 export async function getBeforeYouApply(): Promise<BeforeYouApplyData | undefined> {
     const results = await getLatestVersions("beforeYouApply")
     return extractSingle<BeforeYouApplyData>(results)
+}
+
+export async function getWhyChooseUs(): Promise<WhyChooseUsData | undefined> {
+    const results = await getLatestVersions("whyChooseUs")
+    return extractSingle<WhyChooseUsData>(results)
 }

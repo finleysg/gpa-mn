@@ -82,6 +82,11 @@ export interface WhyGreyhoundData {
     icon: string
 }
 
+export interface WhyChooseUsData {
+    title: string
+    body: string
+}
+
 export interface ContentTypeMap {
     sectionHeader: SectionHeaderData
     pageHeader: PageHeaderData
@@ -93,6 +98,7 @@ export interface ContentTypeMap {
     postAdoptionSupport: PostAdoptionSupportData
     lostHoundSuggestion: LostHoundSuggestionData
     whyGreyhound: WhyGreyhoundData
+    whyChooseUs: WhyChooseUsData
 }
 
 export type ContentType = keyof ContentTypeMap

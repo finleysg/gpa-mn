@@ -116,4 +116,12 @@ export const contentTypeConfigs: Record<ContentType, ContentTypeConfig> = {
             { key: "icon", label: "Icon" },
         ],
     },
+    whyChooseUs: {
+        contentType: "whyChooseUs",
+        slug: "why-choose-us",
+        singular: "Why Choose Us",
+        plural: "Why Choose Us",
+        allowCreate: false,
+        tableColumns: [{ key: "title", label: "Title" }],
+    },
 }
