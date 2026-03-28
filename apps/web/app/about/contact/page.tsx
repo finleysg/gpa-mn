@@ -1,7 +1,9 @@
+import Image from "next/image"
 import { Phone, Mail, MapPin } from "lucide-react"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
 import { FadeIn } from "@/app/_components/fade-in"
+import { NewsletterForm } from "@/app/_components/newsletter-form"
 
 export default function ContactPage() {
     return (
@@ -170,6 +172,20 @@ export default function ContactPage() {
                                         </p>
                                     </div>
                                 </div>
+                                <div className="border-border rounded-2xl border bg-[#FAF5F0] p-5 dark:bg-[#1a1715]">
+                                    <div className="flex items-center gap-4">
+                                        <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-xl">
+                                            <Mail className="text-primary size-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold">Newsletter</p>
+                                            <p className="text-muted-foreground">
+                                                Get greyhound news &amp; events
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <NewsletterForm variant="card" />
+                                </div>
                             </div>
 
                             {/* Social */}
@@ -177,18 +193,35 @@ export default function ContactPage() {
                                 <p className="mb-3 text-sm font-semibold">Follow Us</p>
                                 <div className="flex gap-2.5">
                                     {[
-                                        { label: "IG", handle: "@gpaminnesota" },
-                                        { label: "FB", handle: "GPA‑MN" },
-                                        { label: "X", handle: "@gpamn" },
-                                        { label: "TT", handle: "GPA‑MN" },
-                                    ].map((s) => (
+                                        {
+                                            label: "Facebook",
+                                            icon: "/images/social/Facebook_Logo_Primary.png",
+                                        },
+                                        {
+                                            label: "Instagram",
+                                            icon: "/images/social/Instagram_Glyph_Gradient.png",
+                                        },
+                                        {
+                                            label: "TikTok",
+                                            icon: "/images/social/TikTok_Icon_Black_Circle.png",
+                                        },
+                                        {
+                                            label: "Bluesky",
+                                            icon: "/images/social/bluesky-icon.webp",
+                                        },
+                                    ].map((social) => (
                                         <a
-                                            key={s.label}
+                                            key={social.label}
                                             href="#"
-                                            className="border-border text-muted-foreground hover:bg-primary hover:border-primary flex h-10 w-10 items-center justify-center rounded-xl border bg-[#FAF5F0] text-xs font-bold transition-all hover:text-white dark:bg-[#1a1715]"
-                                            aria-label={s.label}
+                                            className="border-border hover:bg-primary hover:border-primary flex h-10 w-10 items-center justify-center rounded-xl border bg-[#FAF5F0] transition-all hover:-translate-y-0.5 dark:bg-[#1a1715]"
+                                            aria-label={social.label}
                                         >
-                                            {s.label}
+                                            <Image
+                                                src={social.icon}
+                                                alt={social.label}
+                                                width={20}
+                                                height={20}
+                                            />
                                         </a>
                                     ))}
                                 </div>

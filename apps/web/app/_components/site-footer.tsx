@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Phone, Mail } from "lucide-react"
 import { footerNav } from "@/app/_data/navigation"
+import { NewsletterForm } from "./newsletter-form"
 
 export function SiteFooter() {
     return (
@@ -112,6 +113,11 @@ export function SiteFooter() {
                                 info@gpa‑mn.org
                             </a>
                         </div>
+                        <div className="my-4 h-px bg-white/8" />
+                        <h5 className="mb-2 text-sm font-semibold text-white/80">
+                            Subscribe to our Newsletter
+                        </h5>
+                        <NewsletterForm variant="footer" />
                     </div>
                 </div>
 
