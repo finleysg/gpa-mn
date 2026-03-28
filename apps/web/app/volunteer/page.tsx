@@ -1,20 +1,29 @@
-import { getVolunteerRoles, getPageHeader, getSectionHeader } from "@/app/_lib/content"
+import {
+    getVolunteerRoles,
+    getPageHeader,
+    getSectionHeader,
+    getHeroImages,
+} from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
 import { VolunteerRoleCard } from "@/app/_components/volunteer-role-card"
 import { FadeIn } from "@/app/_components/fade-in"
+import { MarkdownContent } from "@/app/_components/markdown-content"
 import { CTASection } from "@/app/_components/cta-section"
 import { BlobDecoration } from "@/app/_components/blob-decoration"
+import { HeroImage } from "@/app/_components/hero-image"
 
 export const dynamic = "force-dynamic"
 
 export default async function VolunteerPage() {
-    const [volunteerRoles, pageHeader, fosteringHeader, rolesHeader] = await Promise.all([
-        getVolunteerRoles(),
-        getPageHeader("Volunteer"),
-        getSectionHeader("Volunteer — Fostering"),
-        getSectionHeader("Volunteer — Roles"),
-    ])
+    const [volunteerRoles, pageHeader, fosteringHeader, rolesHeader, heroImages] =
+        await Promise.all([
+            getVolunteerRoles(),
+            getPageHeader("Volunteer"),
+            getSectionHeader("Volunteer — Fostering"),
+            getSectionHeader("Volunteer — Roles"),
+            getHeroImages(),
+        ])
 
     return (
         <>
@@ -40,31 +49,28 @@ export default async function VolunteerPage() {
                                 size={200}
                                 className="-right-16 -bottom-16 opacity-30 dark:opacity-6"
                             />
-                            <div className="relative z-10">
-                                <SectionHeader
-                                    title={fosteringHeader.title}
-                                    description={fosteringHeader.description}
-                                />
-                                <div className="mt-6 space-y-3">
-                                    {[
-                                        "GPA-MN covers all food, supplies, and veterinary costs",
-                                        "Complete a hound profile within 2 weeks describing behavior and personality",
-                                        "Bring foster dogs to meet potential adopters",
-                                        "Our experienced volunteers guide you every step of the way",
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-start gap-3">
-                                            <span className="bg-secondary mt-2 h-2 w-2 shrink-0 rounded-full" />
-                                            <span className="text-muted-foreground">{item}</span>
-                                        </div>
-                                    ))}
+                            <div className="relative z-10 md:grid md:grid-cols-2 md:items-center md:gap-10">
+                                <div className="order-1 text-center md:text-left">
+                                    <SectionHeader title={fosteringHeader.title} />
                                 </div>
-                                <div className="mt-8">
-                                    <a
-                                        href="mailto:fostering@gpa-mn.org"
-                                        className="bg-primary hover:bg-primary/90 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-white shadow-[0_4px_16px_rgba(156,47,48,0.25)] transition-colors"
-                                    >
-                                        Apply to Foster
-                                    </a>
+                                <div className="order-2 mt-6 md:row-span-2 md:mt-0">
+                                    <HeroImage images={heroImages} />
+                                </div>
+                                <div className="order-3 mt-6 md:mt-0">
+                                    {fosteringHeader.description && (
+                                        <MarkdownContent
+                                            content={fosteringHeader.description}
+                                            className="prose text-muted-foreground max-w-150 text-[1.05rem] leading-relaxed [&>p]:mb-4 [&>ul]:mt-0 [&>ul]:space-y-1"
+                                        />
+                                    )}
+                                    <div className="mt-8">
+                                        <a
+                                            href="mailto:fostering@gpa-mn.org"
+                                            className="bg-primary hover:bg-primary/90 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-white shadow-[0_4px_16px_rgba(156,47,48,0.25)] transition-colors"
+                                        >
+                                            Apply to Foster
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

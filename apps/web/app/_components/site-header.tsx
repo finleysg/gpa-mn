@@ -45,7 +45,7 @@ export function SiteHeader() {
                 <Link href="/" className="shrink-0">
                     <Image
                         src="/images/gpa-logo-light.png"
-                        alt="GPA-MN"
+                        alt="GPA‑MN"
                         width={140}
                         height={56}
                         className="h-10 w-auto dark:hidden"
@@ -53,7 +53,7 @@ export function SiteHeader() {
                     />
                     <Image
                         src="/images/gpa-logo-dark.png"
-                        alt="GPA-MN"
+                        alt="GPA‑MN"
                         width={140}
                         height={56}
                         className="hidden h-10 w-auto dark:block"

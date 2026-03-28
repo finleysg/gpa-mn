@@ -14,7 +14,7 @@ const immediateSteps = [
     "Leave your front door open with food and a familiar blanket outside.",
     "Ask neighbors to check their yards, garages, and sheds.",
     "Post to social media immediately — the MN Greyhound community is incredibly responsive.",
-    "Contact GPA-MN at 763-785-4000 to activate our lost hound network.",
+    "Contact GPA‑MN at 763-785-4000 to activate our lost hound network.",
     "File a lost pet report with local animal control and nearby shelters.",
     "Put up flyers with a clear photo in the surrounding neighborhood.",
 ]

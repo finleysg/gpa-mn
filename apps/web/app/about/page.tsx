@@ -52,7 +52,7 @@ export default async function AboutPage() {
                             {
                                 href: "/about/history",
                                 title: "Our History",
-                                desc: "Explore the milestones and story of GPA-MN from 1989 to today.",
+                                desc: "Explore the milestones and story of GPA‑MN from 1989 to today.",
                                 icon: "📜",
                             },
                             {

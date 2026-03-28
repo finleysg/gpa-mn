@@ -15,7 +15,7 @@ export function SiteFooter() {
                     <div>
                         <Image
                             src="/images/gpa-logo-footer.png"
-                            alt="GPA-MN"
+                            alt="GPA‑MN"
                             width={160}
                             height={64}
                             className="mb-3 h-12 w-auto"
@@ -109,7 +109,7 @@ export function SiteFooter() {
                                 className="hover:text-secondary flex items-center gap-2.5 text-sm text-white/60 transition-colors"
                             >
                                 <Mail className="size-4" />
-                                info@gpa-mn.org
+                                info@gpa‑mn.org
                             </a>
                         </div>
                     </div>

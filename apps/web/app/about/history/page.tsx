@@ -6,23 +6,23 @@ import { cn } from "@repo/ui/lib/utils"
 const milestones = [
     {
         year: "1989",
-        title: "GPA-MN Founded",
+        title: "GPA‑MN Founded",
         desc: "Greyhound Pets of America — Minnesota chapter is established by a small group of dedicated greyhound enthusiasts in the Twin Cities.",
     },
     {
         year: "1992",
         title: "First 100 Placements",
-        desc: "Within three years, GPA-MN reaches 100 successful adoptions, establishing itself as a trusted resource for greyhound adoption in the region.",
+        desc: "Within three years, GPA‑MN reaches 100 successful adoptions, establishing itself as a trusted resource for greyhound adoption in the region.",
     },
     {
         year: "1998",
         title: "First Greyfest",
-        desc: "GPA-MN hosts the inaugural Greyfest, bringing together greyhound families for a day of celebration. It quickly becomes the organization's signature annual event.",
+        desc: "GPA‑MN hosts the inaugural Greyfest, bringing together greyhound families for a day of celebration. It quickly becomes the organization's signature annual event.",
     },
     {
         year: "2005",
         title: "1,000th Placement",
-        desc: "A major milestone as GPA-MN places its 1,000th retired racing greyhound in a loving forever home.",
+        desc: "A major milestone as GPA‑MN places its 1,000th retired racing greyhound in a loving forever home.",
     },
     {
         year: "2010",
@@ -37,12 +37,12 @@ const milestones = [
     {
         year: "2020",
         title: "Adapting Through COVID",
-        desc: "GPA-MN adapts its operations during the pandemic, moving to virtual Meet & Greets and contactless adoption processes while continuing to place greyhounds.",
+        desc: "GPA‑MN adapts its operations during the pandemic, moving to virtual Meet & Greets and contactless adoption processes while continuing to place greyhounds.",
     },
     {
         year: "2024",
         title: "2,000th Placement",
-        desc: "GPA-MN reaches the incredible milestone of 2,000 greyhounds placed in loving homes over 35 years of dedicated volunteer service.",
+        desc: "GPA‑MN reaches the incredible milestone of 2,000 greyhounds placed in loving homes over 35 years of dedicated volunteer service.",
     },
 ]
 

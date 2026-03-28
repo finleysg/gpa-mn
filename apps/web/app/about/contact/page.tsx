@@ -140,7 +140,7 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <p className="text-sm font-semibold">General Inquiries</p>
-                                        <p className="text-muted-foreground">info@gpa-mn.org</p>
+                                        <p className="text-muted-foreground">info@gpa‑mn.org</p>
                                     </div>
                                 </a>
 
@@ -154,7 +154,7 @@ export default function ContactPage() {
                                     <div>
                                         <p className="text-sm font-semibold">Fostering</p>
                                         <p className="text-muted-foreground">
-                                            fostering@gpa-mn.org
+                                            fostering@gpa‑mn.org
                                         </p>
                                     </div>
                                 </a>
@@ -178,9 +178,9 @@ export default function ContactPage() {
                                 <div className="flex gap-2.5">
                                     {[
                                         { label: "IG", handle: "@gpaminnesota" },
-                                        { label: "FB", handle: "GPA-MN" },
+                                        { label: "FB", handle: "GPA‑MN" },
                                         { label: "X", handle: "@gpamn" },
-                                        { label: "TT", handle: "GPA-MN" },
+                                        { label: "TT", handle: "GPA‑MN" },
                                     ].map((s) => (
                                         <a
                                             key={s.label}

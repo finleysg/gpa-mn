@@ -19,7 +19,7 @@ const eventsData = [
         description:
             "Our biggest event of the year! Join greyhound lovers for a day of fun, food, vendors, contests, and hound parades.",
         longDescription:
-            "Greyfest is GPA-MN's signature annual event, bringing together hundreds of greyhound families and fans for a full day of celebration. Enjoy vendor booths, a silent auction, hound costume contests, a blessing of the hounds, memorial walk, and plenty of greyhound socializing. Whether you're a longtime adopter or simply curious about the breed, Greyfest is the place to be. Food trucks, raffle prizes, and greyhound merchandise round out this beloved tradition. All proceeds support GPA-MN's adoption mission.",
+            "Greyfest is GPA‑MN's signature annual event, bringing together hundreds of greyhound families and fans for a full day of celebration. Enjoy vendor booths, a silent auction, hound costume contests, a blessing of the hounds, memorial walk, and plenty of greyhound socializing. Whether you're a longtime adopter or simply curious about the breed, Greyfest is the place to be. Food trucks, raffle prizes, and greyhound merchandise round out this beloved tradition. All proceeds support GPA‑MN's adoption mission.",
     },
     {
         title: "Race to Raise 5K",
@@ -31,7 +31,7 @@ const eventsData = [
         description:
             "A fun run and walk fundraiser where humans and hounds race together to support greyhound adoption efforts.",
         longDescription:
-            "Lace up your running shoes and bring your hound for GPA-MN's annual Race to Raise 5K! This family-friendly event welcomes runners, walkers, and greyhounds of all speeds. The scenic course loops around beautiful Lake Harriet. Registration includes a commemorative t-shirt, goodie bag, and post-race refreshments. Awards are given for top finishers and best greyhound costume. All proceeds go directly to funding veterinary care, transportation, and foster support for retired racing greyhounds.",
+            "Lace up your running shoes and bring your hound for GPA‑MN's annual Race to Raise 5K! This family-friendly event welcomes runners, walkers, and greyhounds of all speeds. The scenic course loops around beautiful Lake Harriet. Registration includes a commemorative t-shirt, goodie bag, and post-race refreshments. Awards are given for top finishers and best greyhound costume. All proceeds go directly to funding veterinary care, transportation, and foster support for retired racing greyhounds.",
     },
     {
         title: "Meet & Greet at Chuck & Don's",
@@ -43,7 +43,7 @@ const eventsData = [
         description:
             "Come meet adoptable greyhounds in person! Chat with experienced owners and learn about the breed.",
         longDescription:
-            "Our monthly Meet & Greets are the perfect opportunity to meet greyhounds up close and personal. Adoptable greyhounds will be on hand along with experienced GPA-MN volunteers and adopters who can answer all your questions about the breed. Learn about their gentle temperament, exercise needs, and what makes greyhounds such wonderful pets. No appointment necessary — just stop by! These events are held at pet-friendly retail locations across the Twin Cities metro area.",
+            "Our monthly Meet & Greets are the perfect opportunity to meet greyhounds up close and personal. Adoptable greyhounds will be on hand along with experienced GPA‑MN volunteers and adopters who can answer all your questions about the breed. Learn about their gentle temperament, exercise needs, and what makes greyhounds such wonderful pets. No appointment necessary — just stop by! These events are held at pet-friendly retail locations across the Twin Cities metro area.",
     },
     {
         title: "Sunday Como Walk",
@@ -55,7 +55,7 @@ const eventsData = [
         description:
             "Join fellow greyhound families for a relaxed Sunday stroll through beautiful Como Park.",
         longDescription:
-            "Every Sunday morning, greyhound families gather at Como Park for a leisurely group walk. It's a wonderful way to socialize your greyhound, meet other adopters, and enjoy the beautiful surroundings of Como Park. The walk is casual and self-paced — perfect for greyhounds of all energy levels. New adopters especially are encouraged to join as it's a great way to connect with the GPA-MN community and get tips from experienced greyhound owners. Meet at the main parking lot near the Pavilion.",
+            "Every Sunday morning, greyhound families gather at Como Park for a leisurely group walk. It's a wonderful way to socialize your greyhound, meet other adopters, and enjoy the beautiful surroundings of Como Park. The walk is casual and self-paced — perfect for greyhounds of all energy levels. New adopters especially are encouraged to join as it's a great way to connect with the GPA‑MN community and get tips from experienced greyhound owners. Meet at the main parking lot near the Pavilion.",
     },
     {
         title: "Spring Plant Sale",
@@ -67,7 +67,7 @@ const eventsData = [
         description:
             "Shop beautiful plants while supporting greyhound adoption. A beloved spring tradition!",
         longDescription:
-            "GPA-MN's annual Spring Plant Sale is a beloved tradition that combines two great things: beautiful plants and greyhound adoption! Browse a curated selection of annuals, perennials, herbs, and hanging baskets. All proceeds support GPA-MN's mission. Adoptable greyhounds will be on hand, and volunteers will be available to answer questions about the organization and the adoption process. It's a wonderful way to welcome spring while making a difference for retired racing greyhounds.",
+            "GPA‑MN's annual Spring Plant Sale is a beloved tradition that combines two great things: beautiful plants and greyhound adoption! Browse a curated selection of annuals, perennials, herbs, and hanging baskets. All proceeds support GPA‑MN's mission. Adoptable greyhounds will be on hand, and volunteers will be available to answer questions about the organization and the adoption process. It's a wonderful way to welcome spring while making a difference for retired racing greyhounds.",
     },
     {
         title: "Twin Cities Pride Festival",
@@ -78,9 +78,9 @@ const eventsData = [
         location: "Loring Park, Minneapolis, MN",
         type: "Annual" as const,
         description:
-            "Visit the GPA-MN booth at Twin Cities Pride! Meet greyhounds, grab merch, and celebrate with us.",
+            "Visit the GPA‑MN booth at Twin Cities Pride! Meet greyhounds, grab merch, and celebrate with us.",
         longDescription:
-            "GPA-MN is proud to participate in the Twin Cities Pride Festival at Loring Park! Stop by our booth to meet adoptable greyhounds, chat with volunteers, and pick up greyhound-themed merchandise. Our greyhound ambassadors are always a crowd favorite, drawing hundreds of visitors who fall in love with the breed. Pride is a wonderful celebration of community, and we're honored to be part of it. All merchandise proceeds support GPA-MN's adoption mission.",
+            "GPA‑MN is proud to participate in the Twin Cities Pride Festival at Loring Park! Stop by our booth to meet adoptable greyhounds, chat with volunteers, and pick up greyhound-themed merchandise. Our greyhound ambassadors are always a crowd favorite, drawing hundreds of visitors who fall in love with the breed. Pride is a wonderful celebration of community, and we're honored to be part of it. All merchandise proceeds support GPA‑MN's adoption mission.",
     },
 ]
 
@@ -120,7 +120,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Join Our Pack",
                 description:
-                    "GPA-MN is powered entirely by volunteers like you. Whether you have a few hours a month or want to be deeply involved, there is a role for you.",
+                    "GPA‑MN is powered entirely by volunteers like you. Whether you have a few hours a month or want to be deeply involved, there is a role for you.",
                 location: "Homepage — Volunteer",
             },
         },
@@ -154,9 +154,9 @@ const contentData: ContentSeedItem[] = [
             slug: "volunteer-fostering",
             sortOrder: 5,
             data: {
-                title: "The Lifeblood of GPA-MN",
+                title: "The Lifeblood of GPA‑MN",
                 description:
-                    "We foster every dog rather than kennel them. Foster families provide a safe, loving environment where greyhounds learn about home life — stairs, glass doors, couches, and the simple joy of being a pet.",
+                    "We foster every dog rather than kennel them. Foster families provide a safe, loving environment where greyhounds learn about home life — stairs, glass doors, couches, and the simple joy of being a pet.\n\n- GPA‑MN covers all food, supplies, and veterinary costs\n- Complete a hound profile within 2 weeks describing behavior and personality\n- Bring foster dogs to meet potential adopters\n- Our experienced volunteers guide you every step of the way",
                 location: "Volunteer — Fostering",
             },
         },
@@ -166,7 +166,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Find Your Role",
                 description:
-                    "There are many ways to get involved with GPA-MN. Find the volunteer opportunity that fits your skills and schedule.",
+                    "There are many ways to get involved with GPA‑MN. Find the volunteer opportunity that fits your skills and schedule.",
                 location: "Volunteer — Roles",
             },
         },
@@ -176,7 +176,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Choose How to Help",
                 description:
-                    "There are many ways to support GPA-MN's mission. Every contribution makes a difference in the lives of retired racing greyhounds.",
+                    "There are many ways to support GPA‑MN's mission. Every contribution makes a difference in the lives of retired racing greyhounds.",
                 location: "Donate — Ways to Give",
             },
         },
@@ -225,7 +225,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Everything You Need",
                 description:
-                    "These resources will help you and your greyhound adjust to life together. Don't hesitate to reach out to the GPA-MN community with questions.",
+                    "These resources will help you and your greyhound adjust to life together. Don't hesitate to reach out to the GPA‑MN community with questions.",
                 location: "Adopt / Support — Resources",
             },
         },
@@ -372,10 +372,10 @@ const contentData: ContentSeedItem[] = [
             slug: "volunteer",
             sortOrder: 10,
             data: {
-                title: "Volunteer with GPA-MN",
+                title: "Volunteer with GPA‑MN",
                 highlight: "Volunteer",
                 description:
-                    "GPA-MN is powered entirely by volunteers like you. Whether you have a few hours a month or want to be deeply involved, there is a role for you.",
+                    "GPA‑MN is powered entirely by volunteers like you. Whether you have a few hours a month or want to be deeply involved, there is a role for you.",
                 location: "Volunteer",
             },
         },
@@ -386,7 +386,7 @@ const contentData: ContentSeedItem[] = [
                 title: "Finding Loving Homes for Retired Racing Greyhounds",
                 highlight: "Loving Homes",
                 description:
-                    "Every greyhound deserves a soft bed, a warm home, and a family to call their own. GPA-MN has been making that happen for over 35 years.",
+                    "Every greyhound deserves a soft bed, a warm home, and a family to call their own. GPA‑MN has been making that happen for over 35 years.",
                 location: "Home",
             },
         },
@@ -457,7 +457,7 @@ const contentData: ContentSeedItem[] = [
                     "Meet your matched greyhound at the foster home or a scheduled meeting",
                     "Sign the adoption contract and pay the non-refundable adoption fee",
                     "Receive a starter kit with food, leash, and care information",
-                    "Join the GPA-MN Facebook community for ongoing support and advice",
+                    "Join the GPA‑MN Facebook community for ongoing support and advice",
                 ],
                 icon: "🏠",
             },
@@ -472,7 +472,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Foster Homes",
                 description:
-                    "Open your home to a retired racer while they await their forever family. GPA-MN covers all food, supplies, and veterinary costs. You provide the love and a soft couch.",
+                    "Open your home to a retired racer while they await their forever family. GPA‑MN covers all food, supplies, and veterinary costs. You provide the love and a soft couch.",
                 icon: "🏠",
                 commitment: "Varies (typically 2–8 weeks)",
             },
@@ -527,7 +527,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Board Member",
                 description:
-                    "Serve on the GPA-MN Board of Directors. Help shape organizational strategy, oversee operations, and guide the future of greyhound adoption in Minnesota.",
+                    "Serve on the GPA‑MN Board of Directors. Help shape organizational strategy, oversee operations, and guide the future of greyhound adoption in Minnesota.",
                 icon: "📋",
                 commitment: "2-year elected term",
             },
@@ -562,7 +562,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Stock Donations",
                 description:
-                    "Donate appreciated stock to GPA-MN with minimal fees. Stock donations can offer tax advantages while supporting our mission.",
+                    "Donate appreciated stock to GPA‑MN with minimal fees. Stock donations can offer tax advantages while supporting our mission.",
                 icon: "📈",
             },
         },
@@ -582,7 +582,7 @@ const contentData: ContentSeedItem[] = [
             data: {
                 title: "Chewy Giveback",
                 description:
-                    "Order pet supplies through Chewy's Giveback program and a portion of your purchase supports GPA-MN automatically.",
+                    "Order pet supplies through Chewy's Giveback program and a portion of your purchase supports GPA‑MN automatically.",
                 icon: "🛒",
             },
         },
@@ -605,11 +605,11 @@ const contentData: ContentSeedItem[] = [
         sortOrder: 0,
         data: {
             title: "About GPA-Minnesota",
-            body: `Since 1989, GPA-MN has been placing retired racing greyhounds in loving forever families throughout Minnesota. We believe that successful, life-long adoptions are achieved by carefully and thoughtfully considering each match between dog and family.
+            body: `Since 1989, GPA‑MN has been placing retired racing greyhounds in loving forever families throughout Minnesota. We believe that successful, life-long adoptions are achieved by carefully and thoughtfully considering each match between dog and family.
 
 We are a foster-home based organization, meaning every greyhound in our care lives in a volunteer's home rather than a kennel. This allows each dog to adjust to home life — learning about stairs, glass doors, couches, and the simple joy of being a pet — before joining their forever family.
 
-Our organization runs entirely on the dedication of volunteers who share a passion for these gentle, elegant dogs. From fostering and transport to events and fundraising, every aspect of GPA-MN is powered by people who care deeply about greyhound welfare.
+Our organization runs entirely on the dedication of volunteers who share a passion for these gentle, elegant dogs. From fostering and transport to events and fundraising, every aspect of GPA‑MN is powered by people who care deeply about greyhound welfare.
 
 Over the past three decades, we have placed approximately 2,000 greyhounds with families across the Twin Cities and beyond. Each placement is a success story, and we remain committed to supporting our adopters throughout the lifetime of their greyhound.`,
         },
