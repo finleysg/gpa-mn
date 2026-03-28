@@ -81,22 +81,26 @@ async function toWebEvent(event: DbEvent): Promise<WebEvent> {
         getPhotoByVariant("event", event.id, "mobile"),
     ])
     const photo = eventPhotos[0]
-    return fixHyphens({
-        id: event.id,
-        title: event.title,
-        date: buildDisplayDate(event),
-        startDate: formatIsoDate(event.startDate),
-        endDate: event.endDate ? formatIsoDate(event.endDate) : null,
-        recurrence: event.recurrence,
-        time: event.time,
-        location: event.location,
-        type: event.type,
-        description: event.description,
-        longDescription: event.longDescription,
-        showUpcoming: event.showUpcoming,
-        image: photo ? getPhotoUrl(photo.s3Key) : undefined,
-        mobileImage: mobilePhoto ? getPhotoUrl(mobilePhoto.s3Key) : undefined,
-    })
+    const image = photo ? getPhotoUrl(photo.s3Key) : undefined
+    const mobileImage = mobilePhoto ? getPhotoUrl(mobilePhoto.s3Key) : undefined
+    return {
+        ...fixHyphens({
+            id: event.id,
+            title: event.title,
+            date: buildDisplayDate(event),
+            startDate: formatIsoDate(event.startDate),
+            endDate: event.endDate ? formatIsoDate(event.endDate) : null,
+            recurrence: event.recurrence,
+            time: event.time,
+            location: event.location,
+            type: event.type,
+            description: event.description,
+            longDescription: event.longDescription,
+            showUpcoming: event.showUpcoming,
+        }),
+        image,
+        mobileImage,
+    }
 }
 
 export async function getEvents(): Promise<WebEvent[]> {
@@ -123,7 +127,7 @@ export async function getHeroImages(): Promise<string[]> {
 
 // Replace regular hyphens in "GPA-MN" / "gpa-mn" with non-breaking hyphens (U+2011)
 // so the browser never line-breaks the name.
-function fixHyphens<T>(value: T): T {
+export function fixHyphens<T>(value: T): T {
     if (typeof value === "string") {
         return value.replace(/gpa-mn/gi, (m) => m.replace("-", "\u2011")) as T
     }
