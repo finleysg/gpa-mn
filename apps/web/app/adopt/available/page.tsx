@@ -2,7 +2,7 @@ import { fetchDogs } from "@/app/_lib/rescue-groups"
 import { PageHero } from "@/app/_components/page-hero"
 import { DogCard } from "@/app/_components/dog-card"
 import { FadeIn } from "@/app/_components/fade-in"
-export const revalidate = 300
+export const dynamic = "force-dynamic"
 
 export default async function AvailableDogsPage() {
     const dogs = await fetchDogs()
