@@ -50,12 +50,6 @@ export default async function AboutPage() {
                     <div className="grid gap-6 sm:grid-cols-2">
                         {[
                             {
-                                href: "/about/history",
-                                title: "Our History",
-                                desc: "Explore the milestones and story of GPA‑MN from 1989 to today.",
-                                icon: "📜",
-                            },
-                            {
                                 href: "/about/contact",
                                 title: "Contact Us",
                                 desc: "Get in touch with questions, feedback, or to learn more about our work.",
