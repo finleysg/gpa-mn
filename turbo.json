@@ -1,36 +1,41 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["NODE_ENV"],
-  "globalPassThroughEnv": ["PLAYWRIGHT_*", "CI"],
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["DATABASE_URL", "NEXT_PUBLIC_*"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "lint": {},
-    "typecheck": {
-      "dependsOn": ["^typecheck"]
-    },
-    "test": {
-      "dependsOn": ["^build"]
-    },
-    "test:watch": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:generate": { "cache": false },
-    "db:migrate": { "cache": false },
-    "db:push": { "cache": false },
-    "db:studio": { "cache": false, "persistent": true },
-    "e2e": {
-      "dependsOn": ["^build"],
-      "cache": false,
-      "passThroughEnv": ["BASE_URL", "PLAYWRIGHT_BROWSERS_PATH"]
+    "$schema": "https://turbo.build/schema.json",
+    "globalEnv": ["NODE_ENV"],
+    "globalPassThroughEnv": ["PLAYWRIGHT_*", "CI"],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+            "env": [
+                "DATABASE_URL",
+                "NEXT_PUBLIC_*",
+                "RESCUE_GROUPS_API_KEY",
+                "RESCUE_GROUPS_ORG_ID"
+            ]
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "lint": {},
+        "typecheck": {
+            "dependsOn": ["^typecheck"]
+        },
+        "test": {
+            "dependsOn": ["^build"]
+        },
+        "test:watch": {
+            "cache": false,
+            "persistent": true
+        },
+        "db:generate": { "cache": false },
+        "db:migrate": { "cache": false },
+        "db:push": { "cache": false },
+        "db:studio": { "cache": false, "persistent": true },
+        "e2e": {
+            "dependsOn": ["^build"],
+            "cache": false,
+            "passThroughEnv": ["BASE_URL", "PLAYWRIGHT_BROWSERS_PATH"]
+        }
     }
-  }
 }

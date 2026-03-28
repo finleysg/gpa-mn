@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { dogs } from "./_data/dogs"
+import { fetchDogs } from "./_lib/rescue-groups"
 import {
     getEvents,
     getVolunteerRoles,
@@ -26,6 +26,7 @@ export const dynamic = "force-dynamic"
 
 export default async function HomePage() {
     const [
+        dogs,
         events,
         volunteerRoles,
         heroImages,
@@ -34,6 +35,7 @@ export default async function HomePage() {
         eventsSectionHeader,
         volunteerSectionHeader,
     ] = await Promise.all([
+        fetchDogs(),
         getEvents(),
         getVolunteerRoles(),
         getHeroImages(),

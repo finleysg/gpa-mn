@@ -1,172 +1,22 @@
-export type Dog = {
-  id: string;
-  name: string;
-  image: string;
-  age: number;
-  sex: 'Male' | 'Female';
-  color: string;
-  weight: number;
-  catFriendly: boolean;
-  kidFriendly: boolean;
-  bio: string;
-  traits: string[];
-};
+export type DogImage = {
+    id: string
+    url: string
+    width: number
+    height: number
+}
 
-export const dogs: Dog[] = [
-  {
-    id: 'aurora',
-    name: 'Aurora',
-    image: '/images/adoptables/Aurora1.png',
-    age: 3,
-    sex: 'Female',
-    color: 'Red Fawn',
-    weight: 61,
-    catFriendly: true,
-    kidFriendly: true,
-    bio: 'Aurora is a graceful girl with a warm personality. She loves to be around people and enjoys a good snuggle on the couch after her daily walk. Aurora gets along well with cats and children, making her a wonderful family companion.',
-    traits: ['Cat Friendly', 'Good with Kids', 'Affectionate'],
-  },
-  {
-    id: 'benny',
-    name: 'Benny',
-    image: '/images/adoptables/Benny1.png',
-    age: 4,
-    sex: 'Male',
-    color: 'Brindle',
-    weight: 73,
-    catFriendly: false,
-    kidFriendly: true,
-    bio: 'Benny is a playful and energetic boy who loves his toys and outdoor adventures. He has a goofy personality that will keep you entertained. Benny does best in a home without cats but is great with older children and other dogs.',
-    traits: ['Playful', 'Good with Kids', 'Energetic'],
-  },
-  {
-    id: 'bonnie',
-    name: 'Bonnie',
-    image: '/images/adoptables/Bonnie1.JPG',
-    age: 3,
-    sex: 'Female',
-    color: 'White & Brindle',
-    weight: 59,
-    catFriendly: true,
-    kidFriendly: true,
-    bio: 'Bonnie is a sweet and gentle soul who has adapted beautifully to home life. She loves belly rubs and is always ready for a leisurely stroll around the neighborhood. Bonnie is cat-safe and wonderful with children of all ages.',
-    traits: ['Cat Friendly', 'Good with Kids', 'Gentle'],
-  },
-  {
-    id: 'ginger-rose',
-    name: 'Ginger Rose',
-    image: '/images/adoptables/GingerRose1.png',
-    age: 4,
-    sex: 'Female',
-    color: 'Red',
-    weight: 57,
-    catFriendly: true,
-    kidFriendly: true,
-    bio: 'Ginger Rose is a petite and charming girl with a heart of gold. She is incredibly social and loves meeting new people. Ginger Rose is great with cats, kids, and other dogs — a truly versatile companion for any family.',
-    traits: ['Cat Friendly', 'Good with Kids', 'Social'],
-  },
-  {
-    id: 'hijack',
-    name: 'Hijack',
-    image: '/images/adoptables/Hijack1.JPG',
-    age: 3,
-    sex: 'Male',
-    color: 'Dark Brindle',
-    weight: 74,
-    catFriendly: false,
-    kidFriendly: true,
-    bio: 'Hijack is a handsome boy with a bold personality. He is confident and loves to explore, but also knows how to relax at home. Hijack does best in a home without small animals and enjoys the company of older children and adults.',
-    traits: ['Playful', 'Good with Kids', 'Confident'],
-  },
-  {
-    id: 'lance',
-    name: 'Lance',
-    image: '/images/adoptables/Lance1.png',
-    age: 5,
-    sex: 'Male',
-    color: 'Fawn',
-    weight: 76,
-    catFriendly: true,
-    kidFriendly: true,
-    bio: 'Lance is a distinguished gentleman with a calm and easygoing temperament. He is a true couch potato who loves nothing more than napping in a sunny spot. Lance is wonderful with children and cats, making him an ideal family pet.',
-    traits: ['Cat Friendly', 'Good with Kids', 'Calm'],
-  },
-  {
-    id: 'lolita',
-    name: 'Lolita',
-    image: '/images/adoptables/Lolita1.JPG',
-    age: 3,
-    sex: 'Female',
-    color: 'Blue Fawn',
-    weight: 58,
-    catFriendly: true,
-    kidFriendly: true,
-    bio: 'Lolita is a sweet girl with soulful eyes who bonds deeply with her people. She enjoys leisurely walks and loves to curl up next to you on the couch. Lolita is cat-safe and gets along well with everyone she meets.',
-    traits: ['Cat Friendly', 'Good with Kids', 'Affectionate'],
-  },
-  {
-    id: 'mabel',
-    name: 'Mabel',
-    image: '/images/adoptables/Mabel1.JPG',
-    age: 4,
-    sex: 'Female',
-    color: 'White & Red',
-    weight: 60,
-    catFriendly: false,
-    kidFriendly: true,
-    bio: 'Mabel is full of life and personality. She has adapted quickly to home living and particularly enjoys her soft bed and squeaky toys. Mabel is best in a home without cats but loves people of all ages.',
-    traits: ['Playful', 'Good with Kids', 'Energetic'],
-  },
-  {
-    id: 'mills',
-    name: 'Mills',
-    image: '/images/adoptables/Mills1.png',
-    age: 3,
-    sex: 'Male',
-    color: 'Black',
-    weight: 71,
-    catFriendly: true,
-    kidFriendly: true,
-    bio: 'Mills is a striking boy with a sleek black coat and a gentle disposition. He loves attention and will lean into you for pets at every opportunity. Mills is great with cats and kids, making him a perfect addition to any household.',
-    traits: ['Cat Friendly', 'Good with Kids', 'Leaner'],
-  },
-  {
-    id: 'milly',
-    name: 'Milly',
-    image: '/images/adoptables/Milly1.png',
-    age: 2,
-    sex: 'Female',
-    color: 'Fawn',
-    weight: 55,
-    catFriendly: true,
-    kidFriendly: true,
-    bio: 'Milly is one of our youngest retirees and she is full of curiosity and charm. She has a playful spirit and loves exploring her surroundings. Milly is cat-safe, great with kids, and gets along beautifully with other dogs.',
-    traits: ['Cat Friendly', 'Good with Kids', 'Curious'],
-  },
-  {
-    id: 'nelly',
-    name: 'Nelly',
-    image: '/images/adoptables/Nelly1.png',
-    age: 4,
-    sex: 'Female',
-    color: 'Red Brindle',
-    weight: 62,
-    catFriendly: true,
-    kidFriendly: false,
-    bio: 'Nelly is a beautiful girl who thrives in a quieter household. She is cat-safe and loves to lean against her favorite people for comfort. Nelly would do best in a home with older teens or adults who appreciate her gentle, sensitive nature.',
-    traits: ['Cat Friendly', 'Sensitive', 'Gentle'],
-  },
-  {
-    id: 'theegala',
-    name: 'Theegala',
-    image: '/images/adoptables/Theegala1.png',
-    age: 3,
-    sex: 'Male',
-    color: 'White & Fawn',
-    weight: 70,
-    catFriendly: false,
-    kidFriendly: true,
-    bio: 'Theegala is a tall and athletic boy with a fun-loving personality. He enjoys his daily walks and has a playful side that comes out with his favorite toys. Theegala does best in a home without cats but is great with kids and other dogs.',
-    traits: ['Playful', 'Good with Kids', 'Athletic'],
-  },
-];
+export type Dog = {
+    id: string
+    name: string
+    image: string
+    images: DogImage[]
+    age: number
+    sex: "Male" | "Female"
+    color: string
+    catFriendly: boolean | null
+    dogFriendly: boolean | null
+    bio: string
+    traits: string[]
+    earTattoos: { left: string | null; right: string | null }
+    adoptionPending: boolean
+}

@@ -1,16 +1,33 @@
-import { revalidatePath } from 'next/cache';
-import { NextResponse } from 'next/server';
+import { revalidatePath, revalidateTag } from "next/cache"
+import { NextResponse } from "next/server"
 
 export async function POST(request: Request) {
-  const { paths, secret } = (await request.json()) as { paths: string[]; secret: string };
+    const { paths, tags, secret } = (await request.json()) as {
+        paths?: string[]
+        tags?: string[]
+        secret: string
+    }
 
-  if (secret !== process.env.REVALIDATION_SECRET) {
-    return NextResponse.json({ error: 'Invalid secret' }, { status: 401 });
-  }
+    if (secret !== process.env.REVALIDATION_SECRET) {
+        return NextResponse.json({ error: "Invalid secret" }, { status: 401 })
+    }
 
-  for (const path of paths) {
-    revalidatePath(path);
-  }
+    const revalidatedPaths: string[] = []
+    const revalidatedTags: string[] = []
 
-  return NextResponse.json({ revalidated: paths });
+    if (paths) {
+        for (const path of paths) {
+            revalidatePath(path)
+            revalidatedPaths.push(path)
+        }
+    }
+
+    if (tags) {
+        for (const tag of tags) {
+            revalidateTag(tag, { expire: 0 })
+            revalidatedTags.push(tag)
+        }
+    }
+
+    return NextResponse.json({ revalidated: { paths: revalidatedPaths, tags: revalidatedTags } })
 }
