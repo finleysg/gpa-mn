@@ -21,10 +21,7 @@ export const mainNav: NavItem[] = [
     {
         label: "About",
         href: "/about",
-        children: [
-            { label: "History", href: "/about/history" },
-            { label: "Contact", href: "/about/contact" },
-        ],
+        children: [{ label: "Contact", href: "/about/contact" }],
     },
     { label: "Lost Hound!", href: "/lost-hound" },
 ]
@@ -41,7 +38,6 @@ export const footerNav = {
         { label: "Our Process", href: "/adopt/our-process" },
         { label: "Post-Adoption Support", href: "/adopt/support" },
         { label: "About Us", href: "/about" },
-        { label: "History", href: "/about/history" },
         { label: "Why GPA-MN?", href: "/adopt/why-gpa-mn" },
         { label: "Lost Hound!", href: "/lost-hound" },
     ],

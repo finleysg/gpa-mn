@@ -47,7 +47,7 @@ export default async function AboutPage() {
             <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
                 <div className="mx-auto max-w-200">
                     <SectionHeader title={linksHeader.title} align="center" className="mb-12" />
-                    <div className="grid gap-6 sm:grid-cols-2">
+                    <div className="flex justify-center">
                         {[
                             {
                                 href: "/about/contact",
@@ -56,7 +56,7 @@ export default async function AboutPage() {
                                 icon: "📬",
                             },
                         ].map((link) => (
-                            <FadeIn key={link.href}>
+                            <FadeIn key={link.href} className="w-full max-w-sm">
                                 <Link
                                     href={link.href}
                                     className="bg-card border-border block rounded-3xl border p-8 text-center shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
