@@ -4,3 +4,28 @@
 @plugin "@tailwindcss/typography";
 
 @source "../../../packages/ui/src";
+
+/* TipTap table editor styles */
+.tiptap table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+.tiptap th,
+.tiptap td {
+    border: 1px solid hsl(var(--border));
+    padding: 0.5rem 0.75rem;
+    min-width: 100px;
+    vertical-align: top;
+    position: relative;
+}
+
+.tiptap th {
+    font-weight: 600;
+    background-color: hsl(var(--muted));
+}
+
+.tiptap .selectedCell {
+    background-color: hsl(var(--accent) / 0.3);
+}
