@@ -1,19 +1,22 @@
 "use client"
 
 import { useState } from "react"
-import { useEditor, EditorContent } from "@tiptap/react"
+import { useEditor, useEditorState, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Link from "@tiptap/extension-link"
 import Underline from "@tiptap/extension-underline"
 import { Table, TableRow, TableCell, TableHeader } from "@tiptap/extension-table"
 import { Markdown } from "tiptap-markdown"
 import {
+    AlertTriangle,
     Bold,
     Italic,
     Underline as UnderlineIcon,
     Strikethrough,
     Code,
     RemoveFormatting,
+    Info,
+    Lightbulb,
     Link as LinkIcon,
     ChevronDown,
     Check,
@@ -25,17 +28,26 @@ import {
     ListOrdered,
     Quote,
     CodeSquare,
-    Grid2x2,
-    Columns3,
-    Rows3,
+    Grid2x2Plus,
+    ShieldAlert,
+    TableColumnsSplit,
+    TableRowsSplit,
     Trash2,
+    X,
 } from "lucide-react"
 import { cn } from "@repo/ui/lib/utils"
 import { Label } from "@repo/ui/components/label"
 import { Switch } from "@repo/ui/components/switch"
 import { Textarea } from "@repo/ui/components/textarea"
 import { Popover, PopoverTrigger, PopoverContent } from "@repo/ui/components/popover"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@repo/ui/components/tooltip"
 import type { Editor } from "@tiptap/react"
+import { Admonition, type AdmonitionType } from "../_lib/tiptap/admonition"
 
 interface MarkdownEditorProps {
     name: string
@@ -47,13 +59,15 @@ interface MarkdownEditorProps {
 function ToolbarButton({
     active,
     onClick,
+    title,
     children,
 }: {
     active?: boolean
     onClick: () => void
+    title?: string
     children: React.ReactNode
 }) {
-    return (
+    const button = (
         <button
             type="button"
             onClick={onClick}
@@ -64,6 +78,15 @@ function ToolbarButton({
         >
             {children}
         </button>
+    )
+
+    if (!title) return button
+
+    return (
+        <Tooltip>
+            <TooltipTrigger asChild>{button}</TooltipTrigger>
+            <TooltipContent>{title}</TooltipContent>
+        </Tooltip>
     )
 }
 
@@ -143,7 +166,70 @@ function BlockTypeDropdown({ editor }: { editor: Editor }) {
     )
 }
 
+const admonitionItems: { type: AdmonitionType; label: string; icon: typeof Info }[] = [
+    { type: "note", label: "Note", icon: Info },
+    { type: "tip", label: "Tip", icon: Lightbulb },
+    { type: "warning", label: "Warning", icon: AlertTriangle },
+    { type: "danger", label: "Danger", icon: ShieldAlert },
+]
+
+function AdmonitionDropdown({ editor }: { editor: Editor }) {
+    const [open, setOpen] = useState(false)
+
+    return (
+        <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <button
+                    type="button"
+                    className={cn(
+                        "text-popover-foreground hover:bg-accent hover:text-accent-foreground flex items-center gap-0.5 rounded px-1.5 py-1 text-xs font-medium transition-colors",
+                        editor.isActive("admonition") && "bg-accent text-accent-foreground",
+                    )}
+                >
+                    <Info className="size-4" />
+                    <ChevronDown className="size-3" />
+                </button>
+            </PopoverTrigger>
+            <PopoverContent
+                side="bottom"
+                align="start"
+                sideOffset={8}
+                className="bg-popover w-40 rounded-lg p-1"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+                {admonitionItems.map((item) => {
+                    const Icon = item.icon
+                    const active = editor.isActive("admonition", { type: item.type })
+                    return (
+                        <button
+                            key={item.type}
+                            type="button"
+                            onClick={() => {
+                                editor.chain().focus().toggleAdmonition({ type: item.type }).run()
+                                setOpen(false)
+                            }}
+                            className={cn(
+                                "text-popover-foreground hover:bg-accent hover:text-accent-foreground flex w-full items-center gap-2 rounded px-2 py-1.5 text-sm transition-colors",
+                                active && "text-accent-foreground",
+                            )}
+                        >
+                            <Icon className="size-4" />
+                            {item.label}
+                            {active && <Check className="ml-auto size-4" />}
+                        </button>
+                    )
+                })}
+            </PopoverContent>
+        </Popover>
+    )
+}
+
 function Toolbar({ editor }: { editor: Editor }) {
+    const isInTable = useEditorState({
+        editor,
+        selector: (ctx) => ctx.editor.isActive("table"),
+    })
+
     function handleLinkToggle() {
         if (editor.isActive("link")) {
             editor.chain().focus().unsetLink().run()
@@ -156,108 +242,148 @@ function Toolbar({ editor }: { editor: Editor }) {
     }
 
     return (
-        <div className="border-input flex flex-wrap items-center gap-0.5 rounded-t-md border border-b-0 bg-transparent px-1 py-1">
-            <BlockTypeDropdown editor={editor} />
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton
-                active={editor.isActive("bold")}
-                onClick={() => editor.chain().focus().toggleBold().run()}
-            >
-                <Bold className="size-4" />
-            </ToolbarButton>
-            <ToolbarButton
-                active={editor.isActive("italic")}
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-            >
-                <Italic className="size-4" />
-            </ToolbarButton>
-            <ToolbarButton
-                active={editor.isActive("underline")}
-                onClick={() => editor.chain().focus().toggleUnderline().run()}
-            >
-                <UnderlineIcon className="size-4" />
-            </ToolbarButton>
-            <ToolbarButton
-                active={editor.isActive("strike")}
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-            >
-                <Strikethrough className="size-4" />
-            </ToolbarButton>
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton active={editor.isActive("link")} onClick={handleLinkToggle}>
-                <LinkIcon className="size-4" />
-            </ToolbarButton>
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton
-                active={editor.isActive("bulletList")}
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
-            >
-                <List className="size-4" />
-            </ToolbarButton>
-            <ToolbarButton
-                active={editor.isActive("orderedList")}
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            >
-                <ListOrdered className="size-4" />
-            </ToolbarButton>
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton
-                active={editor.isActive("blockquote")}
-                onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            >
-                <Quote className="size-4" />
-            </ToolbarButton>
-            <ToolbarButton
-                active={editor.isActive("codeBlock")}
-                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-            >
-                <CodeSquare className="size-4" />
-            </ToolbarButton>
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton
-                onClick={() =>
-                    editor
-                        .chain()
-                        .focus()
-                        .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-                        .run()
-                }
-            >
-                <Grid2x2 className="size-4" />
-            </ToolbarButton>
-            {editor.isActive("table") && (
-                <>
-                    <div className="bg-border mx-0.5 h-5 w-px" />
-                    <ToolbarButton onClick={() => editor.chain().focus().addColumnBefore().run()}>
-                        <Columns3 className="size-4" />
-                    </ToolbarButton>
-                    <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()}>
-                        <Columns3 className="size-4 scale-x-[-1]" />
-                    </ToolbarButton>
-                    <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()}>
-                        <Columns3 className="text-destructive size-4" />
-                    </ToolbarButton>
-                    <div className="bg-border mx-0.5 h-5 w-px" />
-                    <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()}>
-                        <Rows3 className="size-4" />
-                    </ToolbarButton>
-                    <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()}>
-                        <Rows3 className="size-4 scale-y-[-1]" />
-                    </ToolbarButton>
-                    <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()}>
-                        <Rows3 className="text-destructive size-4" />
-                    </ToolbarButton>
-                    <div className="bg-border mx-0.5 h-5 w-px" />
-                    <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()}>
-                        <Trash2 className="text-destructive size-4" />
-                    </ToolbarButton>
-                </>
-            )}
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-                <RemoveFormatting className="size-4" />
-            </ToolbarButton>
-        </div>
+        <TooltipProvider delayDuration={500}>
+            <div className="border-input flex flex-wrap items-center gap-0.5 rounded-t-md border border-b-0 bg-transparent px-1 py-1">
+                <BlockTypeDropdown editor={editor} />
+                <div className="bg-border mx-0.5 h-5 w-px" />
+                <ToolbarButton
+                    active={editor.isActive("bold")}
+                    onClick={() => editor.chain().focus().toggleBold().run()}
+                    title="Bold"
+                >
+                    <Bold className="size-4" />
+                </ToolbarButton>
+                <ToolbarButton
+                    active={editor.isActive("italic")}
+                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                    title="Italic"
+                >
+                    <Italic className="size-4" />
+                </ToolbarButton>
+                <ToolbarButton
+                    active={editor.isActive("underline")}
+                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                    title="Underline"
+                >
+                    <UnderlineIcon className="size-4" />
+                </ToolbarButton>
+                <ToolbarButton
+                    active={editor.isActive("strike")}
+                    onClick={() => editor.chain().focus().toggleStrike().run()}
+                    title="Strikethrough"
+                >
+                    <Strikethrough className="size-4" />
+                </ToolbarButton>
+                <div className="bg-border mx-0.5 h-5 w-px" />
+                <ToolbarButton
+                    active={editor.isActive("link")}
+                    onClick={handleLinkToggle}
+                    title="Link"
+                >
+                    <LinkIcon className="size-4" />
+                </ToolbarButton>
+                <div className="bg-border mx-0.5 h-5 w-px" />
+                <ToolbarButton
+                    active={editor.isActive("bulletList")}
+                    onClick={() => editor.chain().focus().toggleBulletList().run()}
+                    title="Bullet list"
+                >
+                    <List className="size-4" />
+                </ToolbarButton>
+                <ToolbarButton
+                    active={editor.isActive("orderedList")}
+                    onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                    title="Ordered list"
+                >
+                    <ListOrdered className="size-4" />
+                </ToolbarButton>
+                <div className="bg-border mx-0.5 h-5 w-px" />
+                <ToolbarButton
+                    active={editor.isActive("blockquote")}
+                    onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                    title="Block quote"
+                >
+                    <Quote className="size-4" />
+                </ToolbarButton>
+                <ToolbarButton
+                    active={editor.isActive("codeBlock")}
+                    onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                    title="Code block"
+                >
+                    <CodeSquare className="size-4" />
+                </ToolbarButton>
+                <AdmonitionDropdown editor={editor} />
+                <div className="bg-border mx-0.5 h-5 w-px" />
+                <ToolbarButton
+                    onClick={() =>
+                        editor
+                            .chain()
+                            .focus()
+                            .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+                            .run()
+                    }
+                    title="Insert table"
+                >
+                    <Grid2x2Plus className="size-4" />
+                </ToolbarButton>
+                {isInTable && (
+                    <>
+                        <div className="bg-border mx-0.5 h-5 w-px" />
+                        <ToolbarButton
+                            onClick={() => editor.chain().focus().addColumnBefore().run()}
+                            title="Add column before"
+                        >
+                            <TableColumnsSplit className="size-4" />
+                        </ToolbarButton>
+                        <ToolbarButton
+                            onClick={() => editor.chain().focus().addColumnAfter().run()}
+                            title="Add column after"
+                        >
+                            <TableColumnsSplit className="size-4 scale-x-[-1]" />
+                        </ToolbarButton>
+                        <ToolbarButton
+                            onClick={() => editor.chain().focus().deleteColumn().run()}
+                            title="Delete column"
+                        >
+                            <X className="text-destructive size-4" />
+                        </ToolbarButton>
+                        <div className="bg-border mx-0.5 h-5 w-px" />
+                        <ToolbarButton
+                            onClick={() => editor.chain().focus().addRowBefore().run()}
+                            title="Add row before"
+                        >
+                            <TableRowsSplit className="size-4" />
+                        </ToolbarButton>
+                        <ToolbarButton
+                            onClick={() => editor.chain().focus().addRowAfter().run()}
+                            title="Add row after"
+                        >
+                            <TableRowsSplit className="size-4 scale-y-[-1]" />
+                        </ToolbarButton>
+                        <ToolbarButton
+                            onClick={() => editor.chain().focus().deleteRow().run()}
+                            title="Delete row"
+                        >
+                            <X className="text-destructive size-4" />
+                        </ToolbarButton>
+                        <div className="bg-border mx-0.5 h-5 w-px" />
+                        <ToolbarButton
+                            onClick={() => editor.chain().focus().deleteTable().run()}
+                            title="Delete table"
+                        >
+                            <Trash2 className="text-destructive size-4" />
+                        </ToolbarButton>
+                    </>
+                )}
+                <div className="bg-border mx-0.5 h-5 w-px" />
+                <ToolbarButton
+                    onClick={() => editor.chain().focus().unsetAllMarks().run()}
+                    title="Clear formatting"
+                >
+                    <RemoveFormatting className="size-4" />
+                </ToolbarButton>
+            </div>
+        </TooltipProvider>
     )
 }
 
@@ -276,6 +402,7 @@ export function MarkdownEditor({ name, label, value, onChange }: MarkdownEditorP
             TableCell,
             TableHeader,
             Markdown,
+            Admonition,
         ],
         content: value,
         onUpdate: ({ editor }) => {

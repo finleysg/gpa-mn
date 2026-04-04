@@ -29,3 +29,27 @@
 .tiptap .selectedCell {
     background-color: hsl(var(--accent) / 0.3);
 }
+
+/* Admonition callout blocks */
+.tiptap .admonition {
+    border-left: 4px solid;
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+    margin: 1em 0;
+}
+.tiptap .admonition-note {
+    background-color: var(--secondary);
+    border-left-color: var(--chart-2);
+}
+.tiptap .admonition-tip {
+    background-color: var(--accent);
+    border-left-color: var(--chart-4);
+}
+.tiptap .admonition-warning {
+    background-color: var(--muted);
+    border-left-color: var(--chart-5);
+}
+.tiptap .admonition-danger {
+    background-color: var(--muted);
+    border-left-color: var(--destructive);
+}

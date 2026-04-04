@@ -1,7 +1,22 @@
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
-import rehypeSanitize from "rehype-sanitize"
+import remarkDirective from "remark-directive"
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize"
 import { ExternalLink } from "lucide-react"
+import { remarkAdmonition } from "../_lib/remark-admonition"
+
+const sanitizeSchema = {
+    ...defaultSchema,
+    attributes: {
+        ...defaultSchema.attributes,
+        div: [
+            ...(defaultSchema.attributes?.div ?? []),
+            ["dataAdmonition", ""],
+            ["dataType", "note", "warning", "tip", "danger"],
+            "className",
+        ],
+    },
+}
 
 function isExternal(href: string | undefined): boolean {
     if (!href) return false
@@ -17,8 +32,8 @@ export function MarkdownContent({ content, className }: { content: string; class
     return (
         <div className={`markdown-content ${className ?? ""}`}>
             <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeSanitize]}
+                remarkPlugins={[remarkGfm, remarkDirective, remarkAdmonition]}
+                rehypePlugins={[[rehypeSanitize, sanitizeSchema]]}
                 components={{
                     a({ href, children }) {
                         if (isExternal(href)) {
