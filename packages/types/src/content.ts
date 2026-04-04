@@ -1,5 +1,5 @@
 export type EventType = "Annual" | "Fundraiser" | "Monthly" | "Weekly" | "Seasonal" | "Special"
-export type EventRecurrence = "once" | "weekly" | "monthly"
+export type EventRecurrence = "once" | "weekly" | "monthly_by_date" | "monthly_by_weekday"
 
 export interface EventData {
     id: number

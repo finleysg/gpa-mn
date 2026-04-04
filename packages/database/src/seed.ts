@@ -36,7 +36,7 @@ const eventsData = [
     {
         title: "Meet & Greet at Chuck & Don's",
         startDate: "2026-03-22",
-        recurrence: "monthly" as const,
+        recurrence: "monthly_by_date" as const,
         time: "11:00 AM – 2:00 PM",
         location: "Chuck & Don's, Woodbury, MN",
         type: "Monthly" as const,

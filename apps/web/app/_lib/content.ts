@@ -63,8 +63,14 @@ function buildDisplayDate(event: DbEvent): string {
         return `Every ${format(start, "EEEE")}`
     }
 
-    if (event.recurrence === "monthly") {
+    if (event.recurrence === "monthly_by_date") {
         return `Monthly on the ${format(start, "do")}`
+    }
+
+    if (event.recurrence === "monthly_by_weekday") {
+        const weekNumber = Math.ceil(start.getDate() / 7)
+        const ordinals = ["1st", "2nd", "3rd", "4th", "5th"]
+        return `${ordinals[weekNumber - 1]} ${format(start, "EEEE")} of each month`
     }
 
     if (event.endDate) {
