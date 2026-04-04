@@ -6,6 +6,7 @@ import {
     getPhotos,
     getPhotoByVariant,
     getContentItemBySlug,
+    getPageBySectionAndSlug,
 } from "@repo/database"
 import type {
     SectionHeaderData,
@@ -19,6 +20,8 @@ import type {
     LostHoundSuggestionData,
     WhyGreyhoundData,
     WhyChooseUsData,
+    PageData,
+    PageSection,
 } from "@repo/types"
 
 function getPhotoUrl(s3Key: string): string {
@@ -246,4 +249,10 @@ export async function getBeforeYouApply(): Promise<BeforeYouApplyData | undefine
 export async function getWhyChooseUs(): Promise<WhyChooseUsData | undefined> {
     const results = await getLatestVersions("whyChooseUs")
     return extractSingle<WhyChooseUsData>(results)
+}
+
+export async function getPage(section: PageSection, slug: string): Promise<PageData | null> {
+    const result = await getPageBySectionAndSlug(section, slug)
+    if (!result) return null
+    return fixHyphens(result.version.data as PageData)
 }

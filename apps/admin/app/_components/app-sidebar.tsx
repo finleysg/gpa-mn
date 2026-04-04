@@ -8,6 +8,7 @@ import {
     BookOpen,
     Calendar,
     ChevronRight,
+    FileText,
     HandCoins,
     Heart,
     Home,
@@ -99,6 +100,7 @@ const navEntries: NavEntry[] = [
                     { title: "Support Resources Cards", href: "/post-adoption-support" },
                 ],
             },
+            { title: "Pages", href: "/adopt-pages", icon: FileText },
         ],
     },
     {
@@ -109,6 +111,7 @@ const navEntries: NavEntry[] = [
             { title: "Fostering", href: "/content/section-header/volunteer-fostering" },
             { title: "Roles Header", href: "/content/section-header/volunteer-roles" },
             { title: "Volunteer Role Cards", href: "/volunteer-roles" },
+            { title: "Pages", href: "/volunteer-pages", icon: FileText },
         ],
     },
     {
@@ -118,6 +121,7 @@ const navEntries: NavEntry[] = [
             { title: "Page Header", href: "/content/page-header/donate" },
             { title: "Ways to Give", href: "/content/section-header/donate-ways" },
             { title: "Donation Options", href: "/donation-options" },
+            { title: "Pages", href: "/donate-pages", icon: FileText },
         ],
     },
     { title: "Events", href: "/events", icon: Calendar },

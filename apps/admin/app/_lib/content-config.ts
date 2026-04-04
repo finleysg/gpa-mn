@@ -1,11 +1,11 @@
-import type { ContentType } from "@repo/types"
+import type { ContentType, PageSection } from "@repo/types"
 
 export interface ContentTypeConfig {
     contentType: ContentType
     slug: string
     singular: string
     plural: string
-    tableColumns: { key: string; label: string }[]
+    tableColumns: { key: string; label: string; copyable?: boolean }[]
     allowCreate?: boolean
     sortBy?: string
 }
@@ -124,4 +124,30 @@ export const contentTypeConfigs: Record<ContentType, ContentTypeConfig> = {
         allowCreate: false,
         tableColumns: [{ key: "title", label: "Title" }],
     },
+    page: {
+        contentType: "page",
+        slug: "adopt-pages",
+        singular: "Page",
+        plural: "Pages",
+        tableColumns: [{ key: "title", label: "Title" }],
+    },
+}
+
+const sectionLabels: Record<PageSection, string> = {
+    adopt: "Adopt",
+    volunteer: "Volunteer",
+    donate: "Donate",
+}
+
+export function getPageConfig(section: PageSection): ContentTypeConfig {
+    return {
+        contentType: "page",
+        slug: `${section}-pages`,
+        singular: `${sectionLabels[section]} Page`,
+        plural: `${sectionLabels[section]} Pages`,
+        tableColumns: [
+            { key: "title", label: "Title" },
+            { key: "url", label: "URL", copyable: true },
+        ],
+    }
 }

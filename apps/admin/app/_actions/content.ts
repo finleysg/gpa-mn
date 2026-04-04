@@ -5,6 +5,7 @@ import {
     updateContentItem,
     archiveContentItem,
     revertToVersion,
+    getPageBySectionAndSlug,
 } from "@repo/database"
 import type { ContentType } from "@repo/types"
 import { revalidatePath } from "next/cache"
@@ -13,6 +14,12 @@ import { contentTypeConfigs } from "../_lib/content-config"
 import { revalidateWeb } from "../_lib/revalidate-web"
 
 const HARDCODED_USER = "admin"
+
+const PAGE_SLUG_BLOCKLIST: Record<string, string[]> = {
+    adopt: ["available", "our-process", "why-gpa-mn", "support"],
+    volunteer: [],
+    donate: [],
+}
 
 const webPathMap: Record<ContentType, string[]> = {
     sectionHeader: ["/"],
@@ -26,6 +33,7 @@ const webPathMap: Record<ContentType, string[]> = {
     lostHoundSuggestion: ["/lost-hound"],
     whyGreyhound: ["/adopt"],
     whyChooseUs: ["/adopt/why-gpa-mn"],
+    page: ["/adopt", "/volunteer", "/donate"],
 }
 
 async function revalidateWebPaths(contentType: ContentType) {
@@ -101,6 +109,14 @@ function parseContentFormData(
                 title: formData.get("title") as string,
                 text: formData.get("text") as string,
             }
+        case "page":
+            return {
+                section: formData.get("section") as string,
+                title: formData.get("title") as string,
+                description: (formData.get("description") as string) || undefined,
+                body: formData.get("body") as string,
+                printable: formData.get("printable") === "true",
+            }
     }
 }
 
@@ -113,7 +129,30 @@ export async function createContentAction(contentType: ContentType, formData: Fo
     }
 
     const slug = slugify(data.title as string)
+
+    if (contentType === "page") {
+        const section = data.section as string
+        const blocklist = PAGE_SLUG_BLOCKLIST[section] ?? []
+        if (blocklist.includes(slug)) {
+            return {
+                errors: [
+                    `The slug "${slug}" conflicts with an existing ${section} page. Choose a different title.`,
+                ],
+            }
+        }
+        const existing = await getPageBySectionAndSlug(section, slug)
+        if (existing) {
+            return { errors: [`A page with this title already exists in the ${section} section.`] }
+        }
+    }
+
     const result = await createContentItem(contentType, slug, data, HARDCODED_USER)
+
+    if (contentType === "page") {
+        const section = data.section as string
+        redirect(`/${section}-pages/${result.id}`)
+    }
+
     redirect(`/${config.slug}/${result.id}`)
 }
 
@@ -136,10 +175,14 @@ export async function updateContentAction(
     return { success: true as const }
 }
 
-export async function archiveContentAction(contentItemId: number, contentType: ContentType) {
+export async function archiveContentAction(
+    contentItemId: number,
+    contentType: ContentType,
+    redirectSlug?: string,
+) {
     const config = contentTypeConfigs[contentType]
     await archiveContentItem(contentItemId)
-    redirect(`/${config.slug}`)
+    redirect(`/${redirectSlug ?? config.slug}`)
 }
 
 export async function revertContentAction(

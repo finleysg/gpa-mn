@@ -87,6 +87,16 @@ export interface WhyChooseUsData {
     body: string
 }
 
+export type PageSection = "adopt" | "volunteer" | "donate"
+
+export interface PageData {
+    section: PageSection
+    title: string
+    description?: string
+    body: string
+    printable: boolean
+}
+
 export interface ContentTypeMap {
     sectionHeader: SectionHeaderData
     pageHeader: PageHeaderData
@@ -99,6 +109,7 @@ export interface ContentTypeMap {
     lostHoundSuggestion: LostHoundSuggestionData
     whyGreyhound: WhyGreyhoundData
     whyChooseUs: WhyChooseUsData
+    page: PageData
 }
 
 export type ContentType = keyof ContentTypeMap

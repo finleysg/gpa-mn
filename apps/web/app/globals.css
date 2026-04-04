@@ -10,10 +10,45 @@
     color: var(--color-primary);
 }
 
+.markdown-content a {
+    color: var(--chart-4) !important;
+    text-decoration: underline !important;
+}
+
 .scrollbar-none {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 .scrollbar-none::-webkit-scrollbar {
     display: none;
+}
+
+@media print {
+    header,
+    footer,
+    nav {
+        display: none !important;
+        position: static !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    main::before {
+        content: "Greyhound Pets of America \2014  Minnesota";
+        display: block;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #ccc;
+    }
+
+    body {
+        font-size: 12pt;
+    }
+
+    main {
+        padding: 0 !important;
+    }
 }

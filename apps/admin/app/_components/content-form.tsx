@@ -15,6 +15,7 @@ import { DonationOptionFields } from "./content-fields/donation-option-fields"
 import { AboutPageFields } from "./content-fields/about-page-fields"
 import { BeforeYouApplyFields } from "./content-fields/before-you-apply-fields"
 import { WhyChooseUsFields } from "./content-fields/why-choose-us-fields"
+import { PageFields } from "./content-fields/page-fields"
 
 type ActionResult = { errors: string[] } | { success: true } | undefined
 
@@ -23,11 +24,12 @@ interface ContentFormProps {
     data?: Record<string, unknown>
     action: (formData: FormData) => Promise<ActionResult>
     backHref: string
+    fieldProps?: Record<string, unknown>
 }
 
 const fieldComponents: Record<
     ContentType,
-    React.ComponentType<{ data?: Record<string, unknown> }>
+    React.ComponentType<{ data?: Record<string, unknown>; [key: string]: unknown }>
 > = {
     sectionHeader: SectionHeaderFields,
     pageHeader: PageHeaderFields,
@@ -40,9 +42,10 @@ const fieldComponents: Record<
     lostHoundSuggestion: DonationOptionFields,
     whyGreyhound: DonationOptionFields,
     whyChooseUs: WhyChooseUsFields,
+    page: PageFields,
 }
 
-export function ContentForm({ contentType, data, action, backHref }: ContentFormProps) {
+export function ContentForm({ contentType, data, action, backHref, fieldProps }: ContentFormProps) {
     const [state, formAction] = useActionState(
         async (_prev: ActionResult, formData: FormData) => action(formData),
         undefined,
@@ -67,7 +70,7 @@ export function ContentForm({ contentType, data, action, backHref }: ContentForm
                 </div>
             )}
 
-            <FieldsComponent data={data} />
+            <FieldsComponent data={data} {...fieldProps} />
 
             {isEditing && (
                 <div className="space-y-2">
