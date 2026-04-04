@@ -92,37 +92,6 @@ const blockTypes = [
         isActive: (e: Editor) => e.isActive("heading", { level: 3 }),
         action: (e: Editor) => e.chain().focus().toggleHeading({ level: 3 }).run(),
     },
-    {
-        label: "Bulleted list",
-        icon: List,
-        isActive: (e: Editor) => e.isActive("bulletList"),
-        action: (e: Editor) => e.chain().focus().toggleBulletList().run(),
-    },
-    {
-        label: "Numbered list",
-        icon: ListOrdered,
-        isActive: (e: Editor) => e.isActive("orderedList"),
-        action: (e: Editor) => e.chain().focus().toggleOrderedList().run(),
-    },
-    {
-        label: "Quote",
-        icon: Quote,
-        isActive: (e: Editor) => e.isActive("blockquote"),
-        action: (e: Editor) => e.chain().focus().toggleBlockquote().run(),
-    },
-    {
-        label: "Code block",
-        icon: CodeSquare,
-        isActive: (e: Editor) => e.isActive("codeBlock"),
-        action: (e: Editor) => e.chain().focus().toggleCodeBlock().run(),
-    },
-    {
-        label: "Table",
-        icon: Grid2x2,
-        isActive: (e: Editor) => e.isActive("table"),
-        action: (e: Editor) =>
-            e.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
-    },
 ]
 
 function BlockTypeDropdown({ editor }: { editor: Editor }) {
@@ -214,18 +183,47 @@ function Toolbar({ editor }: { editor: Editor }) {
             >
                 <Strikethrough className="size-4" />
             </ToolbarButton>
-            <ToolbarButton
-                active={editor.isActive("code")}
-                onClick={() => editor.chain().focus().toggleCode().run()}
-            >
-                <Code className="size-4" />
-            </ToolbarButton>
-            <ToolbarButton onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-                <RemoveFormatting className="size-4" />
-            </ToolbarButton>
             <div className="bg-border mx-0.5 h-5 w-px" />
             <ToolbarButton active={editor.isActive("link")} onClick={handleLinkToggle}>
                 <LinkIcon className="size-4" />
+            </ToolbarButton>
+            <div className="bg-border mx-0.5 h-5 w-px" />
+            <ToolbarButton
+                active={editor.isActive("bulletList")}
+                onClick={() => editor.chain().focus().toggleBulletList().run()}
+            >
+                <List className="size-4" />
+            </ToolbarButton>
+            <ToolbarButton
+                active={editor.isActive("orderedList")}
+                onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            >
+                <ListOrdered className="size-4" />
+            </ToolbarButton>
+            <div className="bg-border mx-0.5 h-5 w-px" />
+            <ToolbarButton
+                active={editor.isActive("blockquote")}
+                onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            >
+                <Quote className="size-4" />
+            </ToolbarButton>
+            <ToolbarButton
+                active={editor.isActive("codeBlock")}
+                onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            >
+                <CodeSquare className="size-4" />
+            </ToolbarButton>
+            <div className="bg-border mx-0.5 h-5 w-px" />
+            <ToolbarButton
+                onClick={() =>
+                    editor
+                        .chain()
+                        .focus()
+                        .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+                        .run()
+                }
+            >
+                <Grid2x2 className="size-4" />
             </ToolbarButton>
             {editor.isActive("table") && (
                 <>
@@ -255,6 +253,10 @@ function Toolbar({ editor }: { editor: Editor }) {
                     </ToolbarButton>
                 </>
             )}
+            <div className="bg-border mx-0.5 h-5 w-px" />
+            <ToolbarButton onClick={() => editor.chain().focus().unsetAllMarks().run()}>
+                <RemoveFormatting className="size-4" />
+            </ToolbarButton>
         </div>
     )
 }
