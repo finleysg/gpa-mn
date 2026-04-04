@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { useEditor, EditorContent } from "@tiptap/react"
-import { BubbleMenu } from "@tiptap/react/menus"
 import StarterKit from "@tiptap/starter-kit"
 import Link from "@tiptap/extension-link"
 import Underline from "@tiptap/extension-underline"
@@ -175,44 +174,7 @@ function BlockTypeDropdown({ editor }: { editor: Editor }) {
     )
 }
 
-function TableToolbar({ editor }: { editor: Editor }) {
-    return (
-        <div className="bg-popover flex items-center gap-0.5 rounded-lg border px-1 py-1 shadow-md">
-            <ToolbarButton onClick={() => editor.chain().focus().addColumnBefore().run()}>
-                <Columns3 className="size-4" />
-                <span className="sr-only">Add column before</span>
-            </ToolbarButton>
-            <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()}>
-                <Columns3 className="size-4 scale-x-[-1]" />
-                <span className="sr-only">Add column after</span>
-            </ToolbarButton>
-            <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()}>
-                <Columns3 className="text-destructive size-4" />
-                <span className="sr-only">Delete column</span>
-            </ToolbarButton>
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()}>
-                <Rows3 className="size-4" />
-                <span className="sr-only">Add row before</span>
-            </ToolbarButton>
-            <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()}>
-                <Rows3 className="size-4 scale-y-[-1]" />
-                <span className="sr-only">Add row after</span>
-            </ToolbarButton>
-            <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()}>
-                <Rows3 className="text-destructive size-4" />
-                <span className="sr-only">Delete row</span>
-            </ToolbarButton>
-            <div className="bg-border mx-0.5 h-5 w-px" />
-            <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()}>
-                <Trash2 className="text-destructive size-4" />
-                <span className="sr-only">Delete table</span>
-            </ToolbarButton>
-        </div>
-    )
-}
-
-function BubbleToolbar({ editor }: { editor: Editor }) {
+function Toolbar({ editor }: { editor: Editor }) {
     function handleLinkToggle() {
         if (editor.isActive("link")) {
             editor.chain().focus().unsetLink().run()
@@ -225,7 +187,7 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
     }
 
     return (
-        <div className="bg-popover flex items-center gap-0.5 rounded-lg border px-1 py-1 shadow-md">
+        <div className="border-input flex flex-wrap items-center gap-0.5 rounded-t-md border border-b-0 bg-transparent px-1 py-1">
             <BlockTypeDropdown editor={editor} />
             <div className="bg-border mx-0.5 h-5 w-px" />
             <ToolbarButton
@@ -265,6 +227,34 @@ function BubbleToolbar({ editor }: { editor: Editor }) {
             <ToolbarButton active={editor.isActive("link")} onClick={handleLinkToggle}>
                 <LinkIcon className="size-4" />
             </ToolbarButton>
+            {editor.isActive("table") && (
+                <>
+                    <div className="bg-border mx-0.5 h-5 w-px" />
+                    <ToolbarButton onClick={() => editor.chain().focus().addColumnBefore().run()}>
+                        <Columns3 className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton onClick={() => editor.chain().focus().addColumnAfter().run()}>
+                        <Columns3 className="size-4 scale-x-[-1]" />
+                    </ToolbarButton>
+                    <ToolbarButton onClick={() => editor.chain().focus().deleteColumn().run()}>
+                        <Columns3 className="text-destructive size-4" />
+                    </ToolbarButton>
+                    <div className="bg-border mx-0.5 h-5 w-px" />
+                    <ToolbarButton onClick={() => editor.chain().focus().addRowBefore().run()}>
+                        <Rows3 className="size-4" />
+                    </ToolbarButton>
+                    <ToolbarButton onClick={() => editor.chain().focus().addRowAfter().run()}>
+                        <Rows3 className="size-4 scale-y-[-1]" />
+                    </ToolbarButton>
+                    <ToolbarButton onClick={() => editor.chain().focus().deleteRow().run()}>
+                        <Rows3 className="text-destructive size-4" />
+                    </ToolbarButton>
+                    <div className="bg-border mx-0.5 h-5 w-px" />
+                    <ToolbarButton onClick={() => editor.chain().focus().deleteTable().run()}>
+                        <Trash2 className="text-destructive size-4" />
+                    </ToolbarButton>
+                </>
+            )}
         </div>
     )
 }
@@ -320,19 +310,13 @@ export function MarkdownEditor({ name, label, value, onChange }: MarkdownEditorP
 
             {wysiwyg ? (
                 editor && (
-                    <>
-                        <BubbleMenu editor={editor} className="z-20">
-                            {editor.isActive("table") ? (
-                                <TableToolbar editor={editor} />
-                            ) : (
-                                <BubbleToolbar editor={editor} />
-                            )}
-                        </BubbleMenu>
+                    <div className="focus-within:border-ring focus-within:ring-ring/50 rounded-md focus-within:ring-[3px]">
+                        <Toolbar editor={editor} />
                         <EditorContent
                             editor={editor}
-                            className="border-input focus-within:border-ring focus-within:ring-ring/50 prose prose-sm min-h-50 max-w-none rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-within:ring-[3px] md:text-sm [&_.tiptap:focus]:outline-none"
+                            className="border-input prose prose-sm min-h-50 max-w-none rounded-b-md border bg-transparent px-3 py-2 text-base shadow-xs outline-none md:text-sm [&_.tiptap:focus]:outline-none"
                         />
-                    </>
+                    </div>
                 )
             ) : (
                 <Textarea
