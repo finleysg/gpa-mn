@@ -258,17 +258,24 @@ export default async function HomePage() {
                                 </div>
 
                                 <div className="mt-8 grid grid-cols-2 gap-3 md:mt-0">
-                                    {shuffledRoles.map((role) => (
-                                        <div
-                                            key={role.title}
-                                            className="rounded-2xl border border-white/10 bg-white/10 p-4 text-center transition-all hover:-translate-y-0.5 hover:bg-white/15"
-                                        >
-                                            <div className="mb-1.5 text-xl">{role.icon}</div>
-                                            <span className="text-xs font-semibold">
-                                                {role.title}
-                                            </span>
-                                        </div>
-                                    ))}
+                                    {shuffledRoles.map((role) => {
+                                        const slug = role.title
+                                            .toLowerCase()
+                                            .replace(/\s+/g, "-")
+                                            .replace(/[^a-z0-9-]/g, "")
+                                        return (
+                                            <Link
+                                                key={role.title}
+                                                href={`/volunteer#${slug}`}
+                                                className="rounded-2xl border border-white/10 bg-white/10 p-4 text-center transition-all hover:-translate-y-0.5 hover:bg-white/15"
+                                            >
+                                                <div className="mb-1.5 text-xl">{role.icon}</div>
+                                                <span className="text-xs font-semibold">
+                                                    {role.title}
+                                                </span>
+                                            </Link>
+                                        )
+                                    })}
                                 </div>
                             </div>
                         </div>
