@@ -29,3 +29,56 @@ Use `pnpm --filter <package>` to target a specific app/package:
 ### E2E tests
 
 - `pnpm e2e` — Run end-to-end tests
+
+## Commit Message Convention
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/). All commit messages are validated by commitlint via a husky `commit-msg` hook.
+
+### Format
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+
+| Type       | When to use                                             |
+| ---------- | ------------------------------------------------------- |
+| `feat`     | A new feature or capability                             |
+| `fix`      | A bug fix                                               |
+| `docs`     | Documentation-only changes                              |
+| `style`    | Formatting, whitespace, missing semicolons, etc.        |
+| `refactor` | Code change that neither fixes a bug nor adds a feature |
+| `perf`     | Performance improvement                                 |
+| `test`     | Adding or updating tests                                |
+| `ci`       | CI/CD pipeline changes                                  |
+| `chore`    | Maintenance (dependencies, configs, tooling)            |
+| `revert`   | Reverting a previous commit                             |
+
+### Scopes (optional)
+
+Use one of: `web`, `admin`, `database`, `ui`, `types`, `eslint-config`, `tailwind-config`, `e2e`, `deps`
+
+Omit the scope when a change spans multiple packages or is repo-wide.
+
+### Examples
+
+```
+feat(web): add volunteer role anchor links on home page
+fix(database): handle null values in content query
+chore(deps): update turbo to v2.9
+docs: update README with deployment instructions
+ci: add typecheck to GitHub Actions workflow
+```
+
+### Changelog
+
+Generate a changelog on demand:
+
+```sh
+pnpm changelog
+```
