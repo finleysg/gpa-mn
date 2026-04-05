@@ -14,7 +14,7 @@ const transporter = resend
 async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
     if (resend) {
         const { error } = await resend.emails.send({
-            from: "GPA-MN Admin <noreply@gpa-mn.org>",
+            from: "GPA-MN Admin <noreply@zoomdoggy.com>",
             to: [to],
             subject,
             html,
@@ -79,7 +79,7 @@ export async function sendInviteEmail({
     inviterName: string
     token: string
 }) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://admin.localhost:1355"
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
     const acceptUrl = `${siteUrl}/accept-invite?token=${token}`
 
     await sendEmail({
