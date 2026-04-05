@@ -12,7 +12,9 @@ import {
     HandCoins,
     Heart,
     Home,
+    Mail,
     PawPrint,
+    Users,
 } from "lucide-react"
 import {
     Sidebar,
@@ -28,6 +30,8 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@repo/ui/components/sidebar"
+import { useSession } from "./session-provider"
+import { type RoleName } from "@repo/database"
 
 interface NavItem {
     title: string
@@ -41,9 +45,9 @@ interface NavGroup {
     children: NavEntry[]
 }
 
-type NavEntry = NavItem | NavGroup
+type NavEntry = (NavItem | NavGroup) & { section?: string }
 
-function isGroup(entry: NavEntry): entry is NavGroup {
+function isGroup(entry: NavEntry): entry is NavGroup & { section?: string } {
     return "children" in entry
 }
 
@@ -54,10 +58,43 @@ function isActive(pathname: string, entry: NavEntry): boolean {
     return pathname.startsWith(entry.href)
 }
 
+const SECTION_ACCESS: Record<string, RoleName[]> = {
+    users: ["Super Admin", "User Admin"],
+    home: ["Super Admin", "Content Admin"],
+    adopt: [
+        "Super Admin",
+        "Content Admin",
+        "Adoption Matcher",
+        "Adoption Coordinator",
+        "Adoption Rep",
+        "Adoption Observer",
+    ],
+    volunteer: ["Super Admin", "Content Admin"],
+    donate: ["Super Admin", "Content Admin"],
+    events: ["Super Admin", "Content Admin"],
+    about: ["Super Admin", "Content Admin"],
+    "lost-hound": ["Super Admin", "Content Admin"],
+    foster: ["Super Admin", "Foster Coordinator", "Foster"],
+}
+
+function canAccess(roles: RoleName[], section?: string): boolean {
+    if (!section) return true
+    if (roles.includes("Super Admin")) return true
+    const allowed = SECTION_ACCESS[section]
+    if (!allowed) return false
+    return roles.some((r) => allowed.includes(r))
+}
+
+const adminEntries: NavEntry[] = [
+    { title: "All Users", href: "/users", icon: Users, section: "users" },
+    { title: "Invitations", href: "/users/invitations", icon: Mail, section: "users" },
+]
+
 const navEntries: NavEntry[] = [
     {
         title: "Home",
         icon: Home,
+        section: "home",
         children: [
             { title: "Page Header", href: "/home" },
             { title: "Available Greyhounds", href: "/content/section-header/home-adopt" },
@@ -68,6 +105,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Adopt",
         icon: PawPrint,
+        section: "adopt",
         children: [
             { title: "Page Header", href: "/content/page-header/adopt" },
             { title: "Why Greyhounds", href: "/content/section-header/adopt-why" },
@@ -106,6 +144,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Volunteer",
         icon: Heart,
+        section: "volunteer",
         children: [
             { title: "Page Header", href: "/content/page-header/volunteer" },
             { title: "Fostering", href: "/content/section-header/volunteer-fostering" },
@@ -117,6 +156,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Donate",
         icon: HandCoins,
+        section: "donate",
         children: [
             { title: "Page Header", href: "/content/page-header/donate" },
             { title: "Ways to Give", href: "/content/section-header/donate-ways" },
@@ -124,10 +164,11 @@ const navEntries: NavEntry[] = [
             { title: "Pages", href: "/donate-pages", icon: FileText },
         ],
     },
-    { title: "Events", href: "/events", icon: Calendar },
+    { title: "Events", href: "/events", icon: Calendar, section: "events" },
     {
         title: "About",
         icon: BookOpen,
+        section: "about",
         children: [
             { title: "Page Header", href: "/content/page-header/about" },
             { title: "About Page", href: "/about-page" },
@@ -137,6 +178,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Lost Hound",
         icon: AlertTriangle,
+        section: "lost-hound",
         children: [
             { title: "Page Header", href: "/content/page-header/lost-hound" },
             { title: "Act Now Lists", href: "/content/section-header/lost-hound-act" },
@@ -221,6 +263,27 @@ function NavGroupItem({ group, pathname }: { group: NavGroup; pathname: string }
 
 export function AppSidebar() {
     const pathname = usePathname()
+    const { roles } = useSession()
+
+    const visibleContentEntries = navEntries.filter((entry) => canAccess(roles, entry.section))
+    const visibleAdminEntries = adminEntries.filter((entry) => canAccess(roles, entry.section))
+
+    function renderEntries(entries: NavEntry[]) {
+        return entries.map((entry) =>
+            isGroup(entry) ? (
+                <NavGroupItem key={entry.title} group={entry} pathname={pathname} />
+            ) : (
+                <SidebarMenuItem key={entry.href}>
+                    <SidebarMenuButton asChild isActive={pathname.startsWith(entry.href)}>
+                        <Link href={entry.href}>
+                            {entry.icon && <entry.icon />}
+                            <span>{entry.title}</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            ),
+        )
+    }
 
     return (
         <Sidebar>
@@ -237,31 +300,17 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupLabel>Content</SidebarGroupLabel>
                     <SidebarGroupContent>
-                        <SidebarMenu>
-                            {navEntries.map((entry) =>
-                                isGroup(entry) ? (
-                                    <NavGroupItem
-                                        key={entry.title}
-                                        group={entry}
-                                        pathname={pathname}
-                                    />
-                                ) : (
-                                    <SidebarMenuItem key={entry.href}>
-                                        <SidebarMenuButton
-                                            asChild
-                                            isActive={pathname.startsWith(entry.href)}
-                                        >
-                                            <Link href={entry.href}>
-                                                {entry.icon && <entry.icon />}
-                                                <span>{entry.title}</span>
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ),
-                            )}
-                        </SidebarMenu>
+                        <SidebarMenu>{renderEntries(visibleContentEntries)}</SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+                {visibleAdminEntries.length > 0 && (
+                    <SidebarGroup>
+                        <SidebarGroupLabel>Users</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>{renderEntries(visibleAdminEntries)}</SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                )}
             </SidebarContent>
         </Sidebar>
     )

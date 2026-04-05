@@ -1,41 +1,42 @@
 {
-  "name": "@repo/database",
-  "version": "0.0.0",
-  "private": true,
-  "license": "MIT",
-  "type": "module",
-  "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx src/seed.ts",
-    "db:seed-user": "tsx src/seed-user.ts"
-  },
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
+    "name": "@repo/database",
+    "version": "0.0.0",
+    "private": true,
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "typecheck": "tsc --noEmit",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:push": "drizzle-kit push",
+        "db:studio": "drizzle-kit studio",
+        "db:seed": "tsx src/seed.ts",
+        "db:seed-roles": "tsx src/seed-roles.ts",
+        "db:seed-user": "tsx src/seed-user.ts"
     },
-    "./schema": {
-      "types": "./src/schema/index.ts",
-      "default": "./src/schema/index.ts"
+    "exports": {
+        ".": {
+            "types": "./src/index.ts",
+            "default": "./src/index.ts"
+        },
+        "./schema": {
+            "types": "./src/schema/index.ts",
+            "default": "./src/schema/index.ts"
+        }
+    },
+    "dependencies": {
+        "dotenv": "^16.5.0",
+        "drizzle-orm": "^0.45.1",
+        "mysql2": "^3.14.1"
+    },
+    "devDependencies": {
+        "@better-auth/drizzle-adapter": "^1.5.5",
+        "@repo/typescript-config": "workspace:*",
+        "@types/node": "^24.0.3",
+        "better-auth": "^1.5.5",
+        "drizzle-kit": "^0.31.1",
+        "tsx": "^4.21.0",
+        "typescript": "^5.8.3"
     }
-  },
-  "dependencies": {
-    "dotenv": "^16.5.0",
-    "drizzle-orm": "^0.45.1",
-    "mysql2": "^3.14.1"
-  },
-  "devDependencies": {
-    "@better-auth/drizzle-adapter": "^1.5.5",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "^24.0.3",
-    "better-auth": "^1.5.5",
-    "drizzle-kit": "^0.31.1",
-    "tsx": "^4.21.0",
-    "typescript": "^5.8.3"
-  }
 }
