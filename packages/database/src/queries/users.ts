@@ -9,6 +9,7 @@ export async function getUsers() {
             id: user.id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
             deactivatedAt: user.deactivatedAt,
             createdAt: user.createdAt,
             roleName: role.name,
@@ -24,6 +25,7 @@ export async function getUsers() {
             id: string
             name: string
             email: string
+            phone: string | null
             deactivatedAt: Date | null
             createdAt: Date
             roles: { id: string; name: string }[]
@@ -36,6 +38,7 @@ export async function getUsers() {
                 id: row.id,
                 name: row.name,
                 email: row.email,
+                phone: row.phone,
                 deactivatedAt: row.deactivatedAt,
                 createdAt: row.createdAt,
                 roles: [],
@@ -55,6 +58,7 @@ export async function getUser(id: string) {
             id: user.id,
             name: user.name,
             email: user.email,
+            phone: user.phone,
             deactivatedAt: user.deactivatedAt,
             createdAt: user.createdAt,
             roleName: role.name,
@@ -72,6 +76,7 @@ export async function getUser(id: string) {
         id: first.id,
         name: first.name,
         email: first.email,
+        phone: first.phone,
         deactivatedAt: first.deactivatedAt,
         createdAt: first.createdAt,
         roles: rows
@@ -94,4 +99,8 @@ export async function deactivateUser(id: string) {
 
 export async function reactivateUser(id: string) {
     await db.update(user).set({ deactivatedAt: null }).where(eq(user.id, id))
+}
+
+export async function updateUserPhone(id: string, phone: string | null) {
+    await db.update(user).set({ phone }).where(eq(user.id, id))
 }

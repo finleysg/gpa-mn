@@ -7,18 +7,22 @@ import {
     AlertTriangle,
     BookOpen,
     Calendar,
+    ChevronsUpDown,
     ChevronRight,
     FileText,
     HandCoins,
     Heart,
     Home,
+    LogOut,
     Mail,
     PawPrint,
+    Settings,
     Users,
 } from "lucide-react"
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -30,7 +34,16 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
 } from "@repo/ui/components/sidebar"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@repo/ui/components/dropdown-menu"
 import { useSession } from "./session-provider"
+import { authClient } from "@/app/lib/auth-client"
+import { useRouter } from "next/navigation"
 import { type RoleName } from "@repo/database"
 
 interface NavItem {
@@ -263,7 +276,13 @@ function NavGroupItem({ group, pathname }: { group: NavGroup; pathname: string }
 
 export function AppSidebar() {
     const pathname = usePathname()
-    const { roles } = useSession()
+    const router = useRouter()
+    const { user, roles } = useSession()
+
+    async function handleSignOut() {
+        await authClient.signOut()
+        router.push("/login")
+    }
 
     const visibleContentEntries = navEntries.filter((entry) => canAccess(roles, entry.section))
     const visibleAdminEntries = adminEntries.filter((entry) => canAccess(roles, entry.section))
@@ -312,6 +331,37 @@ export function AppSidebar() {
                     </SidebarGroup>
                 )}
             </SidebarContent>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <SidebarMenuButton>
+                                    <span className="truncate">{user.name}</span>
+                                    <ChevronsUpDown className="ml-auto size-4" />
+                                </SidebarMenuButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent side="top" className="w-56">
+                                <div className="text-muted-foreground px-2 py-1.5 text-sm">
+                                    {user.email}
+                                </div>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem asChild>
+                                    <Link href="/account">
+                                        <Settings className="mr-2 size-4" />
+                                        Account Settings
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={handleSignOut}>
+                                    <LogOut className="mr-2 size-4" />
+                                    Sign out
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
         </Sidebar>
     )
 }

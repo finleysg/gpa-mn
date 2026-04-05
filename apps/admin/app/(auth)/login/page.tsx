@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/app/lib/auth-client"
 import { Button } from "@repo/ui/components/button"
@@ -72,6 +73,14 @@ export default function LoginPage() {
                             {loading ? "Signing in..." : "Sign in"}
                         </Button>
                     </form>
+                    <div className="mt-4 text-center">
+                        <Link
+                            href="/forgot-password"
+                            className="text-muted-foreground text-sm hover:underline"
+                        >
+                            Forgot password?
+                        </Link>
+                    </div>
                 </CardContent>
             </Card>
         </div>

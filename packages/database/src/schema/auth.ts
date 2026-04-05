@@ -6,6 +6,7 @@ export const user = mysqlTable("user", {
     email: varchar({ length: 255 }).notNull().unique(),
     emailVerified: boolean().notNull().default(false),
     image: text(),
+    phone: varchar({ length: 32 }),
     deactivatedAt: timestamp(),
     createdAt: timestamp().notNull().defaultNow(),
     updatedAt: timestamp().notNull().defaultNow().onUpdateNow(),
