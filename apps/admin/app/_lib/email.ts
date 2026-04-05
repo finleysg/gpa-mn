@@ -1,14 +1,39 @@
+import { Resend } from "resend"
 import nodemailer from "nodemailer"
 
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST ?? "localhost",
-    port: Number(process.env.SMTP_PORT ?? 1025),
-    secure: false,
-})
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
+
+const transporter = resend
+    ? null
+    : nodemailer.createTransport({
+          host: process.env.SMTP_HOST ?? "localhost",
+          port: Number(process.env.SMTP_PORT ?? 1025),
+          secure: false,
+      })
+
+async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
+    if (resend) {
+        const { error } = await resend.emails.send({
+            from: "GPA-MN Admin <noreply@gpa-mn.org>",
+            to: [to],
+            subject,
+            html,
+        })
+        if (error) {
+            throw new Error(`Failed to send email: ${error.message}`)
+        }
+    } else {
+        await transporter!.sendMail({
+            from: '"GPA-MN Admin" <noreply@gpa-mn.org>',
+            to,
+            subject,
+            html,
+        })
+    }
+}
 
 export async function sendPasswordResetEmail({ to, url }: { to: string; url: string }) {
-    await transporter.sendMail({
-        from: '"GPA-MN Admin" <noreply@gpa-mn.org>',
+    await sendEmail({
         to,
         subject: "Reset your password",
         html: `
@@ -27,8 +52,7 @@ export async function sendPasswordResetEmail({ to, url }: { to: string; url: str
 }
 
 export async function sendChangeEmailVerification({ to, url }: { to: string; url: string }) {
-    await transporter.sendMail({
-        from: '"GPA-MN Admin" <noreply@gpa-mn.org>',
+    await sendEmail({
         to,
         subject: "Verify your new email address",
         html: `
@@ -58,8 +82,7 @@ export async function sendInviteEmail({
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://admin.localhost:1355"
     const acceptUrl = `${siteUrl}/accept-invite?token=${token}`
 
-    await transporter.sendMail({
-        from: '"GPA-MN Admin" <noreply@gpa-mn.org>',
+    await sendEmail({
         to,
         subject: "You've been invited to GPA-MN Admin",
         html: `
