@@ -1,5 +1,6 @@
 import { eq, and, sql } from "drizzle-orm"
 import { db } from "../index"
+import { user } from "../schema/auth"
 import { role, userRole } from "../schema/roles"
 
 export async function getRoles() {
@@ -56,4 +57,26 @@ export async function countSuperAdmins() {
         .innerJoin(role, eq(userRole.roleId, role.id))
         .where(eq(role.name, "Super Admin"))
     return result?.count ?? 0
+}
+
+export async function hasRole(userId: string, roleName: string) {
+    const [result] = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(userRole)
+        .innerJoin(role, eq(userRole.roleId, role.id))
+        .where(and(eq(userRole.userId, userId), eq(role.name, roleName)))
+    return (result?.count ?? 0) > 0
+}
+
+export async function getUsersByRole(roleName: string) {
+    return db
+        .select({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        })
+        .from(userRole)
+        .innerJoin(role, eq(userRole.roleId, role.id))
+        .innerJoin(user, eq(userRole.userId, user.id))
+        .where(eq(role.name, roleName))
 }

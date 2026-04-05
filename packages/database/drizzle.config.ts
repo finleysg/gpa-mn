@@ -23,6 +23,7 @@ export default defineConfig({
         "./src/schema/content.ts",
         "./src/schema/photos.ts",
         "./src/schema/roles.ts",
+        "./src/schema/applications.ts",
     ],
     dialect: "mysql",
     dbCredentials: parseConnectionUrl(process.env.DATABASE_URL!),
