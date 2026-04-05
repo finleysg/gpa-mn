@@ -4,6 +4,7 @@ import {
     createContentItem,
     updateContentItem,
     archiveContentItem,
+    restoreContentItem,
     revertToVersion,
     getPageBySectionAndSlug,
 } from "@repo/database"
@@ -183,6 +184,17 @@ export async function archiveContentAction(
     const config = contentTypeConfigs[contentType]
     await archiveContentItem(contentItemId)
     redirect(`/${redirectSlug ?? config.slug}`)
+}
+
+export async function restoreContentAction(
+    contentItemId: number,
+    contentType: ContentType,
+    redirectSlug?: string,
+) {
+    const config = contentTypeConfigs[contentType]
+    await restoreContentItem(contentItemId)
+    revalidatePath(`/${redirectSlug ?? config.slug}`)
+    await revalidateWebPaths(contentType)
 }
 
 export async function revertContentAction(

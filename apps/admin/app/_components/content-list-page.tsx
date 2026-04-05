@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { getLatestVersions } from "@repo/database"
+import { getAllLatestVersions } from "@repo/database"
+import { Badge } from "@repo/ui/components/badge"
 import { Button } from "@repo/ui/components/button"
 import {
     Table,
@@ -10,9 +11,10 @@ import {
     TableRow,
 } from "@repo/ui/components/table"
 import { Plus } from "lucide-react"
-import { archiveContentAction } from "@/app/_actions/content"
+import { archiveContentAction, restoreContentAction } from "@/app/_actions/content"
 import { ArchiveButton } from "@/app/_components/archive-button"
 import { CopyButton } from "@/app/_components/copy-button"
+import { RestoreButton } from "@/app/_components/restore-button"
 import type { ContentTypeConfig } from "@/app/_lib/content-config"
 
 interface ContentListPageProps {
@@ -22,7 +24,7 @@ interface ContentListPageProps {
 }
 
 export async function ContentListPage({ config, filterFn, augmentData }: ContentListPageProps) {
-    const rawItems = await getLatestVersions(config.contentType)
+    const rawItems = await getAllLatestVersions(config.contentType)
     const sorted = config.sortBy
         ? [...rawItems].sort((a, b) => {
               const aVal = String((a.version.data as Record<string, unknown>)[config.sortBy!] ?? "")
@@ -63,16 +65,24 @@ export async function ContentListPage({ config, filterFn, augmentData }: Content
                         const rawData = version.data as Record<string, unknown>
                         const data = augmentData ? augmentData(rawData, item.slug) : rawData
                         return (
-                            <TableRow key={item.id}>
+                            <TableRow
+                                key={item.id}
+                                className={item.archived ? "opacity-50" : undefined}
+                            >
                                 {config.tableColumns.map((col, colIndex) => (
                                     <TableCell key={col.key}>
                                         {colIndex === 0 ? (
-                                            <Link
-                                                href={`/${config.slug}/${item.id}`}
-                                                className="font-medium hover:underline"
-                                            >
-                                                {String(data[col.key] ?? "")}
-                                            </Link>
+                                            <span className="flex items-center gap-2">
+                                                <Link
+                                                    href={`/${config.slug}/${item.id}`}
+                                                    className="font-medium hover:underline"
+                                                >
+                                                    {String(data[col.key] ?? "")}
+                                                </Link>
+                                                {item.archived && (
+                                                    <Badge variant="outline">Archived</Badge>
+                                                )}
+                                            </span>
                                         ) : col.copyable ? (
                                             <span className="flex items-center gap-1">
                                                 <span>{String(data[col.key] ?? "")}</span>
@@ -85,18 +95,37 @@ export async function ContentListPage({ config, filterFn, augmentData }: Content
                                 ))}
                                 <TableCell>v{version.version}</TableCell>
                                 <TableCell>
-                                    <ArchiveButton
-                                        title={String(
-                                            data.title ?? data[config.tableColumns[0]!.key] ?? "",
-                                        )}
-                                        entityName={config.singular.toLowerCase()}
-                                        action={archiveContentAction.bind(
-                                            null,
-                                            item.id,
-                                            config.contentType,
-                                            config.slug,
-                                        )}
-                                    />
+                                    {item.archived ? (
+                                        <RestoreButton
+                                            title={String(
+                                                data.title ??
+                                                    data[config.tableColumns[0]!.key] ??
+                                                    "",
+                                            )}
+                                            entityName={config.singular.toLowerCase()}
+                                            action={restoreContentAction.bind(
+                                                null,
+                                                item.id,
+                                                config.contentType,
+                                                config.slug,
+                                            )}
+                                        />
+                                    ) : (
+                                        <ArchiveButton
+                                            title={String(
+                                                data.title ??
+                                                    data[config.tableColumns[0]!.key] ??
+                                                    "",
+                                            )}
+                                            entityName={config.singular.toLowerCase()}
+                                            action={archiveContentAction.bind(
+                                                null,
+                                                item.id,
+                                                config.contentType,
+                                                config.slug,
+                                            )}
+                                        />
+                                    )}
                                 </TableCell>
                             </TableRow>
                         )

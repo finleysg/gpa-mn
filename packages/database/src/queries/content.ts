@@ -39,6 +39,12 @@ export async function getLatestVersions(contentType: ContentType) {
         .orderBy(asc(contentItems.sortOrder))
 }
 
+export async function getAllLatestVersions(contentType: ContentType) {
+    return withLatestVersion()
+        .where(eq(contentItems.contentType, contentType))
+        .orderBy(asc(contentItems.archived), asc(contentItems.sortOrder))
+}
+
 export async function getContentItemBySlug(contentType: ContentType, slug: string) {
     const [result] = await db
         .select()
@@ -143,6 +149,10 @@ export async function revertToVersion(
 
 export async function archiveContentItem(contentItemId: number) {
     await db.update(contentItems).set({ archived: true }).where(eq(contentItems.id, contentItemId))
+}
+
+export async function restoreContentItem(contentItemId: number) {
+    await db.update(contentItems).set({ archived: false }).where(eq(contentItems.id, contentItemId))
 }
 
 export async function reorderContentItems(contentType: ContentType, orderedIds: number[]) {

@@ -12,28 +12,27 @@ import {
     DialogTrigger,
 } from "@repo/ui/components/dialog"
 
-interface ArchiveButtonProps {
+interface RestoreButtonProps {
     title: string
     entityName?: string
     action: () => Promise<void>
 }
 
-export function ArchiveButton({ title, entityName = "item", action }: ArchiveButtonProps) {
+export function RestoreButton({ title, entityName = "item", action }: RestoreButtonProps) {
     const [open, setOpen] = useState(false)
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant="ghost" size="sm">
-                    Archive
+                    Restore
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Archive {entityName}</DialogTitle>
+                    <DialogTitle>Restore {entityName}</DialogTitle>
                     <DialogDescription>
-                        Are you sure you want to archive &ldquo;{title}&rdquo;? It will be removed
-                        from the public site.
+                        Restore &ldquo;{title}&rdquo;? It will appear on the public site again.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
@@ -41,9 +40,7 @@ export function ArchiveButton({ title, entityName = "item", action }: ArchiveBut
                         Cancel
                     </Button>
                     <form action={action}>
-                        <Button variant="destructive" type="submit">
-                            Archive
-                        </Button>
+                        <Button type="submit">Restore</Button>
                     </form>
                 </DialogFooter>
             </DialogContent>
