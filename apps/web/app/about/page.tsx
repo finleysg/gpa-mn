@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { getWebsiteVisibleRolesWithUsers } from "@repo/database"
 import { getAboutPage, getPageHeader, getSectionHeader } from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
@@ -9,10 +10,11 @@ import { MarkdownContent } from "@/app/_components/markdown-content"
 export const dynamic = "force-dynamic"
 
 export default async function AboutPage() {
-    const [aboutPage, pageHeader, linksHeader] = await Promise.all([
+    const [aboutPage, pageHeader, linksHeader, visibleRoles] = await Promise.all([
         getAboutPage(),
         getPageHeader("About"),
         getSectionHeader("About — Learn More"),
+        getWebsiteVisibleRolesWithUsers(),
     ])
 
     return (
@@ -42,6 +44,36 @@ export default async function AboutPage() {
                     </FadeIn>
                 </div>
             </section>
+
+            {/* Team */}
+            {visibleRoles.length > 0 && (
+                <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+                    <div className="mx-auto max-w-300">
+                        <SectionHeader title="Our Team" align="center" className="mb-12" />
+                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                            {visibleRoles.map((role, i) => (
+                                <FadeIn key={role.id} delay={i * 60}>
+                                    <div className="bg-card border-border rounded-2xl border p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
+                                        <h3 className="font-heading mb-4 text-lg tracking-wider uppercase">
+                                            {role.name}
+                                        </h3>
+                                        <ul className="space-y-2">
+                                            {role.users.map((user) => (
+                                                <li
+                                                    key={user.id}
+                                                    className="text-muted-foreground text-sm"
+                                                >
+                                                    {user.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </FadeIn>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Links */}
             <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">

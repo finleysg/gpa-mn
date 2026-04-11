@@ -1,4 +1,4 @@
-import { mysqlTable, text, timestamp, unique, varchar } from "drizzle-orm/mysql-core"
+import { boolean, mysqlTable, text, timestamp, unique, varchar } from "drizzle-orm/mysql-core"
 import { user } from "./auth"
 
 export const ROLE_NAMES = [
@@ -23,6 +23,7 @@ export const role = mysqlTable("role", {
     id: varchar({ length: 36 }).primaryKey(),
     name: varchar({ length: 50 }).notNull().unique(),
     description: text(),
+    websiteVisible: boolean().notNull().default(false),
     createdAt: timestamp().notNull().defaultNow(),
 })
 

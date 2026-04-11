@@ -1,4 +1,4 @@
-import { eq, and, sql } from "drizzle-orm"
+import { eq, and, sql, isNull } from "drizzle-orm"
 import { db } from "../index"
 import { user } from "../schema/auth"
 import { role, userRole } from "../schema/roles"
@@ -79,4 +79,44 @@ export async function getUsersByRole(roleName: string) {
         .innerJoin(role, eq(userRole.roleId, role.id))
         .innerJoin(user, eq(userRole.userId, user.id))
         .where(eq(role.name, roleName))
+}
+
+export async function updateRoleWebsiteVisible(roleId: string, websiteVisible: boolean) {
+    await db.update(role).set({ websiteVisible }).where(eq(role.id, roleId))
+}
+
+export async function getWebsiteVisibleRolesWithUsers() {
+    const rows = await db
+        .select({
+            roleId: role.id,
+            roleName: role.name,
+            userId: user.id,
+            userName: user.name,
+        })
+        .from(role)
+        .innerJoin(userRole, eq(role.id, userRole.roleId))
+        .innerJoin(user, and(eq(userRole.userId, user.id), isNull(user.deactivatedAt)))
+        .where(eq(role.websiteVisible, true))
+        .orderBy(role.name, user.name)
+
+    const rolesMap = new Map<
+        string,
+        { id: string; name: string; users: { id: string; name: string }[] }
+    >()
+
+    for (const row of rows) {
+        if (!rolesMap.has(row.roleId)) {
+            rolesMap.set(row.roleId, {
+                id: row.roleId,
+                name: row.roleName,
+                users: [],
+            })
+        }
+        rolesMap.get(row.roleId)!.users.push({
+            id: row.userId,
+            name: row.userName,
+        })
+    }
+
+    return Array.from(rolesMap.values())
 }

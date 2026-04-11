@@ -25,6 +25,7 @@ import {
 } from "@/app/lib/auth-utils"
 import { auth } from "@/app/lib/auth"
 import { sendInviteEmail } from "@/app/_lib/email"
+import { revalidateWeb } from "@/app/_lib/revalidate-web"
 
 async function requireUserAdmin() {
     const session = await getSessionOrRedirect()
@@ -137,6 +138,7 @@ export async function updateUserRolesAction(
     await setUserRoles(userId, roleIds, session.user.id)
     revalidatePath(`/users/${userId}`)
     revalidatePath("/users")
+    await revalidateWeb(["/about"])
     redirect("/users")
 }
 
@@ -157,6 +159,7 @@ export async function deactivateUserAction(userId: string) {
     await updateUserAdminLogin(userId, false)
     revalidatePath("/users")
     revalidatePath(`/users/${userId}`)
+    await revalidateWeb(["/about"])
 }
 
 export async function reactivateUserAction(userId: string) {
@@ -164,6 +167,7 @@ export async function reactivateUserAction(userId: string) {
     await reactivateUser(userId)
     revalidatePath("/users")
     revalidatePath(`/users/${userId}`)
+    await revalidateWeb(["/about"])
 }
 
 // --- Create User ---

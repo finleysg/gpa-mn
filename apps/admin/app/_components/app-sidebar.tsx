@@ -18,6 +18,7 @@ import {
     Mail,
     PawPrint,
     Settings,
+    Shield,
     Users,
 } from "lucide-react"
 import {
@@ -117,6 +118,7 @@ function canAccess(roles: RoleName[], section?: string): boolean {
 const adminEntries: NavEntry[] = [
     { title: "All Users", href: "/users", icon: Users, section: "users" },
     { title: "Invitations", href: "/users/invitations", icon: Mail, section: "users" },
+    { title: "Roles", href: "/roles", icon: Shield, section: "users" },
 ]
 
 const operationsEntries: NavEntry[] = [
