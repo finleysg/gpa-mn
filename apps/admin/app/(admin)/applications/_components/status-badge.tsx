@@ -1,0 +1,20 @@
+import { Badge } from "@repo/ui/components/badge"
+import type { ApplicationStatus } from "@repo/database"
+
+const STATUS_CONFIG: Record<
+    ApplicationStatus,
+    { label: string; variant: "default" | "secondary" | "destructive" | "outline" }
+> = {
+    draft: { label: "Draft", variant: "outline" },
+    submitted: { label: "Submitted", variant: "default" },
+    in_review: { label: "In Review", variant: "secondary" },
+    approved: { label: "Approved", variant: "default" },
+    adopted: { label: "Adopted", variant: "default" },
+    denied: { label: "Denied", variant: "destructive" },
+    on_hold: { label: "On Hold", variant: "outline" },
+}
+
+export function StatusBadge({ status }: { status: ApplicationStatus }) {
+    const config = STATUS_CONFIG[status]
+    return <Badge variant={config.variant}>{config.label}</Badge>
+}

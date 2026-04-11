@@ -21,6 +21,13 @@ const SECTION_ACCESS: Record<string, RoleName[]> = {
     about: ["Super Admin", "Content Admin"],
     "lost-hound": ["Super Admin", "Content Admin"],
     foster: ["Super Admin", "Foster Coordinator", "Foster"],
+    applications: [
+        "Super Admin",
+        "Adoption Coordinator",
+        "Adoption Matcher",
+        "Adoption Rep",
+        "Adoption Observer",
+    ],
 }
 
 export async function getSessionOrRedirect() {

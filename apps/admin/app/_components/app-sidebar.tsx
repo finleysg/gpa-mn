@@ -9,6 +9,7 @@ import {
     Calendar,
     ChevronsUpDown,
     ChevronRight,
+    ClipboardList,
     FileText,
     HandCoins,
     Heart,
@@ -88,6 +89,13 @@ const SECTION_ACCESS: Record<string, RoleName[]> = {
     about: ["Super Admin", "Content Admin"],
     "lost-hound": ["Super Admin", "Content Admin"],
     foster: ["Super Admin", "Foster Coordinator", "Foster"],
+    applications: [
+        "Super Admin",
+        "Adoption Coordinator",
+        "Adoption Matcher",
+        "Adoption Rep",
+        "Adoption Observer",
+    ],
 }
 
 function canAccess(roles: RoleName[], section?: string): boolean {
@@ -101,6 +109,10 @@ function canAccess(roles: RoleName[], section?: string): boolean {
 const adminEntries: NavEntry[] = [
     { title: "All Users", href: "/users", icon: Users, section: "users" },
     { title: "Invitations", href: "/users/invitations", icon: Mail, section: "users" },
+]
+
+const operationsEntries: NavEntry[] = [
+    { title: "Applications", href: "/applications", icon: ClipboardList, section: "applications" },
 ]
 
 const navEntries: NavEntry[] = [
@@ -285,6 +297,9 @@ export function AppSidebar() {
     }
 
     const visibleContentEntries = navEntries.filter((entry) => canAccess(roles, entry.section))
+    const visibleOperationsEntries = operationsEntries.filter((entry) =>
+        canAccess(roles, entry.section),
+    )
     const visibleAdminEntries = adminEntries.filter((entry) => canAccess(roles, entry.section))
 
     function renderEntries(entries: NavEntry[]) {
@@ -322,6 +337,14 @@ export function AppSidebar() {
                         <SidebarMenu>{renderEntries(visibleContentEntries)}</SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+                {visibleOperationsEntries.length > 0 && (
+                    <SidebarGroup>
+                        <SidebarGroupLabel>Operations</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>{renderEntries(visibleOperationsEntries)}</SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                )}
                 {visibleAdminEntries.length > 0 && (
                     <SidebarGroup>
                         <SidebarGroupLabel>Users</SidebarGroupLabel>
