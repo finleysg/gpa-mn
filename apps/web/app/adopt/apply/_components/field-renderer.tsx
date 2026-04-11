@@ -32,7 +32,7 @@ export function FieldRenderer({ field, value, onChange, error, namePrefix }: Fie
 
     return (
         <div className="space-y-2">
-            {field.type !== "checkbox" && field.type !== "repeating" && (
+            {field.type !== "checkbox" && field.type !== "repeating" && field.type !== "scale" && (
                 <Label htmlFor={fieldName}>
                     {field.label}
                     {field.required && <span className="text-destructive ml-1">*</span>}
