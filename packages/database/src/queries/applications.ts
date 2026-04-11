@@ -116,6 +116,42 @@ export async function addMilestone(data: {
     return result!
 }
 
+export async function upsertMilestone(data: {
+    applicationId: number
+    milestone: Milestone
+    completedAt: Date
+    userId: string
+    notes?: string
+}) {
+    await db
+        .insert(applicationMilestones)
+        .values({
+            applicationId: data.applicationId,
+            milestone: data.milestone,
+            completedAt: data.completedAt,
+            notes: data.notes ?? null,
+            userId: data.userId,
+        })
+        .onDuplicateKeyUpdate({
+            set: {
+                completedAt: data.completedAt,
+                userId: data.userId,
+                notes: data.notes ?? null,
+            },
+        })
+}
+
+export async function deleteMilestone(applicationId: number, milestone: Milestone) {
+    await db
+        .delete(applicationMilestones)
+        .where(
+            and(
+                eq(applicationMilestones.applicationId, applicationId),
+                eq(applicationMilestones.milestone, milestone),
+            ),
+        )
+}
+
 export async function getMilestones(applicationId: number) {
     return db
         .select({

@@ -1,20 +1,55 @@
-import { getApplication } from "@repo/database"
+import {
+    getApplication,
+    getLatestSections,
+    getMilestones,
+    getComments,
+    getUsersByRole,
+} from "@repo/database"
+import type { SectionKey } from "@repo/database"
+import type { ApplicationComment } from "@repo/types"
 import { requireSectionAccess } from "@/app/_lib/require-section-access"
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import { Suspense } from "react"
 import { Button } from "@repo/ui/components/button"
 import { ArrowLeft } from "lucide-react"
-import { StatusBadge } from "../_components/status-badge"
+import { ApplicationDetail } from "./_components/application-detail"
 
 interface PageProps {
     params: Promise<{ id: string }>
+    searchParams: Promise<{ tab?: string }>
 }
 
 export default async function ApplicationDetailPage({ params }: PageProps) {
     await requireSectionAccess("applications")
     const { id } = await params
-    const application = await getApplication(Number(id))
+    const numericId = Number(id)
+
+    const [application, sectionsRows, milestones, commentRows, adoptionReps] = await Promise.all([
+        getApplication(numericId),
+        getLatestSections(numericId),
+        getMilestones(numericId),
+        getComments(numericId),
+        getUsersByRole("Adoption Rep"),
+    ])
+
     if (!application) notFound()
+
+    const sections: Partial<Record<SectionKey, Record<string, unknown>>> = {}
+    for (const row of sectionsRows) {
+        sections[row.section.sectionKey] = row.section.data as Record<string, unknown>
+    }
+
+    const comments: ApplicationComment[] = commentRows.map((row) => ({
+        id: row.comment.id,
+        applicationId: row.comment.applicationId,
+        userId: row.comment.userId,
+        userName: row.userName,
+        sectionCategory: row.comment.sectionCategory,
+        body: row.comment.body,
+        isSystemEvent: row.comment.isSystemEvent,
+        createdAt: row.comment.createdAt,
+    }))
 
     return (
         <div>
@@ -28,9 +63,20 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                 <h1 className="text-2xl font-bold">
                     {application.firstName} {application.lastName}
                 </h1>
-                <StatusBadge status={application.status} />
             </div>
-            <p className="text-muted-foreground">Application detail page coming soon.</p>
+            <Suspense>
+                <ApplicationDetail
+                    applicationId={application.id}
+                    status={application.status}
+                    adoptionRep={application.adoptionRep}
+                    houndId={application.houndId}
+                    houndName={application.houndName}
+                    sections={sections}
+                    milestones={milestones}
+                    comments={comments}
+                    adoptionReps={adoptionReps}
+                />
+            </Suspense>
         </div>
     )
 }
