@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition, useEffect } from "react"
+import { toast } from "sonner"
 import {
     Combobox,
     ComboboxInput,
@@ -46,7 +47,8 @@ export function HoundSelector({
 
     function handleSelect(id: string, name: string) {
         startTransition(async () => {
-            await updateHoundAction(applicationId, id, name)
+            const result = await updateHoundAction(applicationId, id, name)
+            if ("errors" in result) toast.error(result.errors[0])
         })
     }
 
@@ -62,7 +64,8 @@ export function HoundSelector({
                 onValueChange={(value) => {
                     if (!value) {
                         startTransition(async () => {
-                            await updateHoundAction(applicationId, null, null)
+                            const result = await updateHoundAction(applicationId, null, null)
+                            if ("errors" in result) toast.error(result.errors[0])
                         })
                         return
                     }

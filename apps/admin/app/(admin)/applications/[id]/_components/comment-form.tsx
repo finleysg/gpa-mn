@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import { Button } from "@repo/ui/components/button"
 import { Textarea } from "@repo/ui/components/textarea"
 import {
@@ -46,8 +47,12 @@ export function CommentForm({
         if (!body.trim()) return
         startTransition(async () => {
             const effectiveCategory = showCategorySelect ? category : sectionCategory
-            await addCommentAction(applicationId, body, effectiveCategory)
-            setBody("")
+            const result = await addCommentAction(applicationId, body, effectiveCategory)
+            if ("errors" in result) {
+                toast.error(result.errors[0])
+            } else {
+                setBody("")
+            }
         })
     }
 

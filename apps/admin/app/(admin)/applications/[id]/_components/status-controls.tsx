@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import {
     Select,
     SelectContent,
@@ -54,7 +55,10 @@ export function StatusControls({ applicationId, currentStatus }: StatusControlsP
     function handleConfirm() {
         if (!pendingStatus) return
         startTransition(async () => {
-            await changeStatusAction(applicationId, pendingStatus)
+            const result = await changeStatusAction(applicationId, pendingStatus)
+            if ("errors" in result) {
+                toast.error(result.errors[0])
+            }
             setPendingStatus(null)
         })
     }

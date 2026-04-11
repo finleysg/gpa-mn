@@ -1,6 +1,7 @@
 "use client"
 
 import { useTransition } from "react"
+import { toast } from "sonner"
 import { format } from "date-fns"
 import { CalendarIcon, XIcon } from "lucide-react"
 import { Button } from "@repo/ui/components/button"
@@ -94,7 +95,8 @@ export function EnrichmentPanel({
                         onValueChange={(v) => {
                             const value = v === "unassigned" ? null : v
                             startRepTransition(async () => {
-                                await updateAdoptionRepAction(applicationId, value)
+                                const result = await updateAdoptionRepAction(applicationId, value)
+                                if ("errors" in result) toast.error(result.errors[0])
                             })
                         }}
                         disabled={isRepPending}
@@ -154,13 +156,15 @@ function MilestoneDatePicker({
     function handleSelect(date: Date | undefined) {
         if (!date) return
         startTransition(async () => {
-            await setMilestoneAction(applicationId, milestone, date.toISOString())
+            const result = await setMilestoneAction(applicationId, milestone, date.toISOString())
+            if ("errors" in result) toast.error(result.errors[0])
         })
     }
 
     function handleClear() {
         startTransition(async () => {
-            await clearMilestoneAction(applicationId, milestone)
+            const result = await clearMilestoneAction(applicationId, milestone)
+            if ("errors" in result) toast.error(result.errors[0])
         })
     }
 
