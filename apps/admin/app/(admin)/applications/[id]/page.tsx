@@ -21,9 +21,15 @@ interface PageProps {
 }
 
 export default async function ApplicationDetailPage({ params }: PageProps) {
-    await requireSectionAccess("applications")
+    const { session, roles } = await requireSectionAccess("applications")
     const { id } = await params
     const numericId = Number(id)
+
+    const isAdoptionRepOnly = !roles.some((r) =>
+        ["Super Admin", "Adoption Coordinator", "Adoption Matcher", "Adoption Observer"].includes(
+            r,
+        ),
+    )
 
     const [application, sectionsRows, milestones, commentRows, adoptionReps] = await Promise.all([
         getApplication(numericId),
@@ -34,6 +40,9 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     ])
 
     if (!application) notFound()
+
+    // Adoption Reps can only view applications assigned to them
+    if (isAdoptionRepOnly && application.adoptionRep !== session.user.id) notFound()
 
     const sections: Partial<Record<SectionKey, Record<string, unknown>>> = {}
     for (const row of sectionsRows) {
@@ -75,6 +84,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
                     milestones={milestones}
                     comments={comments}
                     adoptionReps={adoptionReps}
+                    isAdoptionRepOnly={isAdoptionRepOnly}
                 />
             </Suspense>
         </div>

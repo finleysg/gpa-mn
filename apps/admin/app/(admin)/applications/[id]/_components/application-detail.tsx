@@ -33,6 +33,7 @@ interface ApplicationDetailProps {
     milestones: MilestoneData[]
     comments: ApplicationComment[]
     adoptionReps: AdoptionRep[]
+    isAdoptionRepOnly: boolean
 }
 
 const TAB_LABELS: Record<string, string> = {
@@ -57,6 +58,7 @@ export function ApplicationDetail({
     milestones,
     comments,
     adoptionReps,
+    isAdoptionRepOnly,
 }: ApplicationDetailProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -78,6 +80,7 @@ export function ApplicationDetail({
                 houndId={houndId}
                 houndName={houndName}
                 milestones={milestones}
+                isAdoptionRepOnly={isAdoptionRepOnly}
             />
 
             <Tabs defaultValue={defaultTab} onValueChange={handleTabChange}>

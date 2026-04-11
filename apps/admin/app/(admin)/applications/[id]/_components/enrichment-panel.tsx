@@ -56,6 +56,7 @@ interface EnrichmentPanelProps {
     houndId: string | null
     houndName: string | null
     milestones: MilestoneData[]
+    isAdoptionRepOnly?: boolean
 }
 
 const MILESTONE_LABELS: Record<Milestone, string> = {
@@ -75,6 +76,7 @@ export function EnrichmentPanel({
     houndId,
     houndName,
     milestones,
+    isAdoptionRepOnly,
 }: EnrichmentPanelProps) {
     const [isRepPending, startRepTransition] = useTransition()
 
@@ -88,38 +90,45 @@ export function EnrichmentPanel({
                     <StatusControls applicationId={applicationId} currentStatus={status} />
                 </div>
 
-                <div className="space-y-1.5">
-                    <Label>Adoption Rep</Label>
-                    <Select
-                        value={adoptionRep ?? "unassigned"}
-                        onValueChange={(v) => {
-                            const value = v === "unassigned" ? null : v
-                            startRepTransition(async () => {
-                                const result = await updateAdoptionRepAction(applicationId, value)
-                                if ("errors" in result) toast.error(result.errors[0])
-                            })
-                        }}
-                        disabled={isRepPending}
-                    >
-                        <SelectTrigger>
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="unassigned">Unassigned</SelectItem>
-                            {adoptionReps.map((rep) => (
-                                <SelectItem key={rep.id} value={rep.id}>
-                                    {rep.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
+                {!isAdoptionRepOnly && (
+                    <div className="space-y-1.5">
+                        <Label>Adoption Rep</Label>
+                        <Select
+                            value={adoptionRep ?? "unassigned"}
+                            onValueChange={(v) => {
+                                const value = v === "unassigned" ? null : v
+                                startRepTransition(async () => {
+                                    const result = await updateAdoptionRepAction(
+                                        applicationId,
+                                        value,
+                                    )
+                                    if ("errors" in result) toast.error(result.errors[0])
+                                })
+                            }}
+                            disabled={isRepPending}
+                        >
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="unassigned">Unassigned</SelectItem>
+                                {adoptionReps.map((rep) => (
+                                    <SelectItem key={rep.id} value={rep.id}>
+                                        {rep.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
 
-                <HoundSelector
-                    applicationId={applicationId}
-                    currentHoundId={houndId}
-                    currentHoundName={houndName}
-                />
+                {!isAdoptionRepOnly && (
+                    <HoundSelector
+                        applicationId={applicationId}
+                        currentHoundId={houndId}
+                        currentHoundName={houndName}
+                    />
+                )}
             </div>
 
             <div>

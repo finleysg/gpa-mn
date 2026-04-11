@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, like, max, or, sql } from "drizzle-orm"
+import { and, asc, desc, eq, inArray, like, max, or, sql } from "drizzle-orm"
 import { db } from "../index"
 import { user } from "../schema/auth"
 import {
@@ -220,6 +220,45 @@ export async function getLatestSections(applicationId: number) {
             ),
         )
         .where(eq(applicationSections.applicationId, applicationId))
+}
+
+export async function getLatestSectionsForApplications(
+    applicationIds: number[],
+    sectionKeys: SectionKey[],
+) {
+    if (applicationIds.length === 0) return []
+
+    const latestVersions = db
+        .select({
+            applicationId: applicationSections.applicationId,
+            sectionKey: applicationSections.sectionKey,
+            maxVersion: max(applicationSections.version).as("maxVersion"),
+        })
+        .from(applicationSections)
+        .where(
+            and(
+                inArray(applicationSections.applicationId, applicationIds),
+                inArray(applicationSections.sectionKey, sectionKeys),
+            ),
+        )
+        .groupBy(applicationSections.applicationId, applicationSections.sectionKey)
+        .as("latestVersions")
+
+    return db
+        .select({
+            applicationId: applicationSections.applicationId,
+            sectionKey: applicationSections.sectionKey,
+            data: applicationSections.data,
+        })
+        .from(applicationSections)
+        .innerJoin(
+            latestVersions,
+            and(
+                eq(applicationSections.applicationId, latestVersions.applicationId),
+                eq(applicationSections.sectionKey, latestVersions.sectionKey),
+                eq(applicationSections.version, sql`${latestVersions.maxVersion}`),
+            ),
+        )
 }
 
 export async function submitApplication(id: number) {
