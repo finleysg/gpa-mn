@@ -1,6 +1,6 @@
-import { and, eq, isNull, notInArray, sql } from "drizzle-orm"
+import { and, eq, isNull, isNotNull, notInArray, sql } from "drizzle-orm"
 import { db } from "../index"
-import { user } from "../schema/auth"
+import { account, user } from "../schema/auth"
 import { role, userRole } from "../schema/roles"
 
 export async function getUsers() {
@@ -10,6 +10,7 @@ export async function getUsers() {
             name: user.name,
             email: user.email,
             phone: user.phone,
+            adminLogin: user.adminLogin,
             deactivatedAt: user.deactivatedAt,
             createdAt: user.createdAt,
             roleName: role.name,
@@ -26,6 +27,7 @@ export async function getUsers() {
             name: string
             email: string
             phone: string | null
+            adminLogin: boolean
             deactivatedAt: Date | null
             createdAt: Date
             roles: { id: string; name: string }[]
@@ -39,6 +41,7 @@ export async function getUsers() {
                 name: row.name,
                 email: row.email,
                 phone: row.phone,
+                adminLogin: row.adminLogin,
                 deactivatedAt: row.deactivatedAt,
                 createdAt: row.createdAt,
                 roles: [],
@@ -59,6 +62,7 @@ export async function getUser(id: string) {
             name: user.name,
             email: user.email,
             phone: user.phone,
+            adminLogin: user.adminLogin,
             notifyOnSubmission: user.notifyOnSubmission,
             notifyOnAssignment: user.notifyOnAssignment,
             deactivatedAt: user.deactivatedAt,
@@ -79,6 +83,7 @@ export async function getUser(id: string) {
         name: first.name,
         email: first.email,
         phone: first.phone,
+        adminLogin: first.adminLogin,
         notifyOnSubmission: first.notifyOnSubmission,
         notifyOnAssignment: first.notifyOnAssignment,
         deactivatedAt: first.deactivatedAt,
@@ -136,4 +141,30 @@ export async function getUsersForSubmissionNotification() {
             ),
         )
     return rows
+}
+
+export async function hasAdminLogin(id: string): Promise<boolean> {
+    const [result] = await db
+        .select({ adminLogin: user.adminLogin })
+        .from(user)
+        .where(eq(user.id, id))
+    return result?.adminLogin ?? false
+}
+
+export async function updateUserAdminLogin(id: string, adminLogin: boolean) {
+    await db.update(user).set({ adminLogin }).where(eq(user.id, id))
+}
+
+export async function userHasPassword(userId: string): Promise<boolean> {
+    const [result] = await db
+        .select({ password: account.password })
+        .from(account)
+        .where(
+            and(
+                eq(account.userId, userId),
+                eq(account.providerId, "credential"),
+                isNotNull(account.password),
+            ),
+        )
+    return result != null
 }

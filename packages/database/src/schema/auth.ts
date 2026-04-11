@@ -9,6 +9,7 @@ export const user = mysqlTable("user", {
     phone: varchar({ length: 32 }),
     notifyOnSubmission: boolean().notNull().default(true),
     notifyOnAssignment: boolean().notNull().default(true),
+    adminLogin: boolean().notNull().default(false),
     deactivatedAt: timestamp(),
     createdAt: timestamp().notNull().defaultNow(),
     updatedAt: timestamp().notNull().defaultNow().onUpdateNow(),

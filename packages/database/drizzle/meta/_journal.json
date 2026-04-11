@@ -1,13 +1,20 @@
 {
-  "version": "7",
-  "dialect": "mysql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1773853103960,
-      "tag": "0000_breezy_ikaris",
-      "breakpoints": true
-    }
-  ]
+    "version": "7",
+    "dialect": "mysql",
+    "entries": [
+        {
+            "idx": 0,
+            "version": "5",
+            "when": 1773853103960,
+            "tag": "0000_breezy_ikaris",
+            "breakpoints": true
+        },
+        {
+            "idx": 1,
+            "version": "5",
+            "when": 1775923155176,
+            "tag": "0001_fearless_professor_monster",
+            "breakpoints": true
+        }
+    ]
 }

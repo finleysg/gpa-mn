@@ -2,7 +2,12 @@
 
 import { redirect } from "next/navigation"
 import { auth } from "@/app/lib/auth"
-import { getInvitationByToken, acceptInvitation, setUserRoles } from "@repo/database"
+import {
+    getInvitationByToken,
+    acceptInvitation,
+    setUserRoles,
+    updateUserAdminLogin,
+} from "@repo/database"
 
 export type AcceptInviteState = {
     error?: string
@@ -52,6 +57,7 @@ export async function acceptInviteAction(
         result.user.id,
         invite.roles.map((r) => r.id),
     )
+    await updateUserAdminLogin(result.user.id, true)
 
     redirect("/login")
 }

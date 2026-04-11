@@ -29,12 +29,17 @@ export default async function UsersPage() {
                         <Link href="/users/invitations">Invitations</Link>
                     </Button>
                 </div>
-                <Button asChild>
-                    <Link href="/users/invite">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Invite User
-                    </Link>
-                </Button>
+                <div className="flex gap-2">
+                    <Button asChild>
+                        <Link href="/users/create">
+                            <Plus className="mr-2 h-4 w-4" />
+                            Create User
+                        </Link>
+                    </Button>
+                    <Button variant="outline" asChild>
+                        <Link href="/users/invite">Invite User</Link>
+                    </Button>
+                </div>
             </div>
 
             <Table>

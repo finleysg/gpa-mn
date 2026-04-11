@@ -1,7 +1,7 @@
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { auth } from "./auth"
-import { getUserRoles } from "@repo/database"
+import { getUserRoles, hasAdminLogin } from "@repo/database"
 import type { RoleName } from "@repo/database"
 
 const SECTION_ACCESS: Record<string, RoleName[]> = {
@@ -48,6 +48,13 @@ export async function getSessionOrRedirect() {
     // Check if user is deactivated
     if ((session.user as Record<string, unknown>).deactivatedAt) {
         // Invalidate the session and redirect
+        await auth.api.signOut({ headers: await headers() })
+        redirect("/login")
+    }
+
+    // Check if user has admin login access
+    const canLogin = await hasAdminLogin(session.user.id)
+    if (!canLogin) {
         await auth.api.signOut({ headers: await headers() })
         redirect("/login")
     }

@@ -3,6 +3,7 @@ import { getUser, getRoles } from "@repo/database"
 import { requireSectionAccess } from "@/app/_lib/require-section-access"
 import { Badge } from "@repo/ui/components/badge"
 import { EditRolesForm } from "./edit-roles-form"
+import { AdminLoginToggle } from "./admin-login-toggle"
 
 export default async function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
     await requireSectionAccess("users")
@@ -35,6 +36,16 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
                     </p>
                 </div>
                 <div>
+                    <p className="text-muted-foreground text-sm">Admin Login</p>
+                    <p>
+                        {user.adminLogin ? (
+                            <Badge>Enabled</Badge>
+                        ) : (
+                            <Badge variant="outline">Disabled</Badge>
+                        )}
+                    </p>
+                </div>
+                <div>
                     <p className="text-muted-foreground text-sm">Created</p>
                     <p>{new Date(user.createdAt).toLocaleDateString()}</p>
                 </div>
@@ -45,6 +56,10 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
                 allRoles={allRoles}
                 currentRoleIds={user.roles.map((r) => r.id)}
             />
+
+            <div className="mt-8">
+                <AdminLoginToggle userId={user.id} currentValue={user.adminLogin} />
+            </div>
         </div>
     )
 }
