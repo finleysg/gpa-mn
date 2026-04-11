@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm"
+import { and, eq, isNull, notInArray, sql } from "drizzle-orm"
 import { db } from "../index"
 import { user } from "../schema/auth"
 import { role, userRole } from "../schema/roles"
@@ -59,6 +59,8 @@ export async function getUser(id: string) {
             name: user.name,
             email: user.email,
             phone: user.phone,
+            notifyOnSubmission: user.notifyOnSubmission,
+            notifyOnAssignment: user.notifyOnAssignment,
             deactivatedAt: user.deactivatedAt,
             createdAt: user.createdAt,
             roleName: role.name,
@@ -77,6 +79,8 @@ export async function getUser(id: string) {
         name: first.name,
         email: first.email,
         phone: first.phone,
+        notifyOnSubmission: first.notifyOnSubmission,
+        notifyOnAssignment: first.notifyOnAssignment,
         deactivatedAt: first.deactivatedAt,
         createdAt: first.createdAt,
         roles: rows
@@ -103,4 +107,33 @@ export async function reactivateUser(id: string) {
 
 export async function updateUserPhone(id: string, phone: string | null) {
     await db.update(user).set({ phone }).where(eq(user.id, id))
+}
+
+export async function updateUserNotificationPreferences(
+    id: string,
+    preferences: { notifyOnSubmission?: boolean; notifyOnAssignment?: boolean },
+) {
+    await db.update(user).set(preferences).where(eq(user.id, id))
+}
+
+const EXCLUDED_SUBMISSION_ROLES = ["Adoption Rep", "Foster Coordinator", "Foster"]
+
+export async function getUsersForSubmissionNotification() {
+    const rows = await db
+        .selectDistinct({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        })
+        .from(user)
+        .innerJoin(userRole, eq(user.id, userRole.userId))
+        .innerJoin(role, eq(userRole.roleId, role.id))
+        .where(
+            and(
+                eq(user.notifyOnSubmission, true),
+                isNull(user.deactivatedAt),
+                notInArray(role.name, EXCLUDED_SUBMISSION_ROLES),
+            ),
+        )
+    return rows
 }

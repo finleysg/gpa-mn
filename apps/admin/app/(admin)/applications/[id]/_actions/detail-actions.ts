@@ -6,10 +6,13 @@ import {
     upsertMilestone,
     deleteMilestone,
     addComment,
+    getApplication,
+    getUser,
 } from "@repo/database"
 import type { ApplicationStatus, Milestone, SectionCategory } from "@repo/database"
 import { revalidatePath } from "next/cache"
 import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { sendAdminAssignmentEmail } from "@/app/_lib/email"
 
 type ActionResult = { success: true } | { errors: string[] }
 
@@ -35,6 +38,27 @@ export async function updateAdoptionRepAction(
     try {
         await updateApplicationEnrichment(applicationId, { adoptionRep: repUserId })
         revalidatePath(`/applications/${applicationId}`)
+
+        // Fire-and-forget: notify the assigned rep
+        if (repUserId) {
+            Promise.all([getUser(repUserId), getApplication(applicationId)])
+                .then(([rep, application]) => {
+                    if (rep?.notifyOnAssignment && application) {
+                        const adminUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:6100"
+                        return sendAdminAssignmentEmail({
+                            to: rep.email,
+                            repName: rep.name,
+                            applicantName: `${application.firstName} ${application.lastName}`,
+                            applicationId,
+                            adminUrl: `${adminUrl}/applications/${applicationId}`,
+                        })
+                    }
+                })
+                .catch(() => {
+                    // Email failures shouldn't affect the action
+                })
+        }
+
         return { success: true }
     } catch {
         return { errors: ["Failed to update adoption rep"] }

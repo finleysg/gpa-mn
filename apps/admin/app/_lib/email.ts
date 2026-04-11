@@ -1,6 +1,6 @@
 import { Resend } from "resend"
 import nodemailer from "nodemailer"
-import { getUsersByRole } from "@repo/database"
+import { getUsersByRole, getUsersForSubmissionNotification } from "@repo/database"
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
@@ -219,8 +219,16 @@ export async function sendAdminNewSubmissionEmail({
     applicationId: number
     adminUrl: string
 }) {
-    await sendEmailToRole({
-        role: "Adoption Coordinator",
+    const users = await getUsersForSubmissionNotification()
+    const emails = users.map((u) => u.email).filter(Boolean) as string[]
+
+    if (emails.length === 0) {
+        console.warn("[email] No users opted in to submission notifications")
+        return
+    }
+
+    await sendEmail({
+        to: emails,
         subject: `New adoption application from ${applicantName}`,
         html: emailLayout(`
             <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">New Adoption Application</h2>
@@ -231,7 +239,7 @@ export async function sendAdminNewSubmissionEmail({
             </p>
             ${buttonHtml("Review Application", adminUrl)}
             <hr style="border-color:#e4e4e7;margin:24px 0">
-            <p style="font-size:14px;color:#71717a">You received this email because you are an adoption coordinator at GPA-MN.</p>
+            <p style="font-size:14px;color:#71717a">You received this email because you have submission notifications enabled in your account settings.</p>
         `),
     })
 }
@@ -270,6 +278,37 @@ export async function sendStatusChangeEmail({
             ${buttonHtml("View Your Application", applicationUrl)}
             <hr style="border-color:#e4e4e7;margin:24px 0">
             <p style="font-size:14px;color:#71717a">If you have questions, please contact us at adopt@gpa-mn.org.</p>
+        `),
+    })
+}
+
+export async function sendAdminAssignmentEmail({
+    to,
+    repName,
+    applicantName,
+    applicationId,
+    adminUrl,
+}: {
+    to: string
+    repName: string
+    applicantName: string
+    applicationId: number
+    adminUrl: string
+}) {
+    await sendEmail({
+        to,
+        subject: `You've been assigned to adoption application #${applicationId}`,
+        html: emailLayout(`
+            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">Application Assignment</h2>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">Hi ${escapeHtml(repName)},</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">You have been assigned as the adoption rep for the following application:</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">
+                <strong>Applicant:</strong> ${escapeHtml(applicantName)}<br>
+                <strong>Application ID:</strong> ${applicationId}
+            </p>
+            ${buttonHtml("View Application", adminUrl)}
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:14px;color:#71717a">You received this email because you have assignment notifications enabled in your account settings.</p>
         `),
     })
 }

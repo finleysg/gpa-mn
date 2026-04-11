@@ -4,10 +4,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo
 import { ChangeEmailForm } from "./change-email-form"
 import { PhoneForm } from "./phone-form"
 import { ChangePasswordForm } from "./change-password-form"
+import { NotificationSettingsForm } from "./notification-settings-form"
+
+const SUBMISSION_ROLES = [
+    "Super Admin",
+    "User Admin",
+    "Content Admin",
+    "Adoption Matcher",
+    "Adoption Coordinator",
+    "Adoption Observer",
+]
 
 export default async function AccountPage() {
     const session = await getSessionOrRedirect()
     const userData = await getUser(session.user.id)
+
+    const roleNames = userData?.roles.map((r) => r.name) ?? []
+    const showSubmission = roleNames.some((r) => SUBMISSION_ROLES.includes(r))
+    const showAssignment = roleNames.includes("Adoption Rep")
+    const showNotifications = showSubmission || showAssignment
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
@@ -35,6 +50,25 @@ export default async function AccountPage() {
                     <PhoneForm currentPhone={userData?.phone ?? null} />
                 </CardContent>
             </Card>
+
+            {showNotifications && (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Notifications</CardTitle>
+                        <CardDescription>
+                            Choose which email notifications you receive.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <NotificationSettingsForm
+                            notifyOnSubmission={userData?.notifyOnSubmission ?? true}
+                            notifyOnAssignment={userData?.notifyOnAssignment ?? true}
+                            showSubmission={showSubmission}
+                            showAssignment={showAssignment}
+                        />
+                    </CardContent>
+                </Card>
+            )}
 
             <Card>
                 <CardHeader>
