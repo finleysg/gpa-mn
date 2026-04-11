@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "build": "next build",
-        "dev": "portless run next dev",
+        "dev": "portless gpamn-web next dev",
         "start": "next start",
         "lint": "eslint .",
         "typecheck": "tsc --noEmit",
@@ -26,6 +26,7 @@
         "rehype-sanitize": "^6.0.0",
         "remark-directive": "^4.0.0",
         "remark-gfm": "^4.0.1",
+        "sonner": "^2.0.7",
         "unist-util-visit": "^5.1.0"
     },
     "devDependencies": {

@@ -73,8 +73,8 @@ export default async function OurProcessPage() {
                 variant="warm"
                 label="Ready?"
                 title="Ready to Start Your Journey?"
-                description="Browse our available greyhounds and find the perfect companion for your family."
-                primaryAction={{ label: "Meet Available Dogs", href: "/adopt/available" }}
+                description="Fill out an application form. If you need more time, you can start your application now and come back to it later."
+                primaryAction={{ label: "Apply Now", href: "/adopt/apply" }}
                 secondaryAction={{ label: "Contact Us", href: "/about/contact" }}
             />
         </>

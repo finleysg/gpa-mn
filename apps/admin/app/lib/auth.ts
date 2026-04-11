@@ -6,7 +6,11 @@ import { sendPasswordResetEmail, sendChangeEmailVerification } from "@/app/_lib/
 
 export const auth = betterAuth({
     baseURL: process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_SITE_URL,
-    trustedOrigins: ["http://localhost:*", "http://admin.localhost:*", "http://admin.localhost"],
+    trustedOrigins: [
+        "http://localhost:*",
+        "http://gpamn-admin.localhost:*",
+        "http://gpamn-admin.localhost",
+    ],
     database: drizzleAdapter(db, {
         provider: "mysql",
         schema: { user, session, account, verification },

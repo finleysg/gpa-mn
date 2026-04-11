@@ -7,7 +7,9 @@
     },
     "scripts": {
         "build": "turbo run build",
-        "dev": "turbo run dev",
+        "dev": "docker compose up -d && portless alias gpa-web 80 && portless alias gpa-admin 6100 && portless alias gpa-mail 8045 && portless alias gpa-data 6200",
+        "dev:stop": "docker compose down",
+        "dev:logs": "docker compose logs -f",
         "lint": "turbo run lint",
         "test": "turbo run test",
         "test:watch": "turbo run test:watch",

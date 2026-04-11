@@ -205,6 +205,20 @@ export async function createApplicationToken(
     return result!
 }
 
+export async function getApplicationByEmail(email: string) {
+    const [result] = await db
+        .select()
+        .from(applications)
+        .where(eq(applications.email, email))
+        .orderBy(desc(applications.createdAt))
+        .limit(1)
+    return result ?? null
+}
+
+export async function deleteApplicationTokens(applicationId: number) {
+    await db.delete(applicationTokens).where(eq(applicationTokens.applicationId, applicationId))
+}
+
 export async function addComment(data: {
     applicationId: number
     userId: string

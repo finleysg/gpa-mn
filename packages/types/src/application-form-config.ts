@@ -1,5 +1,5 @@
 import type { SectionKey } from "@repo/database"
-import type { ConditionalRule } from "./applications.js"
+import type { ConditionalRule } from "./applications"
 
 // === Field types ===
 

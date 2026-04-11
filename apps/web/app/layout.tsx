@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import { Bebas_Neue, Lora, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
-import { SiteHeader } from "./_components/site-header"
-import { SiteFooter } from "./_components/site-footer"
+import { ConditionalHeader } from "./_components/conditional-header"
+import { ConditionalFooter } from "./_components/conditional-footer"
 import "./globals.css"
 
 const bebasNeue = Bebas_Neue({
@@ -39,9 +39,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <SiteHeader />
+                    <ConditionalHeader />
                     <main>{children}</main>
-                    <SiteFooter />
+                    <ConditionalFooter />
                 </ThemeProvider>
             </body>
         </html>
