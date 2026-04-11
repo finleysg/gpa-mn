@@ -21,9 +21,7 @@ export function CommentThread({ comments, showCategory }: CommentThreadProps) {
             {comments.map((comment) => (
                 <div key={comment.id} className="space-y-1">
                     <div className="flex items-center gap-2 text-sm">
-                        <span className="font-medium">
-                            {comment.isSystemEvent ? "System" : comment.userName}
-                        </span>
+                        <span className="font-medium">{comment.userName}</span>
                         <span className="text-muted-foreground">
                             {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
                         </span>

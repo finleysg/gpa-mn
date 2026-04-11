@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/components/tabs"
 import { SECTION_CONFIGS } from "@repo/types"
@@ -8,6 +9,7 @@ import type { ApplicationStatus, Milestone } from "@repo/database"
 import { EnrichmentPanel } from "./enrichment-panel"
 import { SectionTab } from "./section-tab"
 import { DiscussionTab } from "./discussion-tab"
+import { CommentsSheet } from "./comments-sheet"
 
 interface MilestoneData {
     milestone: {
@@ -62,9 +64,11 @@ export function ApplicationDetail({
 }: ApplicationDetailProps) {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const defaultTab = searchParams.get("tab") ?? "applicant_info"
+    const initialTab = searchParams.get("tab") ?? "applicant_info"
+    const [activeTab, setActiveTab] = useState(initialTab)
 
     function handleTabChange(value: string) {
+        setActiveTab(value)
         const params = new URLSearchParams(searchParams.toString())
         params.set("tab", value)
         router.replace(`?${params.toString()}`, { scroll: false })
@@ -72,6 +76,11 @@ export function ApplicationDetail({
 
     return (
         <div className="space-y-6">
+            <CommentsSheet
+                applicationId={applicationId}
+                comments={comments}
+                activeTab={activeTab}
+            />
             <EnrichmentPanel
                 applicationId={applicationId}
                 status={status}
@@ -83,7 +92,7 @@ export function ApplicationDetail({
                 isAdoptionRepOnly={isAdoptionRepOnly}
             />
 
-            <Tabs defaultValue={defaultTab} onValueChange={handleTabChange}>
+            <Tabs defaultValue={initialTab} onValueChange={handleTabChange}>
                 <TabsList className="flex-wrap">
                     {SECTION_CONFIGS.map((section) => (
                         <TabsTrigger key={section.key} value={section.key}>
