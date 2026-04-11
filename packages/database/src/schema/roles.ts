@@ -8,9 +8,13 @@ export const ROLE_NAMES = [
     "Adoption Matcher",
     "Adoption Coordinator",
     "Adoption Rep",
-    "Adoption Observer",
     "Foster Coordinator",
     "Foster",
+    "President",
+    "Vice President",
+    "Secretary",
+    "Treasurer",
+    "Board Member",
 ] as const
 
 export type RoleName = (typeof ROLE_NAMES)[number]

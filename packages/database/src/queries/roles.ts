@@ -4,7 +4,7 @@ import { user } from "../schema/auth"
 import { role, userRole } from "../schema/roles"
 
 export async function getRoles() {
-    return db.select().from(role)
+    return db.select().from(role).orderBy(role.name)
 }
 
 export async function getRoleByName(name: string) {

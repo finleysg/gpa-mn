@@ -12,7 +12,11 @@ const SUBMISSION_ROLES = [
     "Content Admin",
     "Adoption Matcher",
     "Adoption Coordinator",
-    "Adoption Observer",
+    "President",
+    "Vice President",
+    "Secretary",
+    "Treasurer",
+    "Board Member",
 ]
 
 export default async function AccountPage() {

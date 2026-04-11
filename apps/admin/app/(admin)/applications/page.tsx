@@ -25,9 +25,16 @@ export default async function ApplicationsPage({ searchParams }: PageProps) {
     const { session, roles } = await requireSectionAccess("applications")
 
     const isAdoptionRepOnly = !roles.some((r) =>
-        ["Super Admin", "Adoption Coordinator", "Adoption Matcher", "Adoption Observer"].includes(
-            r,
-        ),
+        [
+            "Super Admin",
+            "Adoption Coordinator",
+            "Adoption Matcher",
+            "President",
+            "Vice President",
+            "Secretary",
+            "Treasurer",
+            "Board Member",
+        ].includes(r),
     )
     const showHound = !isAdoptionRepOnly
 

@@ -26,9 +26,16 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     const numericId = Number(id)
 
     const isAdoptionRepOnly = !roles.some((r) =>
-        ["Super Admin", "Adoption Coordinator", "Adoption Matcher", "Adoption Observer"].includes(
-            r,
-        ),
+        [
+            "Super Admin",
+            "Adoption Coordinator",
+            "Adoption Matcher",
+            "President",
+            "Vice President",
+            "Secretary",
+            "Treasurer",
+            "Board Member",
+        ].includes(r),
     )
 
     const [application, sectionsRows, milestones, commentRows, adoptionReps] = await Promise.all([
