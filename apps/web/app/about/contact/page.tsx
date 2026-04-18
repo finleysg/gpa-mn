@@ -4,6 +4,7 @@ import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
 import { FadeIn } from "@/app/_components/fade-in"
 import { NewsletterForm } from "@/app/_components/newsletter-form"
+import { ContactForm } from "./_components/contact-form"
 
 export default function ContactPage() {
     return (
@@ -20,95 +21,7 @@ export default function ContactPage() {
                     <FadeIn>
                         <div className="border-border rounded-4xl border bg-[#FAF5F0] p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] md:p-10 dark:bg-[#1a1715] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
                             <SectionHeader title="Drop Us a Line" />
-                            <form className="mt-6 space-y-5" action="#">
-                                <div>
-                                    <label
-                                        htmlFor="name"
-                                        className="mb-1.5 block text-sm font-semibold"
-                                    >
-                                        Full Name
-                                    </label>
-                                    <input
-                                        id="name"
-                                        type="text"
-                                        placeholder="Your name"
-                                        className="border-border bg-card focus:ring-primary/30 w-full rounded-xl border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
-                                    />
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor="email"
-                                        className="mb-1.5 block text-sm font-semibold"
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        id="email"
-                                        type="email"
-                                        placeholder="your@email.com"
-                                        className="border-border bg-card focus:ring-primary/30 w-full rounded-xl border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
-                                    />
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor="category"
-                                        className="mb-1.5 block text-sm font-semibold"
-                                    >
-                                        Category
-                                    </label>
-                                    <select
-                                        id="category"
-                                        defaultValue=""
-                                        className="border-border bg-card focus:ring-primary/30 w-full rounded-xl border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
-                                    >
-                                        <option value="" disabled>
-                                            Select a category…
-                                        </option>
-                                        <option value="general">General Inquiry</option>
-                                        <option value="fostering">Fostering</option>
-                                        <option value="volunteer">Volunteer</option>
-                                        <option value="vet-care">Vet Care</option>
-                                        <option value="meet-and-greet">Meet &amp; Greet</option>
-                                        <option value="lost-hounds">Lost Hounds</option>
-                                        <option value="returns">Returns</option>
-                                        <option value="whistle-blower">Whistle Blower</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor="subject"
-                                        className="mb-1.5 block text-sm font-semibold"
-                                    >
-                                        Subject
-                                    </label>
-                                    <input
-                                        id="subject"
-                                        type="text"
-                                        placeholder="What's this about?"
-                                        className="border-border bg-card focus:ring-primary/30 w-full rounded-xl border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
-                                    />
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor="message"
-                                        className="mb-1.5 block text-sm font-semibold"
-                                    >
-                                        Message
-                                    </label>
-                                    <textarea
-                                        id="message"
-                                        rows={5}
-                                        placeholder="Tell us more..."
-                                        className="border-border bg-card focus:ring-primary/30 w-full resize-none rounded-xl border px-4 py-3 text-sm focus:ring-2 focus:outline-none"
-                                    />
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="bg-primary hover:bg-primary/90 w-full rounded-full py-3.5 font-semibold text-white shadow-[0_4px_16px_rgba(156,47,48,0.25)] transition-colors"
-                                >
-                                    Send Message
-                                </button>
-                            </form>
+                            <ContactForm />
                         </div>
                     </FadeIn>
 

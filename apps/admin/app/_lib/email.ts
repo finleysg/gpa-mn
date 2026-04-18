@@ -58,10 +58,12 @@ async function sendEmail({
     to,
     subject,
     html,
+    replyTo,
 }: {
     to: string | string[]
     subject: string
     html: string
+    replyTo?: string
 }) {
     const recipients = Array.isArray(to) ? to : [to]
 
@@ -71,6 +73,7 @@ async function sendEmail({
             to: recipients,
             subject,
             html,
+            ...(replyTo ? { replyTo } : {}),
         })
         if (error) {
             throw new Error(`Failed to send email: ${error.message}`)
@@ -81,6 +84,7 @@ async function sendEmail({
             to: recipients,
             subject,
             html,
+            ...(replyTo ? { replyTo } : {}),
         })
     } else {
         console.log(`[email] Would send to ${recipients.join(", ")}: ${subject}`)
@@ -105,6 +109,55 @@ async function sendEmailToRole({
     }
 
     await sendEmail({ to: emails, subject, html })
+}
+
+// --- Contact form ---
+
+export const CONTACT_CATEGORIES = {
+    general: { label: "General Inquiry", to: "info@gpa-mn.org" },
+    fostering: { label: "Fostering", to: "fostering@gpa-mn.org" },
+    volunteer: { label: "Volunteer", to: "volunteering@gpa-mn.org" },
+    "vet-care": { label: "Vet Care", to: "vetcare@gpa-mn.org" },
+    "meet-and-greet": { label: "Meet & Greet", to: "meetandgreet@gpa-mn.org" },
+    "lost-hounds": { label: "Lost Hounds", to: "losthound@gpa-mn.org" },
+    returns: { label: "Returns", to: "returns@gpa-mn.org" },
+    "whistle-blower": { label: "Whistle Blower", to: "whistleblower@gpa-mn.org" },
+} as const
+
+export type ContactCategory = keyof typeof CONTACT_CATEGORIES
+
+export async function sendContactEmail({
+    category,
+    name,
+    email,
+    subject,
+    message,
+}: {
+    category: ContactCategory
+    name: string
+    email: string
+    subject: string
+    message: string
+}) {
+    const { label, to } = CONTACT_CATEGORIES[category]
+
+    await sendEmail({
+        to,
+        replyTo: email,
+        subject: `[${label}] ${subject}`,
+        html: emailLayout(`
+            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">New contact form message</h2>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">
+                <strong>Category:</strong> ${escapeHtml(label)}<br>
+                <strong>From:</strong> ${escapeHtml(name)} &lt;${escapeHtml(email)}&gt;<br>
+                <strong>Subject:</strong> ${escapeHtml(subject)}
+            </p>
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:16px;line-height:26px;color:#3f3f46;white-space:pre-wrap">${escapeHtml(message)}</p>
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:14px;color:#71717a">Reply directly to this email to respond to ${escapeHtml(name)}.</p>
+        `),
+    })
 }
 
 // --- Admin auth emails ---

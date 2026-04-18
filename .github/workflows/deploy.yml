@@ -38,6 +38,7 @@ jobs:
                   build-args: |
                       NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL_WEB }}
                       NEXT_PUBLIC_NEWSLETTER_URL=${{ vars.NEXT_PUBLIC_NEWSLETTER_URL }}
+                      NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
                   tags: |
                       ${{ env.REGISTRY }}/${{ github.repository }}/web:${{ github.ref_name }}
                       ${{ env.REGISTRY }}/${{ github.repository }}/web:latest
