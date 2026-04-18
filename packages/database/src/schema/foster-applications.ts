@@ -1,5 +1,6 @@
 import {
     boolean,
+    foreignKey,
     int,
     json,
     mysqlEnum,
@@ -79,9 +80,7 @@ export const fosterApplicationMilestones = mysqlTable(
     "fosterApplicationMilestones",
     {
         id: int().primaryKey().autoincrement(),
-        fosterApplicationId: int()
-            .notNull()
-            .references(() => fosterApplications.id),
+        fosterApplicationId: int().notNull(),
         milestone: mysqlEnum("milestone", FOSTER_MILESTONES).notNull(),
         completedAt: timestamp().notNull(),
         notes: text(),
@@ -91,6 +90,11 @@ export const fosterApplicationMilestones = mysqlTable(
         createdAt: timestamp().notNull().defaultNow(),
     },
     (table) => [
+        foreignKey({
+            name: "fa_milestones_app_fk",
+            columns: [table.fosterApplicationId],
+            foreignColumns: [fosterApplications.id],
+        }),
         uniqueIndex("fosterApplicationId_milestone_idx").on(
             table.fosterApplicationId,
             table.milestone,
@@ -102,15 +106,18 @@ export const fosterApplicationSections = mysqlTable(
     "fosterApplicationSections",
     {
         id: int().primaryKey().autoincrement(),
-        fosterApplicationId: int()
-            .notNull()
-            .references(() => fosterApplications.id),
+        fosterApplicationId: int().notNull(),
         sectionKey: mysqlEnum("sectionKey", FOSTER_SECTION_KEYS).notNull(),
         version: int().notNull().default(1),
         data: json().notNull(),
         createdAt: timestamp().notNull().defaultNow(),
     },
     (table) => [
+        foreignKey({
+            name: "fa_sections_app_fk",
+            columns: [table.fosterApplicationId],
+            foreignColumns: [fosterApplications.id],
+        }),
         uniqueIndex("fosterApplicationId_sectionKey_version_idx").on(
             table.fosterApplicationId,
             table.sectionKey,
@@ -119,26 +126,42 @@ export const fosterApplicationSections = mysqlTable(
     ],
 )
 
-export const fosterApplicationComments = mysqlTable("fosterApplicationComments", {
-    id: int().primaryKey().autoincrement(),
-    fosterApplicationId: int()
-        .notNull()
-        .references(() => fosterApplications.id),
-    userId: varchar({ length: 36 })
-        .notNull()
-        .references(() => user.id),
-    sectionCategory: mysqlEnum("sectionCategory", FOSTER_SECTION_CATEGORIES),
-    body: text().notNull(),
-    isSystemEvent: boolean().notNull().default(false),
-    createdAt: timestamp().notNull().defaultNow(),
-})
+export const fosterApplicationComments = mysqlTable(
+    "fosterApplicationComments",
+    {
+        id: int().primaryKey().autoincrement(),
+        fosterApplicationId: int().notNull(),
+        userId: varchar({ length: 36 })
+            .notNull()
+            .references(() => user.id),
+        sectionCategory: mysqlEnum("sectionCategory", FOSTER_SECTION_CATEGORIES),
+        body: text().notNull(),
+        isSystemEvent: boolean().notNull().default(false),
+        createdAt: timestamp().notNull().defaultNow(),
+    },
+    (table) => [
+        foreignKey({
+            name: "fa_comments_app_fk",
+            columns: [table.fosterApplicationId],
+            foreignColumns: [fosterApplications.id],
+        }),
+    ],
+)
 
-export const fosterApplicationTokens = mysqlTable("fosterApplicationTokens", {
-    id: int().primaryKey().autoincrement(),
-    fosterApplicationId: int()
-        .notNull()
-        .references(() => fosterApplications.id),
-    token: varchar({ length: 64 }).notNull().unique(),
-    expiresAt: timestamp().notNull(),
-    createdAt: timestamp().notNull().defaultNow(),
-})
+export const fosterApplicationTokens = mysqlTable(
+    "fosterApplicationTokens",
+    {
+        id: int().primaryKey().autoincrement(),
+        fosterApplicationId: int().notNull(),
+        token: varchar({ length: 64 }).notNull().unique(),
+        expiresAt: timestamp().notNull(),
+        createdAt: timestamp().notNull().defaultNow(),
+    },
+    (table) => [
+        foreignKey({
+            name: "fa_tokens_app_fk",
+            columns: [table.fosterApplicationId],
+            foreignColumns: [fosterApplications.id],
+        }),
+    ],
+)
