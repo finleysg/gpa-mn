@@ -1,9 +1,9 @@
 import { getRoles } from "@repo/database"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { requirePermission } from "@/app/_lib/require-section-access"
 import { InviteForm } from "./invite-form"
 
 export default async function InviteUserPage() {
-    await requireSectionAccess("users")
+    await requirePermission("User Edit")
     const roles = await getRoles()
 
     return (

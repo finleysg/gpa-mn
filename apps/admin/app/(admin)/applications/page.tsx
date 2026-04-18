@@ -4,7 +4,7 @@ import {
     getLatestSectionsForApplications,
     type ApplicationStatus,
 } from "@repo/database"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { canViewAllAdoptions, requireAdoptionsAccess } from "@/app/_lib/require-section-access"
 import {
     Table,
     TableBody,
@@ -22,20 +22,9 @@ interface PageProps {
 }
 
 export default async function ApplicationsPage({ searchParams }: PageProps) {
-    const { session, roles } = await requireSectionAccess("applications")
-
-    const isAdoptionRepOnly = !roles.some((r) =>
-        [
-            "Super Admin",
-            "Adoption Coordinator",
-            "Adoption Matcher",
-            "President",
-            "Vice President",
-            "Secretary",
-            "Treasurer",
-            "Board Member",
-        ].includes(r),
-    )
+    const { session, ctx } = await requireAdoptionsAccess()
+    const canSeeAll = canViewAllAdoptions(ctx)
+    const isAdoptionRepOnly = !canSeeAll
     const showHound = !isAdoptionRepOnly
 
     const params = await searchParams

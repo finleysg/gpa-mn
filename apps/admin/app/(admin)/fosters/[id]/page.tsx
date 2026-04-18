@@ -6,7 +6,7 @@ import {
 } from "@repo/database"
 import type { FosterSectionKey } from "@repo/database"
 import type { FosterApplicationComment } from "@repo/types"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { requireFostersAccess } from "@/app/_lib/require-section-access"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Suspense } from "react"
@@ -19,7 +19,7 @@ interface PageProps {
 }
 
 export default async function FosterApplicationDetailPage({ params }: PageProps) {
-    await requireSectionAccess("fosters")
+    await requireFostersAccess()
     const { id } = await params
     const numericId = Number(id)
 

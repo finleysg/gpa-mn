@@ -11,16 +11,54 @@ import {
 } from "@repo/database"
 import type { ApplicationStatus, Milestone, SectionCategory } from "@repo/database"
 import { revalidatePath } from "next/cache"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import {
+    canEditAllAdoptions,
+    canEditMyAdoptions,
+    getPermissionContext,
+    getSessionOrRedirect,
+    hasPermission,
+    type PermissionContext,
+} from "@/app/lib/auth-utils"
 import { sendAdminAssignmentEmail } from "@/app/_lib/email"
 
 type ActionResult = { success: true } | { errors: string[] }
+
+async function requireAdoptionEditor(applicationId: number) {
+    const session = await getSessionOrRedirect()
+    const ctx = await getPermissionContext(session.user.id)
+
+    if (canEditAllAdoptions(ctx)) {
+        return { session, ctx, scope: "all" as const }
+    }
+
+    if (canEditMyAdoptions(ctx)) {
+        const application = await getApplication(applicationId)
+        if (!application) {
+            throw new Error("Application not found")
+        }
+        if (application.adoptionRep !== session.user.id) {
+            throw new Error("Unauthorized")
+        }
+        return { session, ctx, scope: "mine" as const }
+    }
+
+    throw new Error("Unauthorized")
+}
+
+async function requireFullAdoptionEditor() {
+    const session = await getSessionOrRedirect()
+    const ctx: PermissionContext = await getPermissionContext(session.user.id)
+    if (!hasPermission(ctx, "Adoption Edit")) {
+        throw new Error("Unauthorized")
+    }
+    return { session, ctx }
+}
 
 export async function changeStatusAction(
     applicationId: number,
     status: ApplicationStatus,
 ): Promise<ActionResult> {
-    const { session } = await requireSectionAccess("applications")
+    const { session } = await requireAdoptionEditor(applicationId)
     try {
         await updateApplicationStatus(applicationId, status, session.user.id)
         revalidatePath(`/applications/${applicationId}`)
@@ -34,12 +72,11 @@ export async function updateAdoptionRepAction(
     applicationId: number,
     repUserId: string | null,
 ): Promise<ActionResult> {
-    await requireSectionAccess("applications")
+    await requireFullAdoptionEditor()
     try {
         await updateApplicationEnrichment(applicationId, { adoptionRep: repUserId })
         revalidatePath(`/applications/${applicationId}`)
 
-        // Fire-and-forget: notify the assigned rep
         if (repUserId) {
             Promise.all([getUser(repUserId), getApplication(applicationId)])
                 .then(([rep, application]) => {
@@ -70,7 +107,7 @@ export async function updateHoundAction(
     houndId: string | null,
     houndName: string | null,
 ): Promise<ActionResult> {
-    await requireSectionAccess("applications")
+    await requireAdoptionEditor(applicationId)
     try {
         await updateApplicationEnrichment(applicationId, { houndId, houndName })
         revalidatePath(`/applications/${applicationId}`)
@@ -85,7 +122,7 @@ export async function setMilestoneAction(
     milestone: Milestone,
     completedAt: string,
 ): Promise<ActionResult> {
-    const { session } = await requireSectionAccess("applications")
+    const { session } = await requireAdoptionEditor(applicationId)
     try {
         await upsertMilestone({
             applicationId,
@@ -104,7 +141,7 @@ export async function clearMilestoneAction(
     applicationId: number,
     milestone: Milestone,
 ): Promise<ActionResult> {
-    await requireSectionAccess("applications")
+    await requireAdoptionEditor(applicationId)
     try {
         await deleteMilestone(applicationId, milestone)
         revalidatePath(`/applications/${applicationId}`)
@@ -119,7 +156,7 @@ export async function addCommentAction(
     body: string,
     sectionCategory?: SectionCategory,
 ): Promise<ActionResult> {
-    const { session } = await requireSectionAccess("applications")
+    const { session } = await requireAdoptionEditor(applicationId)
     if (!body.trim()) {
         return { errors: ["Comment body is required"] }
     }

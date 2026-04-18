@@ -7,7 +7,7 @@ import {
 } from "@repo/database"
 import type { SectionKey } from "@repo/database"
 import type { ApplicationComment } from "@repo/types"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { canViewAllAdoptions, requireAdoptionsAccess } from "@/app/_lib/require-section-access"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Suspense } from "react"
@@ -21,22 +21,11 @@ interface PageProps {
 }
 
 export default async function ApplicationDetailPage({ params }: PageProps) {
-    const { session, roles } = await requireSectionAccess("applications")
+    const { session, ctx } = await requireAdoptionsAccess()
     const { id } = await params
     const numericId = Number(id)
 
-    const isAdoptionRepOnly = !roles.some((r) =>
-        [
-            "Super Admin",
-            "Adoption Coordinator",
-            "Adoption Matcher",
-            "President",
-            "Vice President",
-            "Secretary",
-            "Treasurer",
-            "Board Member",
-        ].includes(r),
-    )
+    const isAdoptionRepOnly = !canViewAllAdoptions(ctx)
 
     const [application, sectionsRows, milestones, commentRows, adoptionReps] = await Promise.all([
         getApplication(numericId),

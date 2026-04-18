@@ -4,7 +4,7 @@ import {
     getLatestFosterSectionsForApplications,
     type FosterApplicationStatus,
 } from "@repo/database"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { requireFostersAccess } from "@/app/_lib/require-section-access"
 import {
     Table,
     TableBody,
@@ -22,7 +22,7 @@ interface PageProps {
 }
 
 export default async function FostersPage({ searchParams }: PageProps) {
-    await requireSectionAccess("fosters")
+    await requireFostersAccess()
 
     const params = await searchParams
     const statusFilter = params.status as FosterApplicationStatus | "all" | "active" | undefined

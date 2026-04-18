@@ -1,42 +1,15 @@
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { auth } from "./auth"
-import { getUserRoles, hasAdminLogin } from "@repo/database"
-import type { RoleName } from "@repo/database"
+import { getUserPermissions, getUserRoles, hasAdminLogin } from "@repo/database"
+import type { PermissionName, RoleName } from "@repo/database"
 
-const SECTION_ACCESS: Record<string, RoleName[]> = {
-    users: ["Super Admin", "User Admin"],
-    home: ["Super Admin", "Content Admin"],
-    adopt: [
-        "Super Admin",
-        "Content Admin",
-        "Adoption Matcher",
-        "Adoption Coordinator",
-        "Adoption Rep",
-        "President",
-        "Vice President",
-        "Secretary",
-        "Treasurer",
-        "Board Member",
-    ],
-    volunteer: ["Super Admin", "Content Admin"],
-    donate: ["Super Admin", "Content Admin"],
-    events: ["Super Admin", "Content Admin"],
-    about: ["Super Admin", "Content Admin"],
-    "lost-hound": ["Super Admin", "Content Admin"],
-    foster: ["Super Admin", "Foster Coordinator", "Foster"],
-    applications: [
-        "Super Admin",
-        "Adoption Coordinator",
-        "Adoption Matcher",
-        "Adoption Rep",
-        "President",
-        "Vice President",
-        "Secretary",
-        "Treasurer",
-        "Board Member",
-    ],
-    fosters: ["Super Admin", "Foster Coordinator", "President", "Vice President"],
+export const SUPER_ADMIN_ROLE: RoleName = "Super Admin"
+
+export interface PermissionContext {
+    userId: string
+    isSuperAdmin: boolean
+    permissions: PermissionName[]
 }
 
 export async function getSessionOrRedirect() {
@@ -46,14 +19,11 @@ export async function getSessionOrRedirect() {
         redirect("/login")
     }
 
-    // Check if user is deactivated
     if ((session.user as Record<string, unknown>).deactivatedAt) {
-        // Invalidate the session and redirect
         await auth.api.signOut({ headers: await headers() })
         redirect("/login")
     }
 
-    // Check if user has admin login access
     const canLogin = await hasAdminLogin(session.user.id)
     if (!canLogin) {
         await auth.api.signOut({ headers: await headers() })
@@ -63,14 +33,91 @@ export async function getSessionOrRedirect() {
     return session
 }
 
-export async function getUserRolesFromSession(userId: string) {
+export async function getUserRolesFromSession(userId: string): Promise<RoleName[]> {
     const roles = await getUserRoles(userId)
     return roles.map((r) => r.name as RoleName)
 }
 
-export function canAccessSection(userRoles: RoleName[], section: string): boolean {
-    if (userRoles.includes("Super Admin")) return true
-    const allowed = SECTION_ACCESS[section]
-    if (!allowed) return false
-    return userRoles.some((r) => allowed.includes(r))
+export async function getPermissionContext(userId: string): Promise<PermissionContext> {
+    const [roles, permissions] = await Promise.all([
+        getUserRoles(userId),
+        getUserPermissions(userId),
+    ])
+    const isSuperAdmin = roles.some((r) => r.name === SUPER_ADMIN_ROLE)
+    return { userId, isSuperAdmin, permissions }
+}
+
+export function hasPermission(
+    ctx: PermissionContext,
+    requirement: PermissionName | PermissionName[],
+): boolean {
+    if (ctx.isSuperAdmin) return true
+    const required = Array.isArray(requirement) ? requirement : [requirement]
+    return required.some((p) => ownedOrImplied(ctx.permissions, p))
+}
+
+function ownedOrImplied(owned: PermissionName[], needed: PermissionName): boolean {
+    if (owned.includes(needed)) return true
+    // Edit implies View; broader (non-"My") implies narrower
+    switch (needed) {
+        case "Adoption View":
+            return (
+                owned.includes("Adoption Edit") ||
+                owned.includes("My Adoption View") ||
+                owned.includes("My Adoption Edit")
+            )
+        case "My Adoption View":
+            return (
+                owned.includes("Adoption View") ||
+                owned.includes("Adoption Edit") ||
+                owned.includes("My Adoption Edit")
+            )
+        case "Adoption Edit":
+            return false
+        case "My Adoption Edit":
+            return owned.includes("Adoption Edit")
+        case "Foster View":
+            return owned.includes("Foster Edit")
+        case "Foster Edit":
+            return false
+        default:
+            return false
+    }
+}
+
+export function canViewAllAdoptions(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, ["Adoption View", "Adoption Edit"])
+}
+
+export function canEditAllAdoptions(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, "Adoption Edit")
+}
+
+export function canViewMyAdoptions(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, [
+        "Adoption View",
+        "Adoption Edit",
+        "My Adoption View",
+        "My Adoption Edit",
+    ])
+}
+
+export function canEditMyAdoptions(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, ["Adoption Edit", "My Adoption Edit"])
+}
+
+export function canViewFosters(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, ["Foster View", "Foster Edit"])
+}
+
+export function canEditFosters(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, "Foster Edit")
+}
+
+export function canEditContent(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, "Content Edit")
+}
+
+export function canEditUsers(ctx: PermissionContext): boolean {
+    return hasPermission(ctx, "User Edit")
 }

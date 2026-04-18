@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { getInvitations } from "@repo/database"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { requirePermission } from "@/app/_lib/require-section-access"
 import { Button } from "@repo/ui/components/button"
 import {
     Table,
@@ -15,7 +15,7 @@ import { Plus } from "lucide-react"
 import { resendInviteAction, revokeInviteAction } from "@/app/_actions/users"
 
 export default async function InvitationsPage() {
-    await requireSectionAccess("users")
+    await requirePermission("User Edit")
     const invitations = await getInvitations()
 
     return (

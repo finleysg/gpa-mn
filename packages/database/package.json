@@ -13,7 +13,8 @@
         "db:studio": "drizzle-kit studio",
         "db:seed": "tsx src/seed.ts",
         "db:seed-roles": "tsx src/seed-roles.ts",
-        "db:seed-user": "tsx src/seed-user.ts"
+        "db:seed-user": "tsx src/seed-user.ts",
+        "db:cleanup-legacy-roles": "tsx src/cleanup-legacy-roles.ts"
     },
     "exports": {
         ".": {

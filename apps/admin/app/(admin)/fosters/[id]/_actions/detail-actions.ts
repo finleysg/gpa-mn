@@ -12,15 +12,24 @@ import type {
     FosterSectionCategory,
 } from "@repo/database"
 import { revalidatePath } from "next/cache"
-import { requireSectionAccess } from "@/app/_lib/require-section-access"
+import { getPermissionContext, getSessionOrRedirect, hasPermission } from "@/app/lib/auth-utils"
 
 type ActionResult = { success: true } | { errors: string[] }
+
+async function requireFosterEditor() {
+    const session = await getSessionOrRedirect()
+    const ctx = await getPermissionContext(session.user.id)
+    if (!hasPermission(ctx, "Foster Edit")) {
+        throw new Error("Unauthorized")
+    }
+    return { session, ctx }
+}
 
 export async function changeStatusAction(
     fosterApplicationId: number,
     status: FosterApplicationStatus,
 ): Promise<ActionResult> {
-    const { session } = await requireSectionAccess("fosters")
+    const { session } = await requireFosterEditor()
     try {
         await updateFosterApplicationStatus(fosterApplicationId, status, session.user.id)
         revalidatePath(`/fosters/${fosterApplicationId}`)
@@ -35,7 +44,7 @@ export async function setMilestoneAction(
     milestone: FosterMilestone,
     completedAt: string,
 ): Promise<ActionResult> {
-    const { session } = await requireSectionAccess("fosters")
+    const { session } = await requireFosterEditor()
     try {
         await upsertFosterMilestone({
             fosterApplicationId,
@@ -54,7 +63,7 @@ export async function clearMilestoneAction(
     fosterApplicationId: number,
     milestone: FosterMilestone,
 ): Promise<ActionResult> {
-    await requireSectionAccess("fosters")
+    await requireFosterEditor()
     try {
         await deleteFosterMilestone(fosterApplicationId, milestone)
         revalidatePath(`/fosters/${fosterApplicationId}`)
@@ -69,7 +78,7 @@ export async function addCommentAction(
     body: string,
     sectionCategory?: FosterSectionCategory,
 ): Promise<ActionResult> {
-    const { session } = await requireSectionAccess("fosters")
+    const { session } = await requireFosterEditor()
     if (!body.trim()) {
         return { errors: ["Comment body is required"] }
     }

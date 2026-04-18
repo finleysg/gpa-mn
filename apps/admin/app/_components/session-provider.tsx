@@ -1,11 +1,13 @@
 "use client"
 
 import { createContext, useContext } from "react"
-import type { RoleName } from "@repo/database"
+import type { PermissionName, RoleName } from "@repo/database"
 
 interface SessionContextValue {
     user: { id: string; name: string; email: string }
     roles: RoleName[]
+    permissions: PermissionName[]
+    isSuperAdmin: boolean
 }
 
 const SessionContext = createContext<SessionContextValue | null>(null)

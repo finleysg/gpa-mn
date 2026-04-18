@@ -1,7 +1,7 @@
-import { and, eq, inArray, isNull, isNotNull, notInArray, sql } from "drizzle-orm"
+import { and, eq, inArray, isNull, isNotNull, sql } from "drizzle-orm"
 import { db } from "../index"
 import { account, user } from "../schema/auth"
-import { role, userRole } from "../schema/roles"
+import { permission, role, rolePermission, userRole } from "../schema/roles"
 
 export async function getUsers() {
     const rows = await db
@@ -127,9 +127,14 @@ export async function updateUserNotificationPreferences(
     await db.update(user).set(preferences).where(eq(user.id, id))
 }
 
-const EXCLUDED_SUBMISSION_ROLES = ["Adoption Rep", "Foster Coordinator", "Foster"]
+const ADOPTION_SUBMISSION_PERMISSIONS = ["Adoption View", "Adoption Edit"]
 
-export async function getUsersForSubmissionNotification() {
+const FOSTER_SUBMISSION_PERMISSIONS = ["Foster View", "Foster Edit"]
+
+async function getUsersForPermissionNotification(
+    permissionNames: string[],
+    notifyColumn: "notifyOnSubmission" | "notifyOnFosterSubmission",
+) {
     const rows = await db
         .selectDistinct({
             id: user.id,
@@ -138,37 +143,45 @@ export async function getUsersForSubmissionNotification() {
         })
         .from(user)
         .innerJoin(userRole, eq(user.id, userRole.userId))
-        .innerJoin(role, eq(userRole.roleId, role.id))
+        .innerJoin(rolePermission, eq(userRole.roleId, rolePermission.roleId))
+        .innerJoin(permission, eq(rolePermission.permissionId, permission.id))
         .where(
             and(
-                eq(user.notifyOnSubmission, true),
+                eq(user[notifyColumn], true),
                 isNull(user.deactivatedAt),
-                notInArray(role.name, EXCLUDED_SUBMISSION_ROLES),
+                eq(user.adminLogin, true),
+                inArray(permission.name, permissionNames),
             ),
         )
     return rows
 }
 
-const FOSTER_SUBMISSION_ROLES = ["Super Admin", "Foster Coordinator", "President", "Vice President"]
+export async function getUsersForSubmissionNotification() {
+    return getUsersForPermissionNotification(ADOPTION_SUBMISSION_PERMISSIONS, "notifyOnSubmission")
+}
 
 export async function getUsersForFosterSubmissionNotification() {
+    return getUsersForPermissionNotification(
+        FOSTER_SUBMISSION_PERMISSIONS,
+        "notifyOnFosterSubmission",
+    )
+}
+
+export async function getUserIdsWithRolePermissions(): Promise<string[]> {
     const rows = await db
-        .selectDistinct({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-        })
-        .from(user)
-        .innerJoin(userRole, eq(user.id, userRole.userId))
-        .innerJoin(role, eq(userRole.roleId, role.id))
-        .where(
-            and(
-                eq(user.notifyOnFosterSubmission, true),
-                isNull(user.deactivatedAt),
-                inArray(role.name, FOSTER_SUBMISSION_ROLES),
-            ),
-        )
-    return rows
+        .selectDistinct({ userId: userRole.userId })
+        .from(userRole)
+        .innerJoin(rolePermission, eq(rolePermission.roleId, userRole.roleId))
+    return rows.map((r) => r.userId)
+}
+
+export async function userHasRolePermissions(userId: string): Promise<boolean> {
+    const [result] = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(userRole)
+        .innerJoin(rolePermission, eq(rolePermission.roleId, userRole.roleId))
+        .where(eq(userRole.userId, userId))
+    return (result?.count ?? 0) > 0
 }
 
 export async function hasAdminLogin(id: string): Promise<boolean> {

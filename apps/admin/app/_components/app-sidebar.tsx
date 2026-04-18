@@ -46,7 +46,7 @@ import {
 import { useSession } from "./session-provider"
 import { authClient } from "@/app/lib/auth-client"
 import { useRouter } from "next/navigation"
-import { type RoleName } from "@repo/database"
+import type { PermissionName } from "@repo/database"
 
 interface NavItem {
     title: string
@@ -60,9 +60,11 @@ interface NavGroup {
     children: NavEntry[]
 }
 
-type NavEntry = (NavItem | NavGroup) & { section?: string }
+type PermissionRequirement = PermissionName | PermissionName[]
 
-function isGroup(entry: NavEntry): entry is NavGroup & { section?: string } {
+type NavEntry = (NavItem | NavGroup) & { requires?: PermissionRequirement }
+
+function isGroup(entry: NavEntry): entry is NavGroup & { requires?: PermissionRequirement } {
     return "children" in entry
 }
 
@@ -73,65 +75,57 @@ function isActive(pathname: string, entry: NavEntry): boolean {
     return pathname.startsWith(entry.href)
 }
 
-const SECTION_ACCESS: Record<string, RoleName[]> = {
-    users: ["Super Admin", "User Admin"],
-    home: ["Super Admin", "Content Admin"],
-    adopt: [
-        "Super Admin",
-        "Content Admin",
-        "Adoption Matcher",
-        "Adoption Coordinator",
-        "Adoption Rep",
-        "President",
-        "Vice President",
-        "Secretary",
-        "Treasurer",
-        "Board Member",
-    ],
-    volunteer: ["Super Admin", "Content Admin"],
-    donate: ["Super Admin", "Content Admin"],
-    events: ["Super Admin", "Content Admin"],
-    about: ["Super Admin", "Content Admin"],
-    "lost-hound": ["Super Admin", "Content Admin"],
-    foster: ["Super Admin", "Foster Coordinator", "Foster"],
-    applications: [
-        "Super Admin",
-        "Adoption Coordinator",
-        "Adoption Matcher",
-        "Adoption Rep",
-        "President",
-        "Vice President",
-        "Secretary",
-        "Treasurer",
-        "Board Member",
-    ],
-    fosters: ["Super Admin", "Foster Coordinator", "President", "Vice President"],
+const IMPLIES: Record<PermissionName, PermissionName[]> = {
+    "Content Edit": [],
+    "User Edit": [],
+    "Adoption View": ["Adoption Edit", "My Adoption View", "My Adoption Edit"],
+    "My Adoption View": ["Adoption View", "Adoption Edit", "My Adoption Edit"],
+    "Adoption Edit": [],
+    "My Adoption Edit": ["Adoption Edit"],
+    "Foster View": ["Foster Edit"],
+    "Foster Edit": [],
 }
 
-function canAccess(roles: RoleName[], section?: string): boolean {
-    if (!section) return true
-    if (roles.includes("Super Admin")) return true
-    const allowed = SECTION_ACCESS[section]
-    if (!allowed) return false
-    return roles.some((r) => allowed.includes(r))
+function canAccess(
+    permissions: PermissionName[],
+    isSuperAdmin: boolean,
+    requires?: PermissionRequirement,
+): boolean {
+    if (!requires) return true
+    if (isSuperAdmin) return true
+    const required = Array.isArray(requires) ? requires : [requires]
+    return required.some((needed) => {
+        if (permissions.includes(needed)) return true
+        return IMPLIES[needed].some((implied) => permissions.includes(implied))
+    })
 }
 
 const adminEntries: NavEntry[] = [
-    { title: "All Users", href: "/users", icon: Users, section: "users" },
-    { title: "Invitations", href: "/users/invitations", icon: Mail, section: "users" },
-    { title: "Roles", href: "/roles", icon: Shield, section: "users" },
+    { title: "All Users", href: "/users", icon: Users, requires: "User Edit" },
+    { title: "Invitations", href: "/users/invitations", icon: Mail, requires: "User Edit" },
+    { title: "Roles", href: "/roles", icon: Shield, requires: "User Edit" },
 ]
 
 const operationsEntries: NavEntry[] = [
-    { title: "Applications", href: "/applications", icon: ClipboardList, section: "applications" },
-    { title: "Fosters", href: "/fosters", icon: Heart, section: "fosters" },
+    {
+        title: "Applications",
+        href: "/applications",
+        icon: ClipboardList,
+        requires: ["Adoption View", "My Adoption View", "Adoption Edit", "My Adoption Edit"],
+    },
+    {
+        title: "Fosters",
+        href: "/fosters",
+        icon: Heart,
+        requires: ["Foster View", "Foster Edit"],
+    },
 ]
 
 const navEntries: NavEntry[] = [
     {
         title: "Home",
         icon: Home,
-        section: "home",
+        requires: "Content Edit",
         children: [
             { title: "Page Header", href: "/home" },
             { title: "Available Greyhounds", href: "/content/section-header/home-adopt" },
@@ -142,7 +136,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Adopt",
         icon: PawPrint,
-        section: "adopt",
+        requires: "Content Edit",
         children: [
             { title: "Page Header", href: "/content/page-header/adopt" },
             { title: "Why Greyhounds", href: "/content/section-header/adopt-why" },
@@ -181,7 +175,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Volunteer",
         icon: Heart,
-        section: "volunteer",
+        requires: "Content Edit",
         children: [
             { title: "Page Header", href: "/content/page-header/volunteer" },
             { title: "Fostering", href: "/content/section-header/volunteer-fostering" },
@@ -193,7 +187,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Donate",
         icon: HandCoins,
-        section: "donate",
+        requires: "Content Edit",
         children: [
             { title: "Page Header", href: "/content/page-header/donate" },
             { title: "Ways to Give", href: "/content/section-header/donate-ways" },
@@ -201,11 +195,11 @@ const navEntries: NavEntry[] = [
             { title: "Pages", href: "/donate-pages", icon: FileText },
         ],
     },
-    { title: "Events", href: "/events", icon: Calendar, section: "events" },
+    { title: "Events", href: "/events", icon: Calendar, requires: "Content Edit" },
     {
         title: "About",
         icon: BookOpen,
-        section: "about",
+        requires: "Content Edit",
         children: [
             { title: "Page Header", href: "/content/page-header/about" },
             { title: "About Page", href: "/about-page" },
@@ -215,7 +209,7 @@ const navEntries: NavEntry[] = [
     {
         title: "Lost Hound",
         icon: AlertTriangle,
-        section: "lost-hound",
+        requires: "Content Edit",
         children: [
             { title: "Page Header", href: "/content/page-header/lost-hound" },
             { title: "Act Now Lists", href: "/content/section-header/lost-hound-act" },
@@ -301,18 +295,22 @@ function NavGroupItem({ group, pathname }: { group: NavGroup; pathname: string }
 export function AppSidebar() {
     const pathname = usePathname()
     const router = useRouter()
-    const { user, roles } = useSession()
+    const { user, permissions, isSuperAdmin } = useSession()
 
     async function handleSignOut() {
         await authClient.signOut()
         router.push("/login")
     }
 
-    const visibleContentEntries = navEntries.filter((entry) => canAccess(roles, entry.section))
-    const visibleOperationsEntries = operationsEntries.filter((entry) =>
-        canAccess(roles, entry.section),
+    const visibleContentEntries = navEntries.filter((entry) =>
+        canAccess(permissions, isSuperAdmin, entry.requires),
     )
-    const visibleAdminEntries = adminEntries.filter((entry) => canAccess(roles, entry.section))
+    const visibleOperationsEntries = operationsEntries.filter((entry) =>
+        canAccess(permissions, isSuperAdmin, entry.requires),
+    )
+    const visibleAdminEntries = adminEntries.filter((entry) =>
+        canAccess(permissions, isSuperAdmin, entry.requires),
+    )
 
     function renderEntries(entries: NavEntry[]) {
         return entries.map((entry) =>

@@ -18,19 +18,15 @@ import {
     updateUserPhone,
     userHasPassword,
 } from "@repo/database"
-import {
-    getSessionOrRedirect,
-    getUserRolesFromSession,
-    canAccessSection,
-} from "@/app/lib/auth-utils"
+import { getPermissionContext, getSessionOrRedirect, hasPermission } from "@/app/lib/auth-utils"
 import { auth } from "@/app/lib/auth"
 import { sendInviteEmail } from "@/app/_lib/email"
 import { revalidateWeb } from "@/app/_lib/revalidate-web"
 
 async function requireUserAdmin() {
     const session = await getSessionOrRedirect()
-    const roles = await getUserRolesFromSession(session.user.id)
-    if (!canAccessSection(roles, "users")) {
+    const ctx = await getPermissionContext(session.user.id)
+    if (!hasPermission(ctx, "User Edit")) {
         throw new Error("Unauthorized")
     }
     return session
