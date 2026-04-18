@@ -90,11 +90,9 @@ export function FosterApplicationDetail({
                         className="data-[state=inactive]:hidden"
                     >
                         <SectionTab
-                            fosterApplicationId={fosterApplicationId}
                             sectionKey={section.key}
                             sectionData={sections[section.key] ?? {}}
                             allSectionsData={sections}
-                            comments={comments}
                         />
                     </TabsContent>
                 ))}

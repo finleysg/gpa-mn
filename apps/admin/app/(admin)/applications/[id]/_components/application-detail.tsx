@@ -110,11 +110,9 @@ export function ApplicationDetail({
                         className="data-[state=inactive]:hidden"
                     >
                         <SectionTab
-                            applicationId={applicationId}
                             sectionKey={section.key}
                             sectionData={sections[section.key] ?? {}}
                             allSectionsData={sections}
-                            comments={comments}
                         />
                     </TabsContent>
                 ))}
