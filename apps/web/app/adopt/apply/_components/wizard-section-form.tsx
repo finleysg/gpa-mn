@@ -4,7 +4,7 @@ import { useActionState, useState, useCallback, useRef } from "react"
 import { useRouter } from "next/navigation"
 import type { SectionKey } from "@repo/database"
 import type { SectionConfig } from "@repo/types"
-import { getVisibleFields } from "@repo/types"
+import { CONDITIONAL_RULES, SECTION_CONFIG_MAP, getVisibleFields } from "@repo/types"
 import { Button } from "@repo/ui/components/button"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
@@ -13,7 +13,7 @@ import { FieldRenderer } from "./field-renderer"
 import { getNextSectionSlug } from "../_lib/section-slugs"
 
 interface WizardSectionFormProps {
-    sectionConfig: SectionConfig
+    sectionConfig: SectionConfig<SectionKey>
     savedData: Record<string, unknown>
     allSectionsData: Partial<Record<SectionKey, Record<string, unknown>>>
     applicationId: number
@@ -29,10 +29,16 @@ export function WizardSectionForm({
     const [formData, setFormData] = useState<Record<string, unknown>>(savedData)
     const intentRef = useRef<"save" | "continue">("continue")
 
-    const visibleFields = getVisibleFields(sectionConfig.key, formData, {
-        ...allSectionsData,
-        [sectionConfig.key]: formData,
-    })
+    const visibleFields = getVisibleFields(
+        sectionConfig.key,
+        formData,
+        {
+            ...allSectionsData,
+            [sectionConfig.key]: formData,
+        },
+        CONDITIONAL_RULES,
+        SECTION_CONFIG_MAP,
+    )
 
     const boundAction = saveSectionAction.bind(null, applicationId, sectionConfig.key)
 

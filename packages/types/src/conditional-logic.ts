@@ -1,10 +1,8 @@
-import type { SectionKey } from "@repo/database"
-import type { ConditionalRule } from "./applications"
-import { CONDITIONAL_RULES, SECTION_CONFIG_MAP } from "./application-form-config"
+import type { ConditionalRule, SectionConfig } from "./applications"
 
-type SectionsData = Partial<Record<SectionKey, Record<string, unknown>>>
+type SectionsData<K extends string> = Partial<Record<K, Record<string, unknown>>>
 
-function evaluateCondition(rule: ConditionalRule, sourceValue: unknown): boolean {
+function evaluateCondition(rule: ConditionalRule<string>, sourceValue: unknown): boolean {
     switch (rule.condition) {
         case "equals":
             return sourceValue === rule.value
@@ -27,12 +25,14 @@ function evaluateCondition(rule: ConditionalRule, sourceValue: unknown): boolean
  * Fields without any conditional rule are always visible.
  * Fields with multiple rules are visible if ANY rule matches (OR logic).
  */
-export function getVisibleFields(
-    sectionKey: SectionKey,
+export function getVisibleFields<K extends string>(
+    sectionKey: K,
     currentData: Record<string, unknown>,
-    allSectionsData: SectionsData = {},
+    allSectionsData: SectionsData<K>,
+    rules: ConditionalRule<K>[],
+    configMap: Record<K, SectionConfig<K>>,
 ): Set<string> {
-    const config = SECTION_CONFIG_MAP[sectionKey]
+    const config = configMap[sectionKey]
     if (!config) return new Set()
 
     const allFieldNames = new Set<string>()
@@ -45,9 +45,8 @@ export function getVisibleFields(
         }
     }
 
-    // Group rules by target field for this section
-    const rulesByTarget = new Map<string, ConditionalRule[]>()
-    for (const rule of CONDITIONAL_RULES) {
+    const rulesByTarget = new Map<string, ConditionalRule<K>[]>()
+    for (const rule of rules) {
         if (rule.targetSection !== sectionKey) continue
         const existing = rulesByTarget.get(rule.targetField) ?? []
         existing.push(rule)
@@ -57,16 +56,14 @@ export function getVisibleFields(
     const visible = new Set<string>()
 
     for (const fieldName of allFieldNames) {
-        const rules = rulesByTarget.get(fieldName)
+        const fieldRules = rulesByTarget.get(fieldName)
 
-        // No rules → always visible
-        if (!rules || rules.length === 0) {
+        if (!fieldRules || fieldRules.length === 0) {
             visible.add(fieldName)
             continue
         }
 
-        // OR logic: visible if any rule matches
-        const isVisible = rules.some((rule) => {
+        const isVisible = fieldRules.some((rule) => {
             const sourceData =
                 rule.sourceSection === sectionKey
                     ? currentData
@@ -87,13 +84,15 @@ export function getVisibleFields(
  * Returns the set of field names that are both visible AND marked as required
  * in the section config.
  */
-export function getRequiredVisibleFields(
-    sectionKey: SectionKey,
+export function getRequiredVisibleFields<K extends string>(
+    sectionKey: K,
     currentData: Record<string, unknown>,
-    allSectionsData: SectionsData = {},
+    allSectionsData: SectionsData<K>,
+    rules: ConditionalRule<K>[],
+    configMap: Record<K, SectionConfig<K>>,
 ): Set<string> {
-    const visible = getVisibleFields(sectionKey, currentData, allSectionsData)
-    const config = SECTION_CONFIG_MAP[sectionKey]
+    const visible = getVisibleFields(sectionKey, currentData, allSectionsData, rules, configMap)
+    const config = configMap[sectionKey]
     if (!config) return new Set()
 
     const required = new Set<string>()

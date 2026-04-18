@@ -12,16 +12,21 @@ import { Label } from "@repo/ui/components/label"
 export function NotificationSettingsForm({
     notifyOnSubmission,
     notifyOnAssignment,
+    notifyOnFosterSubmission,
     showSubmission,
     showAssignment,
+    showFosterSubmission,
 }: {
     notifyOnSubmission: boolean
     notifyOnAssignment: boolean
+    notifyOnFosterSubmission: boolean
     showSubmission: boolean
     showAssignment: boolean
+    showFosterSubmission: boolean
 }) {
     const [submission, setSubmission] = useState(notifyOnSubmission)
     const [assignment, setAssignment] = useState(notifyOnAssignment)
+    const [fosterSubmission, setFosterSubmission] = useState(notifyOnFosterSubmission)
     const [state, action, pending] = useActionState<UpdateNotificationSettingsState, FormData>(
         updateNotificationSettingsAction,
         {},
@@ -39,7 +44,7 @@ export function NotificationSettingsForm({
                     />
                     <input type="hidden" name="notifyOnSubmission" value={String(submission)} />
                     <Label htmlFor="notifyOnSubmission">
-                        Notify me when an application is submitted
+                        Notify me when an adoption application is submitted
                     </Label>
                 </div>
             )}
@@ -54,6 +59,24 @@ export function NotificationSettingsForm({
                     <input type="hidden" name="notifyOnAssignment" value={String(assignment)} />
                     <Label htmlFor="notifyOnAssignment">
                         Notify me when I am assigned to an application
+                    </Label>
+                </div>
+            )}
+            {showFosterSubmission && (
+                <div className="flex items-center gap-3">
+                    <Switch
+                        id="notifyOnFosterSubmission"
+                        checked={fosterSubmission}
+                        onCheckedChange={setFosterSubmission}
+                        disabled={pending}
+                    />
+                    <input
+                        type="hidden"
+                        name="notifyOnFosterSubmission"
+                        value={String(fosterSubmission)}
+                    />
+                    <Label htmlFor="notifyOnFosterSubmission">
+                        Notify me when a foster application is submitted
                     </Label>
                 </div>
             )}

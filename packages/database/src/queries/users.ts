@@ -1,4 +1,4 @@
-import { and, eq, isNull, isNotNull, notInArray, sql } from "drizzle-orm"
+import { and, eq, inArray, isNull, isNotNull, notInArray, sql } from "drizzle-orm"
 import { db } from "../index"
 import { account, user } from "../schema/auth"
 import { role, userRole } from "../schema/roles"
@@ -65,6 +65,7 @@ export async function getUser(id: string) {
             adminLogin: user.adminLogin,
             notifyOnSubmission: user.notifyOnSubmission,
             notifyOnAssignment: user.notifyOnAssignment,
+            notifyOnFosterSubmission: user.notifyOnFosterSubmission,
             deactivatedAt: user.deactivatedAt,
             createdAt: user.createdAt,
             roleName: role.name,
@@ -86,6 +87,7 @@ export async function getUser(id: string) {
         adminLogin: first.adminLogin,
         notifyOnSubmission: first.notifyOnSubmission,
         notifyOnAssignment: first.notifyOnAssignment,
+        notifyOnFosterSubmission: first.notifyOnFosterSubmission,
         deactivatedAt: first.deactivatedAt,
         createdAt: first.createdAt,
         roles: rows
@@ -116,7 +118,11 @@ export async function updateUserPhone(id: string, phone: string | null) {
 
 export async function updateUserNotificationPreferences(
     id: string,
-    preferences: { notifyOnSubmission?: boolean; notifyOnAssignment?: boolean },
+    preferences: {
+        notifyOnSubmission?: boolean
+        notifyOnAssignment?: boolean
+        notifyOnFosterSubmission?: boolean
+    },
 ) {
     await db.update(user).set(preferences).where(eq(user.id, id))
 }
@@ -138,6 +144,28 @@ export async function getUsersForSubmissionNotification() {
                 eq(user.notifyOnSubmission, true),
                 isNull(user.deactivatedAt),
                 notInArray(role.name, EXCLUDED_SUBMISSION_ROLES),
+            ),
+        )
+    return rows
+}
+
+const FOSTER_SUBMISSION_ROLES = ["Super Admin", "Foster Coordinator", "President", "Vice President"]
+
+export async function getUsersForFosterSubmissionNotification() {
+    const rows = await db
+        .selectDistinct({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        })
+        .from(user)
+        .innerJoin(userRole, eq(user.id, userRole.userId))
+        .innerJoin(role, eq(userRole.roleId, role.id))
+        .where(
+            and(
+                eq(user.notifyOnFosterSubmission, true),
+                isNull(user.deactivatedAt),
+                inArray(role.name, FOSTER_SUBMISSION_ROLES),
             ),
         )
     return rows

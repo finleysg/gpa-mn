@@ -13,7 +13,12 @@ import {
     saveSection,
     submitApplication,
 } from "@repo/database"
-import { SECTION_CONFIG_MAP, getVisibleFields, getRequiredVisibleFields } from "@repo/types"
+import {
+    CONDITIONAL_RULES,
+    SECTION_CONFIG_MAP,
+    getVisibleFields,
+    getRequiredVisibleFields,
+} from "@repo/types"
 import { getApplicationCookie } from "../_lib/application-session"
 
 async function sendAdminEmail(endpoint: string, data: Record<string, unknown>) {
@@ -169,8 +174,20 @@ export async function saveSectionAction(
     allSectionsData[sectionKey] = data
 
     // Determine visible and required fields
-    const visibleFields = getVisibleFields(sectionKey, data, allSectionsData)
-    const requiredFields = getRequiredVisibleFields(sectionKey, data, allSectionsData)
+    const visibleFields = getVisibleFields(
+        sectionKey,
+        data,
+        allSectionsData,
+        CONDITIONAL_RULES,
+        SECTION_CONFIG_MAP,
+    )
+    const requiredFields = getRequiredVisibleFields(
+        sectionKey,
+        data,
+        allSectionsData,
+        CONDITIONAL_RULES,
+        SECTION_CONFIG_MAP,
+    )
 
     // Validate required visible fields
     const errors: Record<string, string> = {}

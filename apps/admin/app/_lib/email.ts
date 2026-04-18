@@ -1,6 +1,10 @@
 import { Resend } from "resend"
 import nodemailer from "nodemailer"
-import { getUsersByRole, getUsersForSubmissionNotification } from "@repo/database"
+import {
+    getUsersByRole,
+    getUsersForFosterSubmissionNotification,
+    getUsersForSubmissionNotification,
+} from "@repo/database"
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
@@ -331,6 +335,155 @@ export async function sendAdminNewCommentEmail({
             ${buttonHtml("View Application", adminUrl)}
             <hr style="border-color:#e4e4e7;margin:24px 0">
             <p style="font-size:14px;color:#71717a">You received this email because you are an adoption coordinator at GPA-MN.</p>
+        `),
+    })
+}
+
+// --- Foster application emails ---
+
+export async function sendFosterMagicLinkEmail({
+    to,
+    firstName,
+    url,
+}: {
+    to: string
+    firstName: string
+    url: string
+}) {
+    await sendEmail({
+        to,
+        subject: "Your GPA-MN foster application link",
+        html: emailLayout(`
+            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">Your Foster Application</h2>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">Hi ${escapeHtml(firstName)},</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">Use the button below to access your GPA-MN foster application. You can save your progress and return at any time using this link.</p>
+            ${buttonHtml("Open Application", url)}
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:14px;color:#71717a">This link is unique to your application. Please do not share it with others.</p>
+        `),
+    })
+}
+
+export async function sendFosterSubmissionConfirmationEmail({
+    to,
+    firstName,
+    applicationUrl,
+}: {
+    to: string
+    firstName: string
+    applicationUrl: string
+}) {
+    await sendEmail({
+        to,
+        subject: "Your GPA-MN foster application has been received",
+        html: emailLayout(`
+            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">Application Received</h2>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">Hi ${escapeHtml(firstName)},</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">Thank you for applying to foster with GPA-MN! We have received your application and it is now under review.</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">Here's what to expect next:</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">
+                &bull; The Foster Coordinator will review your application<br>
+                &bull; You may be contacted for a phone interview<br>
+                &bull; A home visit may be scheduled<br>
+                &bull; We will notify you of any status updates by email
+            </p>
+            ${buttonHtml("View Your Application", applicationUrl)}
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:14px;color:#71717a">If you have questions, please contact us at fostering@gpa-mn.org.</p>
+        `),
+    })
+}
+
+export async function sendFosterAdminNewSubmissionEmail({
+    applicantName,
+    fosterApplicationId,
+    adminUrl,
+}: {
+    applicantName: string
+    fosterApplicationId: number
+    adminUrl: string
+}) {
+    const users = await getUsersForFosterSubmissionNotification()
+    const emails = users.map((u) => u.email).filter(Boolean) as string[]
+
+    if (emails.length === 0) {
+        console.warn("[email] No users opted in to foster submission notifications")
+        return
+    }
+
+    await sendEmail({
+        to: emails,
+        subject: `New foster application from ${applicantName}`,
+        html: emailLayout(`
+            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">New Foster Application</h2>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">A new foster application has been submitted and is ready for review.</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">
+                <strong>Applicant:</strong> ${escapeHtml(applicantName)}<br>
+                <strong>Application ID:</strong> ${fosterApplicationId}
+            </p>
+            ${buttonHtml("Review Application", adminUrl)}
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:14px;color:#71717a">You received this email because you have foster submission notifications enabled in your account settings.</p>
+        `),
+    })
+}
+
+const FOSTER_STATUS_DESCRIPTIONS: Record<string, string> = {
+    in_review: "Your foster application is now being reviewed by the Foster Coordinator.",
+    approved:
+        "Congratulations! You have been approved as a GPA-MN foster. We will be in touch about next steps, including when a foster greyhound becomes available.",
+    denied: "After careful review, we are unable to approve your foster application at this time. Please contact us if you have questions.",
+    on_hold:
+        "Your foster application has been placed on hold. We will contact you with more information.",
+}
+
+export async function sendFosterStatusChangeEmail({
+    to,
+    firstName,
+    newStatus,
+    applicationUrl,
+}: {
+    to: string
+    firstName: string
+    newStatus: string
+    applicationUrl: string
+}) {
+    const description =
+        FOSTER_STATUS_DESCRIPTIONS[newStatus] ??
+        `Your foster application status has been updated to: ${newStatus}.`
+
+    await sendEmail({
+        to,
+        subject: "Your GPA-MN foster application status has been updated",
+        html: emailLayout(`
+            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">Application Status Update</h2>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">Hi ${escapeHtml(firstName)},</p>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">${escapeHtml(description)}</p>
+            ${buttonHtml("View Your Application", applicationUrl)}
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:14px;color:#71717a">If you have questions, please contact us at fostering@gpa-mn.org.</p>
+        `),
+    })
+}
+
+export async function sendFosterAdminNewCommentEmail({
+    commenterName,
+    fosterApplicationId,
+    adminUrl,
+}: {
+    commenterName: string
+    fosterApplicationId: number
+    adminUrl: string
+}) {
+    await sendEmailToRole({
+        role: "Foster Coordinator",
+        subject: `New comment on foster application #${fosterApplicationId}`,
+        html: emailLayout(`
+            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">New Comment</h2>
+            <p style="font-size:16px;line-height:26px;color:#3f3f46">${escapeHtml(commenterName)} added a comment on foster application #${fosterApplicationId}.</p>
+            ${buttonHtml("View Application", adminUrl)}
+            <hr style="border-color:#e4e4e7;margin:24px 0">
+            <p style="font-size:14px;color:#71717a">You received this email because you are a Foster Coordinator at GPA-MN.</p>
         `),
     })
 }
