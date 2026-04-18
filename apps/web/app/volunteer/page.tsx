@@ -1,4 +1,3 @@
-import Link from "next/link"
 import {
     getVolunteerRoles,
     getPageHeader,
@@ -65,12 +64,12 @@ export default async function VolunteerPage() {
                                         />
                                     )}
                                     <div className="mt-8">
-                                        <Link
-                                            href="/foster/apply"
+                                        <a
+                                            href="mailto:fostering@gpa-mn.org"
                                             className="bg-primary hover:bg-primary/90 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-white shadow-[0_4px_16px_rgba(156,47,48,0.25)] transition-colors"
                                         >
                                             Apply to Foster
-                                        </Link>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

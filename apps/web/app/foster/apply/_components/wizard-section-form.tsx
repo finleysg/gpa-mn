@@ -8,8 +8,8 @@ import { FOSTER_CONDITIONAL_RULES, FOSTER_SECTION_CONFIG_MAP, getVisibleFields }
 import { Button } from "@repo/ui/components/button"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
+import { FieldRenderer } from "@repo/ui/components/field-renderer"
 import { saveSectionAction, type SaveSectionState } from "../_actions/application"
-import { FieldRenderer } from "./field-renderer"
 import { getNextSectionSlug } from "../_lib/section-slugs"
 
 interface WizardSectionFormProps {
