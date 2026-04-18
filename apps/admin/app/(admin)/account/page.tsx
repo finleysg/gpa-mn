@@ -19,6 +19,8 @@ const SUBMISSION_ROLES = [
     "Board Member",
 ]
 
+const FOSTER_SUBMISSION_ROLES = ["Super Admin", "Foster Coordinator", "President", "Vice President"]
+
 export default async function AccountPage() {
     const session = await getSessionOrRedirect()
     const userData = await getUser(session.user.id)
@@ -26,7 +28,8 @@ export default async function AccountPage() {
     const roleNames = userData?.roles.map((r) => r.name) ?? []
     const showSubmission = roleNames.some((r) => SUBMISSION_ROLES.includes(r))
     const showAssignment = roleNames.includes("Adoption Rep")
-    const showNotifications = showSubmission || showAssignment
+    const showFosterSubmission = roleNames.some((r) => FOSTER_SUBMISSION_ROLES.includes(r))
+    const showNotifications = showSubmission || showAssignment || showFosterSubmission
 
     return (
         <div className="mx-auto max-w-2xl space-y-6">
@@ -67,8 +70,10 @@ export default async function AccountPage() {
                         <NotificationSettingsForm
                             notifyOnSubmission={userData?.notifyOnSubmission ?? true}
                             notifyOnAssignment={userData?.notifyOnAssignment ?? true}
+                            notifyOnFosterSubmission={userData?.notifyOnFosterSubmission ?? true}
                             showSubmission={showSubmission}
                             showAssignment={showAssignment}
+                            showFosterSubmission={showFosterSubmission}
                         />
                     </CardContent>
                 </Card>

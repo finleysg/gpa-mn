@@ -201,15 +201,58 @@ export interface ApplicationComment {
 
 // === Conditional rule ===
 
-import type { SectionKey } from "@repo/database"
-
 export type ConditionOperator = "equals" | "notEquals" | "includes" | "truthy"
 
-export interface ConditionalRule {
+export interface ConditionalRule<K extends string = string> {
     targetField: string
-    targetSection: SectionKey
+    targetSection: K
     sourceField: string
-    sourceSection: SectionKey
+    sourceSection: K
     condition: ConditionOperator
     value?: unknown
+}
+
+// === Field/section config (generic over section key) ===
+
+export type FieldType =
+    | "text"
+    | "textarea"
+    | "email"
+    | "phone"
+    | "number"
+    | "radio"
+    | "dropdown"
+    | "checkbox"
+    | "scale"
+    | "repeating"
+
+export interface FieldOption {
+    value: string
+    label: string
+}
+
+export interface FieldDef {
+    name: string
+    label: string
+    type: FieldType
+    required?: boolean
+    options?: FieldOption[]
+    placeholder?: string
+    helpText?: string
+    scaleMin?: number
+    scaleMax?: number
+    scaleMinLabel?: string
+    scaleMaxLabel?: string
+    min?: number
+    max?: number
+    subFields?: FieldDef[]
+    minEntries?: number
+    maxEntries?: number
+}
+
+export interface SectionConfig<K extends string = string> {
+    key: K
+    title: string
+    description?: string
+    fields: FieldDef[]
 }

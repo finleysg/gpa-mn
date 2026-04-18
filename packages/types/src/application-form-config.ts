@@ -1,50 +1,5 @@
 import type { SectionKey } from "@repo/database"
-import type { ConditionalRule } from "./applications"
-
-// === Field types ===
-
-export type FieldType =
-    | "text"
-    | "textarea"
-    | "email"
-    | "phone"
-    | "number"
-    | "radio"
-    | "dropdown"
-    | "checkbox"
-    | "scale"
-    | "repeating"
-
-export interface FieldOption {
-    value: string
-    label: string
-}
-
-export interface FieldDef {
-    name: string
-    label: string
-    type: FieldType
-    required?: boolean
-    options?: FieldOption[]
-    placeholder?: string
-    helpText?: string
-    scaleMin?: number
-    scaleMax?: number
-    scaleMinLabel?: string
-    scaleMaxLabel?: string
-    min?: number
-    max?: number
-    subFields?: FieldDef[]
-    minEntries?: number
-    maxEntries?: number
-}
-
-export interface SectionConfig {
-    key: SectionKey
-    title: string
-    description?: string
-    fields: FieldDef[]
-}
+import type { ConditionalRule, FieldOption, SectionConfig } from "./applications"
 
 // === Shared option constants ===
 
@@ -264,7 +219,7 @@ export const DOG_BEHAVIOR_KNOWLEDGE_OPTIONS: FieldOption[] = [
 
 // === Section configs ===
 
-export const SECTION_CONFIGS: SectionConfig[] = [
+export const SECTION_CONFIGS: SectionConfig<SectionKey>[] = [
     // 1. Applicant Information
     {
         key: "applicant_info",
@@ -1060,7 +1015,7 @@ export const SECTION_CONFIGS: SectionConfig[] = [
 
 // === Conditional rules ===
 
-export const CONDITIONAL_RULES: ConditionalRule[] = [
+export const CONDITIONAL_RULES: ConditionalRule<SectionKey>[] = [
     // applicant_info: co-applicant fields (7 rules)
     {
         targetField: "coApplicantFirstName",
@@ -1459,6 +1414,6 @@ export const CONDITIONAL_RULES: ConditionalRule[] = [
 
 // === Derived lookup ===
 
-export const SECTION_CONFIG_MAP: Record<SectionKey, SectionConfig> = Object.fromEntries(
+export const SECTION_CONFIG_MAP: Record<SectionKey, SectionConfig<SectionKey>> = Object.fromEntries(
     SECTION_CONFIGS.map((config) => [config.key, config]),
-) as Record<SectionKey, SectionConfig>
+) as Record<SectionKey, SectionConfig<SectionKey>>

@@ -37,13 +37,20 @@ export async function updateNotificationSettingsAction(
 ): Promise<UpdateNotificationSettingsState> {
     const session = await getSessionOrRedirect()
 
-    const preferences: { notifyOnSubmission?: boolean; notifyOnAssignment?: boolean } = {}
+    const preferences: {
+        notifyOnSubmission?: boolean
+        notifyOnAssignment?: boolean
+        notifyOnFosterSubmission?: boolean
+    } = {}
 
     if (formData.has("notifyOnSubmission")) {
         preferences.notifyOnSubmission = formData.get("notifyOnSubmission") === "true"
     }
     if (formData.has("notifyOnAssignment")) {
         preferences.notifyOnAssignment = formData.get("notifyOnAssignment") === "true"
+    }
+    if (formData.has("notifyOnFosterSubmission")) {
+        preferences.notifyOnFosterSubmission = formData.get("notifyOnFosterSubmission") === "true"
     }
 
     await updateUserNotificationPreferences(session.user.id, preferences)

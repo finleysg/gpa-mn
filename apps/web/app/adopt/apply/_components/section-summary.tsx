@@ -1,18 +1,24 @@
 import type { SectionConfig } from "@repo/types"
-import { getVisibleFields } from "@repo/types"
+import { CONDITIONAL_RULES, SECTION_CONFIG_MAP, getVisibleFields } from "@repo/types"
 import type { SectionKey } from "@repo/database"
 
 interface SectionSummaryProps {
-    sectionConfig: SectionConfig
+    sectionConfig: SectionConfig<SectionKey>
     data: Record<string, unknown>
     allSectionsData: Partial<Record<SectionKey, Record<string, unknown>>>
 }
 
 export function SectionSummary({ sectionConfig, data, allSectionsData }: SectionSummaryProps) {
-    const visibleFields = getVisibleFields(sectionConfig.key, data, {
-        ...allSectionsData,
-        [sectionConfig.key]: data,
-    })
+    const visibleFields = getVisibleFields(
+        sectionConfig.key,
+        data,
+        {
+            ...allSectionsData,
+            [sectionConfig.key]: data,
+        },
+        CONDITIONAL_RULES,
+        SECTION_CONFIG_MAP,
+    )
 
     return (
         <div className="space-y-3">

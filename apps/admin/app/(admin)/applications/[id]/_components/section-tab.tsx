@@ -2,7 +2,7 @@
 
 import { ApplicationSectionDisplay } from "@repo/ui/components/application-section-display"
 import { Separator } from "@repo/ui/components/separator"
-import { SECTION_CONFIG_MAP } from "@repo/types"
+import { CONDITIONAL_RULES, SECTION_CONFIG_MAP } from "@repo/types"
 import type { ApplicationComment, SectionKey } from "@repo/types"
 import { CommentThread } from "./comment-thread"
 import { CommentForm } from "./comment-form"
@@ -38,6 +38,8 @@ export function SectionTab({
                 sectionConfig={sectionConfig}
                 data={sectionData}
                 allSectionsData={allSectionsData}
+                conditionalRules={CONDITIONAL_RULES}
+                configMap={SECTION_CONFIG_MAP}
             />
 
             <Separator />

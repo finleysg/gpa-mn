@@ -36,6 +36,7 @@ const SECTION_ACCESS: Record<string, RoleName[]> = {
         "Treasurer",
         "Board Member",
     ],
+    fosters: ["Super Admin", "Foster Coordinator", "President", "Vice President"],
 }
 
 export async function getSessionOrRedirect() {

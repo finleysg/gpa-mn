@@ -1,21 +1,30 @@
-import type { SectionConfig, SectionKey } from "@repo/types"
+import type { ConditionalRule, SectionConfig } from "@repo/types"
 import { getVisibleFields } from "@repo/types"
 
-interface ApplicationSectionDisplayProps {
-    sectionConfig: SectionConfig
+interface ApplicationSectionDisplayProps<K extends string> {
+    sectionConfig: SectionConfig<K>
     data: Record<string, unknown>
-    allSectionsData: Partial<Record<SectionKey, Record<string, unknown>>>
+    allSectionsData: Partial<Record<K, Record<string, unknown>>>
+    conditionalRules: ConditionalRule<K>[]
+    configMap: Record<K, SectionConfig<K>>
 }
 
-export function ApplicationSectionDisplay({
+export function ApplicationSectionDisplay<K extends string>({
     sectionConfig,
     data,
     allSectionsData,
-}: ApplicationSectionDisplayProps) {
-    const visibleFields = getVisibleFields(sectionConfig.key, data, {
-        ...allSectionsData,
-        [sectionConfig.key]: data,
-    })
+    conditionalRules,
+    configMap,
+}: ApplicationSectionDisplayProps<K>) {
+    const visibleFields = getVisibleFields(
+        sectionConfig.key,
+        data,
+        { ...allSectionsData, [sectionConfig.key]: data } as Partial<
+            Record<K, Record<string, unknown>>
+        >,
+        conditionalRules,
+        configMap,
+    )
 
     return (
         <div className="space-y-3">
