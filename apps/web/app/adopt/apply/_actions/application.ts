@@ -234,7 +234,7 @@ export async function submitApplicationAction(applicationId: number): Promise<Su
     const application = await getApplicationFromCookie()
     if (application) {
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-        const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL ?? "http://localhost:3001"
+        const adminUrl = process.env.NEXT_PUBLIC_SITE_URL_ADMIN ?? "http://localhost:3001"
 
         Promise.all([
             sendAdminEmail("submission-confirmation", {

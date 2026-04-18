@@ -37,6 +37,7 @@ jobs:
                   push: true
                   build-args: |
                       NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL_WEB }}
+                      NEXT_PUBLIC_SITE_URL_ADMIN=${{ vars.NEXT_PUBLIC_SITE_URL_ADMIN }}
                       NEXT_PUBLIC_NEWSLETTER_URL=${{ vars.NEXT_PUBLIC_NEWSLETTER_URL }}
                       NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
                   tags: |

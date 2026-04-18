@@ -36,6 +36,7 @@ services:
         environment:
             DATABASE_URL: mysql://gpamn:gpamn_dev@mysql:3306/gpamn
             NEXT_PUBLIC_SITE_URL: http://gpa-web.localhost:1355
+            NEXT_PUBLIC_SITE_URL_ADMIN: http://gpa-admin.localhost:1355
             ADMIN_INTERNAL_URL: http://admin:3000
         depends_on:
             mysql:
