@@ -105,6 +105,7 @@ const SECTION_ACCESS: Record<string, RoleName[]> = {
         "Treasurer",
         "Board Member",
     ],
+    fosters: ["Super Admin", "Foster Coordinator", "President", "Vice President"],
 }
 
 function canAccess(roles: RoleName[], section?: string): boolean {
@@ -123,6 +124,7 @@ const adminEntries: NavEntry[] = [
 
 const operationsEntries: NavEntry[] = [
     { title: "Applications", href: "/applications", icon: ClipboardList, section: "applications" },
+    { title: "Fosters", href: "/fosters", icon: Heart, section: "fosters" },
 ]
 
 const navEntries: NavEntry[] = [
