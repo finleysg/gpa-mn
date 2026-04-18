@@ -13,8 +13,21 @@ import {
 } from "@repo/ui/components/select"
 import { FOSTER_SECTION_CONFIG_MAP } from "@repo/types"
 import type { FosterSectionCategory, FosterSectionKey } from "@repo/database"
-import { FOSTER_SECTION_CATEGORIES } from "@repo/database"
 import { addCommentAction } from "../_actions/detail-actions"
+
+const FOSTER_SECTION_CATEGORIES: FosterSectionCategory[] = [
+    "applicant_info",
+    "household",
+    "pre_foster",
+    "home",
+    "current_pets",
+    "foster_preferences",
+    "vet_reference",
+    "personal_references",
+    "foster_agreements",
+    "final_questions",
+    "general",
+]
 
 interface CommentFormProps {
     fosterApplicationId: number

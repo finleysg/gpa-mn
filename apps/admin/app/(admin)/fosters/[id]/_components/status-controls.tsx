@@ -21,8 +21,16 @@ import {
 } from "@repo/ui/components/alert-dialog"
 import { StatusBadge } from "../../_components/status-badge"
 import type { FosterApplicationStatus } from "@repo/database"
-import { FOSTER_APPLICATION_STATUSES } from "@repo/database"
 import { changeStatusAction } from "../_actions/detail-actions"
+
+const FOSTER_APPLICATION_STATUSES: FosterApplicationStatus[] = [
+    "draft",
+    "submitted",
+    "in_review",
+    "approved",
+    "denied",
+    "on_hold",
+]
 
 const STATUS_LABELS: Record<FosterApplicationStatus, string> = {
     draft: "Draft",

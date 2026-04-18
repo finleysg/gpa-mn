@@ -9,9 +9,16 @@ import { Label } from "@repo/ui/components/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover"
 import { Calendar } from "@repo/ui/components/calendar"
 import type { FosterApplicationStatus, FosterMilestone } from "@repo/database"
-import { FOSTER_MILESTONES } from "@repo/database"
 import { StatusControls } from "./status-controls"
 import { setMilestoneAction, clearMilestoneAction } from "../_actions/detail-actions"
+
+const FOSTER_MILESTONES: FosterMilestone[] = [
+    "screened",
+    "interviewed",
+    "reference_check",
+    "home_visit",
+    "approved",
+]
 
 interface MilestoneData {
     milestone: {
