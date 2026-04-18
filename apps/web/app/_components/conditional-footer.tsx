@@ -5,6 +5,6 @@ import { SiteFooter } from "./site-footer"
 
 export function ConditionalFooter() {
     const pathname = usePathname()
-    if (pathname.startsWith("/adopt/apply")) return null
+    if (pathname.startsWith("/adopt/apply") || pathname.startsWith("/foster/apply")) return null
     return <SiteFooter />
 }
