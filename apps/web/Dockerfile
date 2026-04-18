@@ -24,6 +24,8 @@ COPY --from=installer /app/ .
 COPY --from=pruner /app/out/full/ .
 ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_NEWSLETTER_URL
+ENV NEXT_PUBLIC_NEWSLETTER_URL=$NEXT_PUBLIC_NEWSLETTER_URL
 RUN pnpm turbo run build --filter=web
 
 # Stage 4: Production runtime
