@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { getPostAdoptionSupport, getPageHeader, getSectionHeader } from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
@@ -6,6 +7,13 @@ import { CTASection } from "@/app/_components/cta-section"
 import { MarkdownContent } from "@/app/_components/markdown-content"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Post-Adoption Support",
+    description:
+        "Resources, training tips, and ongoing support for greyhound adopters from GPA-MN.",
+    alternates: { canonical: "/adopt/support" },
+}
 
 export default async function SupportPage() {
     const [resources, pageHeader, resourcesHeader] = await Promise.all([

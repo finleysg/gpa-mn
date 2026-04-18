@@ -1,4 +1,5 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { getWhyGreyhounds, getPageHeader, getSectionHeader } from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
@@ -7,6 +8,13 @@ import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { MarkdownContent } from "@/app/_components/markdown-content"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Adopt a Greyhound",
+    description:
+        "Adopt a retired racing greyhound from GPA-MN. Learn why greyhounds make exceptional pets and start the adoption process.",
+    alternates: { canonical: "/adopt" },
+}
 
 const links = [
     {

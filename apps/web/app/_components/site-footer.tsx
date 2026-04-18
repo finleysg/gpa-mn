@@ -29,22 +29,31 @@ export function SiteFooter() {
                             {[
                                 {
                                     label: "Facebook",
+                                    href: "https://www.facebook.com/gpamn/",
                                     icon: "/images/social/Facebook_Logo_Primary.png",
                                 },
                                 {
                                     label: "Instagram",
+                                    href: "https://www.instagram.com/gpaminnesota/",
                                     icon: "/images/social/Instagram_Glyph_Gradient.png",
                                 },
                                 {
                                     label: "TikTok",
+                                    href: "https://www.tiktok.com/@gpa.minnesota",
                                     icon: "/images/social/TikTok_Icon_Black_Circle.png",
                                     invert: true,
                                 },
-                                { label: "Bluesky", icon: "/images/social/bluesky-icon.webp" },
+                                {
+                                    label: "Bluesky",
+                                    href: "https://bsky.app/profile/greyhoundpetsmn.bsky.social",
+                                    icon: "/images/social/bluesky-icon.webp",
+                                },
                             ].map((social) => (
                                 <a
                                     key={social.label}
-                                    href="#"
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="hover:bg-primary flex h-10 w-10 items-center justify-center rounded-xl border border-white/6 bg-white/8 transition-all hover:-translate-y-0.5"
                                     aria-label={social.label}
                                 >

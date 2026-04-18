@@ -1,4 +1,5 @@
 import Image from "next/image"
+import type { Metadata } from "next"
 import { getWhyChooseUs, getPageHeader } from "@/app/_lib/content"
 import type { PageHeaderData } from "@repo/types"
 import { FadeIn } from "@/app/_components/fade-in"
@@ -6,6 +7,13 @@ import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { MarkdownContent } from "@/app/_components/markdown-content"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Why GPA-MN",
+    description:
+        "Why adopt through GPA-MN: an NGA-endorsed, all-volunteer organization with decades of experience matching greyhounds to the right homes.",
+    alternates: { canonical: "/adopt/why-gpa-mn" },
+}
 
 const fallbackHeader: PageHeaderData = {
     title: "Why Choose GPA\u2011MN?",

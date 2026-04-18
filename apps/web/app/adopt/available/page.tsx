@@ -1,8 +1,16 @@
+import type { Metadata } from "next"
 import { fetchDogs } from "@/app/_lib/rescue-groups"
 import { PageHero } from "@/app/_components/page-hero"
 import { DogCard } from "@/app/_components/dog-card"
 import { FadeIn } from "@/app/_components/fade-in"
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Available Greyhounds",
+    description:
+        "Meet the retired racing greyhounds currently available for adoption through GPA-MN.",
+    alternates: { canonical: "/adopt/available" },
+}
 
 export default async function AvailableDogsPage() {
     const dogs = await fetchDogs()

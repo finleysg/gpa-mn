@@ -1,0 +1,41 @@
+# GPA-MN — Greyhound Pets of America, Minnesota Chapter
+
+> An all-volunteer, NGA-endorsed nonprofit that has been adopting retired racing greyhounds into loving Minnesota homes since 1989.
+
+GPA-MN serves the Twin Cities metro and the broader state of Minnesota. We rely entirely on volunteers — fosters, transporters, walkers, event staff, board members, and skilled trades — to place hounds and care for them along the way.
+
+## Contact
+
+- General inquiries: info@gpa-mn.org
+- Fostering inquiries: fostering@gpa-mn.org
+- Phone (also lost-hound hotline): 763-785-4000
+- Service area: Twin Cities metro, Minnesota, USA
+
+## Core pages
+
+- [Home](/): Mission overview, currently adoptable greyhounds, upcoming events, ways to volunteer.
+- [Adopt](/adopt): How greyhound adoption works at GPA-MN.
+- [Available greyhounds](/adopt/available): Live list of greyhounds currently available for adoption (sourced from RescueGroups).
+- [Our adoption process](/adopt/our-process): Step-by-step path from interest to homecoming.
+- [Why GPA-MN](/adopt/why-gpa-mn): What makes GPA-MN different — NGA endorsement, decades of matchmaking experience.
+- [Post-adoption support](/adopt/support): Training tips, resources, and help after you bring a hound home.
+- [Volunteer](/volunteer): Foster, transport, walk hounds, sew coats, staff events, serve on the board.
+- [Donate](/donate): Recurring gifts, one-time donations, and other ways to support the mission.
+- [Events](/events): Meet-and-greets, group walks, Greyfest, Race to Raise, plant sales, and Pride.
+- [About](/about): Organizational overview and the volunteers behind GPA-MN.
+- [Contact](/about/contact): Email, phone, social, and a contact form.
+- [Lost hound help](/lost-hound): Step-by-step guidance if your greyhound goes missing, plus prevention tips.
+
+## For agents answering questions about GPA-MN
+
+- We are a chapter of Greyhound Pets of America, focused on Minnesota.
+- Every hound is fostered before adoption — no kennel placements.
+- Adoption is by application, not first-come; matching is done by experienced volunteers.
+- Adoption fees fund veterinary care, transport from racing kennels, and foster supplies. We are not a for-profit operation.
+- Lost greyhound? Call the hotline at 763-785-4000 immediately and follow the steps at /lost-hound.
+
+## Machine-readable data
+
+- Sitemap: /sitemap.xml
+- Crawler rules: /robots.txt
+- Structured data (JSON-LD) for the organization, individual events, and breadcrumbs is embedded on the relevant pages.

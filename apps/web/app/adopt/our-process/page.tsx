@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import {
     getAdoptionSteps,
     getPageHeader,
@@ -13,6 +14,13 @@ import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { MarkdownContent } from "@/app/_components/markdown-content"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Our Adoption Process",
+    description:
+        "Step-by-step guide to adopting a retired racing greyhound from GPA-MN — from application to homecoming.",
+    alternates: { canonical: "/adopt/our-process" },
+}
 
 export default async function OurProcessPage() {
     const [adoptionSteps, pageHeader, stepsHeader, beforeYouApply] = await Promise.all([

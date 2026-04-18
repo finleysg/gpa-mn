@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Phone, AlertTriangle } from "lucide-react"
 import { getLostHoundSuggestions, getPageHeader, getSectionHeader } from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
@@ -7,6 +8,13 @@ import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { MarkdownContent } from "@/app/_components/markdown-content"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Lost Hound Help",
+    description:
+        "Lost greyhound? Step-by-step guidance to get your hound home, plus prevention tips and the GPA-MN lost-hound hotline.",
+    alternates: { canonical: "/lost-hound" },
+}
 
 const immediateSteps = [
     "Stay calm. Greyhounds can sense panic and may run further.",

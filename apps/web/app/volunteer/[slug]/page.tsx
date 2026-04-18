@@ -5,6 +5,7 @@ import { MarkdownContent } from "@/app/_components/markdown-content"
 import { PrintButton } from "@/app/_components/print-button"
 import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { FadeIn } from "@/app/_components/fade-in"
+import { JsonLd, breadcrumbList } from "@/app/_components/json-ld"
 
 export const dynamic = "force-dynamic"
 
@@ -17,8 +18,9 @@ export async function generateMetadata({
     const page = await getPage("volunteer", slug)
     if (!page) return {}
     return {
-        title: `${page.title} | GPA\u2011MN`,
+        title: page.title,
         description: page.description,
+        alternates: { canonical: `/volunteer/${slug}` },
     }
 }
 
@@ -32,8 +34,15 @@ export default async function VolunteerContentPage({
 
     if (!page) notFound()
 
+    const crumbs = breadcrumbList([
+        { name: "Home", path: "/" },
+        { name: "Volunteer", path: "/volunteer" },
+        { name: page.title, path: `/volunteer/${slug}` },
+    ])
+
     return (
         <section className="bg-card relative overflow-hidden px-5 py-20 pt-36 md:py-24 md:pt-44">
+            <JsonLd data={crumbs} />
             <BlobDecoration
                 color="teal"
                 size={350}

@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { getEvents, getPageHeader, getSectionHeader } from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { EventCard } from "@/app/_components/event-card"
@@ -6,6 +7,13 @@ import { SectionHeader } from "@/app/_components/section-header"
 import { FadeIn } from "@/app/_components/fade-in"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Events",
+    description:
+        "Greyhound meet-and-greets, group walks, and fundraisers in the Twin Cities and across Minnesota.",
+    alternates: { canonical: "/events" },
+}
 
 export default async function EventsPage() {
     const [events, pageHeader, calendarHeader] = await Promise.all([

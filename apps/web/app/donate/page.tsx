@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { getDonationOptions, getPageHeader, getSectionHeader } from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
@@ -6,6 +7,13 @@ import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { MarkdownContent } from "@/app/_components/markdown-content"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Donate",
+    description:
+        "Support GPA-MN's all-volunteer mission. Donations fund veterinary care, transport, and foster supplies for retired racing greyhounds.",
+    alternates: { canonical: "/donate" },
+}
 
 export default async function DonatePage() {
     const [donationOptions, pageHeader, waysHeader] = await Promise.all([

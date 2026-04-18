@@ -1,10 +1,18 @@
 import Image from "next/image"
+import type { Metadata } from "next"
 import { Phone, Mail, MapPin } from "lucide-react"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
 import { FadeIn } from "@/app/_components/fade-in"
 import { NewsletterForm } from "@/app/_components/newsletter-form"
 import { ContactForm } from "./_components/contact-form"
+
+export const metadata: Metadata = {
+    title: "Contact",
+    description:
+        "Get in touch with GPA-MN about adoption, fostering, volunteering, or general questions.",
+    alternates: { canonical: "/about/contact" },
+}
 
 export default function ContactPage() {
     return (
@@ -108,24 +116,30 @@ export default function ContactPage() {
                                     {[
                                         {
                                             label: "Facebook",
+                                            href: "https://www.facebook.com/gpamn/",
                                             icon: "/images/social/Facebook_Logo_Primary.png",
                                         },
                                         {
                                             label: "Instagram",
+                                            href: "https://www.instagram.com/gpaminnesota/",
                                             icon: "/images/social/Instagram_Glyph_Gradient.png",
                                         },
                                         {
                                             label: "TikTok",
+                                            href: "https://www.tiktok.com/@gpa.minnesota",
                                             icon: "/images/social/TikTok_Icon_Black_Circle.png",
                                         },
                                         {
                                             label: "Bluesky",
+                                            href: "https://bsky.app/profile/greyhoundpetsmn.bsky.social",
                                             icon: "/images/social/bluesky-icon.webp",
                                         },
                                     ].map((social) => (
                                         <a
                                             key={social.label}
-                                            href="#"
+                                            href={social.href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             className="border-border hover:bg-primary hover:border-primary flex h-10 w-10 items-center justify-center rounded-xl border bg-[#FAF5F0] transition-all hover:-translate-y-0.5 dark:bg-[#1a1715]"
                                             aria-label={social.label}
                                         >

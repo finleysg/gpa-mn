@@ -13,8 +13,16 @@ import { MarkdownContent } from "@/app/_components/markdown-content"
 import { CTASection } from "@/app/_components/cta-section"
 import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { HeroImage } from "@/app/_components/hero-image"
+import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+    title: "Volunteer",
+    description:
+        "Foster, transport, walk hounds, staff events, and more. Every greyhound placed depends on volunteers.",
+    alternates: { canonical: "/volunteer" },
+}
 
 export default async function VolunteerPage() {
     const [volunteerRoles, pageHeader, fosteringHeader, rolesHeader, heroImages] =

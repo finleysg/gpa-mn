@@ -38,6 +38,8 @@ export type WebEvent = {
     date: string
     startDate: string
     endDate: string | null
+    startDateIso: string
+    endDateIso: string | null
     recurrence: string
     time: string
     location: string
@@ -99,6 +101,8 @@ async function toWebEvent(event: DbEvent): Promise<WebEvent> {
             date: buildDisplayDate(event),
             startDate: formatIsoDate(event.startDate),
             endDate: event.endDate ? formatIsoDate(event.endDate) : null,
+            startDateIso: event.startDate,
+            endDateIso: event.endDate,
             recurrence: event.recurrence,
             time: event.time,
             location: event.location,
