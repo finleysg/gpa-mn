@@ -2,9 +2,9 @@
 
 import { useActionState, useState, useCallback, useRef } from "react"
 import { useRouter } from "next/navigation"
-import type { SectionKey } from "@repo/database"
+import type { FosterSectionKey } from "@repo/database"
 import type { SectionConfig } from "@repo/types"
-import { CONDITIONAL_RULES, SECTION_CONFIG_MAP, getVisibleFields } from "@repo/types"
+import { FOSTER_CONDITIONAL_RULES, FOSTER_SECTION_CONFIG_MAP, getVisibleFields } from "@repo/types"
 import { Button } from "@repo/ui/components/button"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
@@ -13,9 +13,9 @@ import { saveSectionAction, type SaveSectionState } from "../_actions/applicatio
 import { getNextSectionSlug } from "../_lib/section-slugs"
 
 interface WizardSectionFormProps {
-    sectionConfig: SectionConfig<SectionKey>
+    sectionConfig: SectionConfig<FosterSectionKey>
     savedData: Record<string, unknown>
-    allSectionsData: Partial<Record<SectionKey, Record<string, unknown>>>
+    allSectionsData: Partial<Record<FosterSectionKey, Record<string, unknown>>>
     applicationId: number
 }
 
@@ -32,12 +32,9 @@ export function WizardSectionForm({
     const visibleFields = getVisibleFields(
         sectionConfig.key,
         formData,
-        {
-            ...allSectionsData,
-            [sectionConfig.key]: formData,
-        },
-        CONDITIONAL_RULES,
-        SECTION_CONFIG_MAP,
+        { ...allSectionsData, [sectionConfig.key]: formData },
+        FOSTER_CONDITIONAL_RULES,
+        FOSTER_SECTION_CONFIG_MAP,
     )
 
     const boundAction = saveSectionAction.bind(null, applicationId, sectionConfig.key)
@@ -49,9 +46,9 @@ export function WizardSectionForm({
                 if (intentRef.current === "continue") {
                     const nextSlug = getNextSectionSlug(sectionConfig.key)
                     if (nextSlug) {
-                        router.push(`/adopt/apply/wizard/${nextSlug}`)
+                        router.push(`/foster/apply/wizard/${nextSlug}`)
                     } else {
-                        router.push("/adopt/apply/review")
+                        router.push("/foster/apply/review")
                     }
                 } else {
                     toast.success("Progress saved")
