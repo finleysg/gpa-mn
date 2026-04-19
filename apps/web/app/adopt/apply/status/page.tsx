@@ -65,8 +65,17 @@ export default async function StatusPage() {
                     if (!config) return null
 
                     return (
-                        <section key={key} className="space-y-3">
-                            <h2 className="font-heading text-2xl tracking-wide">{config.title}</h2>
+                        <section
+                            key={key}
+                            aria-labelledby={`status-section-${key}`}
+                            className="space-y-3"
+                        >
+                            <h2
+                                id={`status-section-${key}`}
+                                className="font-heading text-2xl tracking-wide"
+                            >
+                                {config.title}
+                            </h2>
                             <SectionSummary
                                 sectionConfig={config}
                                 data={data}

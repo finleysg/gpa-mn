@@ -132,13 +132,13 @@ export function SiteFooter() {
 
                 {/* Bottom */}
                 <div className="flex flex-col items-center gap-3 border-t border-white/8 pt-6 text-center md:flex-row md:justify-between">
-                    <p className="text-xs text-white/40">
+                    <p className="text-xs text-white/60">
                         &copy; {new Date().getFullYear()} Greyhound Pets of America — Minnesota.
                     </p>
-                    <p className="text-xs text-white/40">
+                    <p className="text-xs text-white/60">
                         A 501(c)(3) nonprofit organization. All-volunteer.
                     </p>
-                    <p className="text-xs text-white/40">Crafted with care by zoomdoggy.com</p>
+                    <p className="text-xs text-white/60">Crafted with care by zoomdoggy.com</p>
                 </div>
             </div>
         </footer>

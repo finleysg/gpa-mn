@@ -44,7 +44,10 @@ export default async function VolunteerPage() {
             />
 
             {/* Fostering highlight */}
-            <section className="bg-card relative overflow-hidden px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="volunteer-fostering-heading"
+                className="bg-card relative overflow-hidden px-5 py-20 md:py-24"
+            >
                 <BlobDecoration
                     color="salmon"
                     size={400}
@@ -60,7 +63,10 @@ export default async function VolunteerPage() {
                             />
                             <div className="relative z-10 md:grid md:grid-cols-2 md:items-center md:gap-10">
                                 <div className="order-1 text-center md:text-left">
-                                    <SectionHeader title={fosteringHeader.title} />
+                                    <SectionHeader
+                                        title={fosteringHeader.title}
+                                        headingId="volunteer-fostering-heading"
+                                    />
                                 </div>
                                 <div className="order-2 mt-6 md:row-span-2 md:mt-0">
                                     <HeroImage images={heroImages} />
@@ -88,11 +94,15 @@ export default async function VolunteerPage() {
             </section>
 
             {/* All roles */}
-            <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-labelledby="volunteer-roles-heading"
+                className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <div className="mx-auto max-w-300">
                     <SectionHeader
                         title={rolesHeader.title}
                         description={rolesHeader.description}
+                        headingId="volunteer-roles-heading"
                         align="center"
                         className="mb-12"
                     />

@@ -8,6 +8,7 @@ type PageHeroProps = {
     children?: React.ReactNode
     className?: string
     variant?: "default" | "urgent"
+    headingId?: string
 }
 
 export function PageHero({
@@ -17,11 +18,13 @@ export function PageHero({
     children,
     className,
     variant = "default",
+    headingId = "page-hero-heading",
 }: PageHeroProps) {
     const parts = highlight ? title.split(highlight) : [title]
 
     return (
         <section
+            aria-labelledby={headingId}
             className={cn(
                 "relative overflow-hidden px-5 pt-36 pb-20 md:pt-44 md:pb-24",
                 variant === "default" &&
@@ -43,7 +46,10 @@ export function PageHero({
             />
 
             <div className="relative z-10 mx-auto max-w-300 text-center">
-                <h1 className="font-heading text-foreground mb-5 text-[clamp(2.8rem,7vw,4.8rem)] leading-[1.1] tracking-wider uppercase">
+                <h1
+                    id={headingId}
+                    className="font-heading text-foreground mb-5 text-[clamp(2.8rem,7vw,4.8rem)] leading-[1.1] tracking-wider uppercase"
+                >
                     {highlight ? (
                         <>
                             {parts[0]}

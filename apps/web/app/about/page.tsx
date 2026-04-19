@@ -35,7 +35,10 @@ export default async function AboutPage() {
             />
 
             {/* Overview */}
-            <section className="bg-card relative overflow-hidden px-5 py-20 md:py-24">
+            <section
+                aria-label="About GPA-MN"
+                className="bg-card relative overflow-hidden px-5 py-20 md:py-24"
+            >
                 <BlobDecoration
                     color="teal"
                     size={350}
@@ -55,9 +58,17 @@ export default async function AboutPage() {
 
             {/* Team */}
             {visibleRoles.length > 0 && (
-                <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+                <section
+                    aria-labelledby="about-team-heading"
+                    className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+                >
                     <div className="mx-auto max-w-300">
-                        <SectionHeader title="Our Team" align="center" className="mb-12" />
+                        <SectionHeader
+                            title="Our Team"
+                            headingId="about-team-heading"
+                            align="center"
+                            className="mb-12"
+                        />
                         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                             {visibleRoles.map((role, i) => (
                                 <FadeIn key={role.id} delay={i * 60}>
@@ -84,9 +95,17 @@ export default async function AboutPage() {
             )}
 
             {/* Links */}
-            <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-labelledby="about-links-heading"
+                className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <div className="mx-auto max-w-200">
-                    <SectionHeader title={linksHeader.title} align="center" className="mb-12" />
+                    <SectionHeader
+                        title={linksHeader.title}
+                        headingId="about-links-heading"
+                        align="center"
+                        className="mb-12"
+                    />
                     <div className="flex justify-center">
                         {[
                             {

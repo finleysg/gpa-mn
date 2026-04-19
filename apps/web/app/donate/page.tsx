@@ -32,7 +32,10 @@ export default async function DonatePage() {
             />
 
             {/* Donation methods */}
-            <section className="bg-card relative overflow-hidden px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="donate-ways-heading"
+                className="bg-card relative overflow-hidden px-5 py-20 md:py-24"
+            >
                 <BlobDecoration
                     color="salmon"
                     size={350}
@@ -48,6 +51,7 @@ export default async function DonatePage() {
                     <SectionHeader
                         title={waysHeader.title}
                         description={waysHeader.description}
+                        headingId="donate-ways-heading"
                         align="center"
                         className="mb-12"
                     />

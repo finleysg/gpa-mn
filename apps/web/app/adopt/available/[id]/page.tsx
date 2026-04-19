@@ -49,7 +49,7 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
         <>
             <JsonLd data={crumbs} />
             {/* Hero image */}
-            <section className="relative overflow-hidden pt-28 pb-0">
+            <section aria-label="Dog photos" className="relative overflow-hidden pt-28 pb-0">
                 <div className="mx-auto max-w-300 px-5">
                     {dog.images.length > 1 ? (
                         <DogImageCarousel images={dog.images} name={dog.name} />
@@ -69,7 +69,10 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
             </section>
 
             {/* Dog info */}
-            <section className="bg-card relative overflow-hidden px-5 py-12 md:py-16">
+            <section
+                aria-labelledby="dog-name"
+                className="bg-card relative overflow-hidden px-5 py-12 md:py-16"
+            >
                 <BlobDecoration
                     color="teal"
                     size={300}
@@ -84,7 +87,10 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
                             &larr; Back to Available Dogs
                         </Link>
 
-                        <h1 className="font-heading text-foreground mb-4 text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] tracking-wider uppercase">
+                        <h1
+                            id="dog-name"
+                            className="font-heading text-foreground mb-4 text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] tracking-wider uppercase"
+                        >
                             {dog.name}
                         </h1>
 

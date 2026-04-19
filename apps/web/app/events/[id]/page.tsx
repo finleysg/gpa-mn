@@ -77,7 +77,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         <>
             <JsonLd data={[eventJsonLd, breadcrumbsJsonLd]} />
             {/* Hero image */}
-            <section className="relative overflow-hidden pt-28 pb-0">
+            <section aria-label="Event image" className="relative overflow-hidden pt-28 pb-0">
                 <div className="mx-auto max-w-300 px-5">
                     {event.image || event.mobileImage ? (
                         <>
@@ -117,7 +117,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </section>
 
             {/* Event info */}
-            <section className="bg-card relative overflow-hidden px-5 py-12 md:py-16">
+            <section
+                aria-labelledby="event-title"
+                className="bg-card relative overflow-hidden px-5 py-12 md:py-16"
+            >
                 <BlobDecoration
                     color="teal"
                     size={300}
@@ -139,7 +142,10 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                             {event.type}
                         </Badge>
 
-                        <h1 className="font-heading text-foreground mb-6 text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] tracking-wider uppercase">
+                        <h1
+                            id="event-title"
+                            className="font-heading text-foreground mb-6 text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] tracking-wider uppercase"
+                        >
                             {event.title}
                         </h1>
 

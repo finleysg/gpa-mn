@@ -40,14 +40,22 @@ export default async function OurProcessPage() {
             />
 
             {/* Process steps */}
-            <section className="bg-card relative overflow-hidden px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="process-steps-heading"
+                className="bg-card relative overflow-hidden px-5 py-20 md:py-24"
+            >
                 <BlobDecoration
                     color="teal"
                     size={400}
                     className="-top-24 -right-24 opacity-15 dark:opacity-5"
                 />
                 <div className="relative z-10 mx-auto max-w-200">
-                    <SectionHeader title={stepsHeader.title} align="center" className="mb-12" />
+                    <SectionHeader
+                        title={stepsHeader.title}
+                        headingId="process-steps-heading"
+                        align="center"
+                        className="mb-12"
+                    />
                     <div className="space-y-10">
                         {adoptionSteps.map((step, i) => (
                             <FadeIn key={step.step} delay={i * 100}>
@@ -59,13 +67,19 @@ export default async function OurProcessPage() {
             </section>
 
             {/* Important notes */}
-            <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-labelledby="before-you-apply-heading"
+                className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <div className="mx-auto max-w-200">
                     <FadeIn>
                         <div className="bg-card border-border rounded-3xl border p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] md:p-10 dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
                             {beforeYouApply && (
                                 <>
-                                    <SectionHeader title={beforeYouApply.title} />
+                                    <SectionHeader
+                                        title={beforeYouApply.title}
+                                        headingId="before-you-apply-heading"
+                                    />
                                     <MarkdownContent
                                         content={beforeYouApply.text}
                                         className="prose text-muted-foreground mt-6 max-w-none"

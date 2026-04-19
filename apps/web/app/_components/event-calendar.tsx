@@ -150,7 +150,7 @@ function getEventTypeColor(type: WebEvent["type"]): string {
         case "Fundraiser":
             return "bg-secondary/30 text-[#2d7a81] dark:bg-secondary/20 dark:text-[#3a9da6]"
         case "Monthly":
-            return "bg-amber-600/20 text-amber-700 dark:bg-amber-600/30 dark:text-amber-500"
+            return "bg-amber-600/20 text-amber-900 dark:bg-amber-600/30 dark:text-amber-300"
         case "Weekly":
             return "bg-sky-600/20 text-sky-700 dark:bg-sky-600/30 dark:text-sky-400"
         case "Seasonal":
@@ -238,7 +238,7 @@ function CalendarGrid({ weeks }: { weeks: CalendarDay[][] }) {
                             key={day.date.toISOString()}
                             className={cn(
                                 "border-border min-h-24 border-r border-b p-1.5 last:border-r-0",
-                                !day.isCurrentMonth && "bg-muted/30 opacity-40",
+                                !day.isCurrentMonth && "bg-muted/30",
                             )}
                         >
                             <div
@@ -246,7 +246,9 @@ function CalendarGrid({ weeks }: { weeks: CalendarDay[][] }) {
                                     "mb-1 flex h-6 w-6 items-center justify-center rounded-full text-xs",
                                     day.isToday
                                         ? "bg-primary font-bold text-white"
-                                        : "text-foreground",
+                                        : day.isCurrentMonth
+                                          ? "text-foreground"
+                                          : "text-muted-foreground",
                                 )}
                             >
                                 {day.day}

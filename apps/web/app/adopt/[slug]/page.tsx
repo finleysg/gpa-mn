@@ -37,7 +37,10 @@ export default async function AdoptContentPage({ params }: { params: Promise<{ s
     ])
 
     return (
-        <section className="bg-card relative overflow-hidden px-5 py-20 pt-36 md:py-24 md:pt-44">
+        <section
+            aria-labelledby="adopt-page-heading"
+            className="bg-card relative overflow-hidden px-5 py-20 pt-36 md:py-24 md:pt-44"
+        >
             <JsonLd data={crumbs} />
             <BlobDecoration
                 color="teal"
@@ -45,7 +48,10 @@ export default async function AdoptContentPage({ params }: { params: Promise<{ s
                 className="-top-20 -right-20 opacity-20 dark:opacity-6"
             />
             <div className="relative z-10 mx-auto max-w-200">
-                <h1 className="font-heading text-foreground mb-8 text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] tracking-wider uppercase">
+                <h1
+                    id="adopt-page-heading"
+                    className="font-heading text-foreground mb-8 text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] tracking-wider uppercase"
+                >
                     {page.title}
                 </h1>
                 {page.printable && (

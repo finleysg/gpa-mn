@@ -23,12 +23,15 @@ export default function ContactPage() {
                 description="Have questions about adoption, volunteering, or our organization? We'd love to hear from you."
             />
 
-            <section className="bg-card px-5 py-20 md:py-24">
+            <section aria-label="Contact methods" className="bg-card px-5 py-20 md:py-24">
                 <div className="mx-auto max-w-300 md:grid md:grid-cols-2 md:gap-12">
                     {/* Contact form */}
                     <FadeIn>
                         <div className="border-border rounded-4xl border bg-[#FAF5F0] p-8 shadow-[0_4px_24px_rgba(0,0,0,0.06)] md:p-10 dark:bg-[#1a1715] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
-                            <SectionHeader title="Drop Us a Line" />
+                            <SectionHeader
+                                title="Drop Us a Line"
+                                headingId="contact-form-heading"
+                            />
                             <ContactForm />
                         </div>
                     </FadeIn>
@@ -37,7 +40,10 @@ export default function ContactPage() {
                     <FadeIn delay={100}>
                         <div className="mt-8 space-y-8 md:mt-0">
                             <div>
-                                <SectionHeader title="Other Ways to Reach Us" />
+                                <SectionHeader
+                                    title="Other Ways to Reach Us"
+                                    headingId="contact-other-heading"
+                                />
                             </div>
 
                             <div className="space-y-5">

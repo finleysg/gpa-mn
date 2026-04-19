@@ -31,11 +31,15 @@ export default async function SupportPage() {
                 variant={pageHeader.variant}
             />
 
-            <section className="bg-card px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="support-resources-heading"
+                className="bg-card px-5 py-20 md:py-24"
+            >
                 <div className="mx-auto max-w-300">
                     <SectionHeader
                         title={resourcesHeader.title}
                         description={resourcesHeader.description}
+                        headingId="support-resources-heading"
                         align="center"
                         className="mb-12"
                     />
@@ -65,7 +69,6 @@ export default async function SupportPage() {
                 title="We're Here For You"
                 description="Have questions about your greyhound? Our experienced volunteers and adopter community are always happy to help."
                 primaryAction={{ label: "Contact Us", href: "/about/contact" }}
-                secondaryAction={{ label: "Join Our Community", href: "#" }}
             />
         </>
     )

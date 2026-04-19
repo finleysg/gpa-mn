@@ -76,7 +76,10 @@ export default async function AdoptPage() {
             </PageHero>
 
             {/* Why Adopt */}
-            <section className="bg-card relative overflow-hidden px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="adopt-why-heading"
+                className="bg-card relative overflow-hidden px-5 py-20 md:py-24"
+            >
                 <BlobDecoration
                     color="teal"
                     size={350}
@@ -86,6 +89,7 @@ export default async function AdoptPage() {
                     <SectionHeader
                         title={whyHeader.title}
                         description={whyHeader.description}
+                        headingId="adopt-why-heading"
                         align="center"
                         className="mb-12"
                     />
@@ -113,9 +117,17 @@ export default async function AdoptPage() {
             </section>
 
             {/* Quick Links */}
-            <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-labelledby="adopt-links-heading"
+                className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <div className="mx-auto max-w-300">
-                    <SectionHeader title={linksHeader.title} align="center" className="mb-12" />
+                    <SectionHeader
+                        title={linksHeader.title}
+                        headingId="adopt-links-heading"
+                        align="center"
+                        className="mb-12"
+                    />
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                         {links.map((link, i) => (
                             <FadeIn key={link.href} delay={i * 80}>

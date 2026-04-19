@@ -45,7 +45,7 @@ export default async function LostHoundPage() {
             />
 
             {/* Emergency banner */}
-            <section className="bg-primary px-5 py-6 text-white">
+            <section aria-label="Emergency contact" className="bg-primary px-5 py-6 text-white">
                 <div className="mx-auto flex max-w-300 flex-col items-center justify-center gap-4 text-center md:flex-row md:text-left">
                     <AlertTriangle className="size-8 shrink-0" />
                     <div>
@@ -67,7 +67,10 @@ export default async function LostHoundPage() {
             </section>
 
             {/* Immediate steps */}
-            <section className="bg-card relative overflow-hidden px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="lost-hound-steps-heading"
+                className="bg-card relative overflow-hidden px-5 py-20 md:py-24"
+            >
                 <BlobDecoration
                     color="primary"
                     size={300}
@@ -75,7 +78,10 @@ export default async function LostHoundPage() {
                 />
                 <div className="relative z-10 mx-auto max-w-200">
                     <FadeIn>
-                        <SectionHeader title={stepsHeader.title} />
+                        <SectionHeader
+                            title={stepsHeader.title}
+                            headingId="lost-hound-steps-heading"
+                        />
                         <ol className="mt-8 space-y-4">
                             {immediateSteps.map((step, i) => (
                                 <li key={i} className="flex items-start gap-4">
@@ -93,11 +99,15 @@ export default async function LostHoundPage() {
             </section>
 
             {/* Prevention */}
-            <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-labelledby="lost-hound-prevention-heading"
+                className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <div className="mx-auto max-w-300">
                     <SectionHeader
                         title={preventionHeader.title}
                         description={preventionHeader.description}
+                        headingId="lost-hound-prevention-heading"
                         align="center"
                         className="mb-12"
                     />

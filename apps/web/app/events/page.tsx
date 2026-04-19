@@ -31,7 +31,10 @@ export default async function EventsPage() {
                 variant={pageHeader.variant}
             />
 
-            <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-label="Upcoming events"
+                className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <div className="mx-auto max-w-300">
                     <div className="-mx-5 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0 md:pb-0">
                         {events
@@ -49,9 +52,16 @@ export default async function EventsPage() {
                 </div>
             </section>
             {/* Calendar */}
-            <section className="bg-card px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="events-calendar-heading"
+                className="bg-card px-5 py-20 md:py-24"
+            >
                 <div className="mx-auto max-w-300">
-                    <SectionHeader title={calendarHeader.title} className="mb-10" />
+                    <SectionHeader
+                        title={calendarHeader.title}
+                        headingId="events-calendar-heading"
+                        className="mb-10"
+                    />
                     <EventCalendar events={events} />
                 </div>
             </section>

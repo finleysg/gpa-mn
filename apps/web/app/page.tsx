@@ -55,7 +55,10 @@ export default async function HomePage() {
     return (
         <>
             {/* ── HERO ── */}
-            <section className="to-secondary/30 relative flex min-h-[80vh] items-center overflow-hidden bg-linear-to-br from-[#FAF5F0] via-[#f0ebe4] via-60% px-5 pt-36 pb-20 md:pt-44 md:pb-24 dark:from-[#1a1715] dark:via-[#1e1b17] dark:via-60% dark:to-[#152628]">
+            <section
+                aria-labelledby="home-hero-heading"
+                className="to-secondary/30 relative flex min-h-[80vh] items-center overflow-hidden bg-linear-to-br from-[#FAF5F0] via-[#f0ebe4] via-60% px-5 pt-36 pb-20 md:pt-44 md:pb-24 dark:from-[#1a1715] dark:via-[#1e1b17] dark:via-60% dark:to-[#152628]"
+            >
                 <BlobDecoration
                     color="pink"
                     size={500}
@@ -70,7 +73,10 @@ export default async function HomePage() {
                 <div className="relative z-10 mx-auto grid max-w-300 items-center gap-10 md:grid-cols-2 md:gap-12">
                     {/* Text content */}
                     <div className="text-center md:text-left">
-                        <h1 className="font-heading text-foreground mb-5 text-[clamp(2.8rem,7vw,4.8rem)] leading-[1.1] tracking-wider uppercase">
+                        <h1
+                            id="home-hero-heading"
+                            className="font-heading text-foreground mb-5 text-[clamp(2.8rem,7vw,4.8rem)] leading-[1.1] tracking-wider uppercase"
+                        >
                             {pageHeader.highlight ? (
                                 <>
                                     {pageHeader.title.split(pageHeader.highlight)[0]}
@@ -137,7 +143,10 @@ export default async function HomePage() {
             </section>
 
             {/* ── AVAILABLE DOGS CAROUSEL ── */}
-            <section className="relative bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-labelledby="home-dogs-heading"
+                className="relative bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <BlobDecoration
                     color="pink"
                     size={300}
@@ -148,6 +157,7 @@ export default async function HomePage() {
                         <SectionHeader
                             title={dogsSectionHeader.title}
                             description={dogsSectionHeader.description}
+                            headingId="home-dogs-heading"
                             className="text-center md:text-left"
                         />
                         <Link
@@ -185,7 +195,10 @@ export default async function HomePage() {
             </section>
 
             {/* ── EVENTS ── */}
-            <section className="bg-card relative overflow-hidden px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="home-events-heading"
+                className="bg-card relative overflow-hidden px-5 py-20 md:py-24"
+            >
                 <BlobDecoration
                     color="teal"
                     size={450}
@@ -195,6 +208,7 @@ export default async function HomePage() {
                     <SectionHeader
                         title={eventsSectionHeader.title}
                         description={eventsSectionHeader.description}
+                        headingId="home-events-heading"
                         align="center"
                         className="mb-10"
                     />
@@ -226,7 +240,10 @@ export default async function HomePage() {
             </section>
 
             {/* ── VOLUNTEER ── */}
-            <section className="bg-card px-5 py-20 md:py-24">
+            <section
+                aria-labelledby="home-volunteer-heading"
+                className="bg-card px-5 py-20 md:py-24"
+            >
                 <div className="mx-auto max-w-300">
                     <FadeIn>
                         <div className="relative overflow-hidden rounded-4xl border border-white/6 bg-linear-to-br from-[#00444b] via-[#005a63] to-[#2d7a81] p-10 text-white shadow-[0_8px_40px_rgba(0,68,75,0.25)] md:p-14 lg:p-16 dark:from-[#0a2e32] dark:via-[#0e3a40] dark:to-[#0c3438] dark:shadow-[0_8px_40px_rgba(0,0,0,0.3)]">
@@ -243,7 +260,10 @@ export default async function HomePage() {
 
                             <div className="relative z-10 md:grid md:grid-cols-2 md:items-center md:gap-10">
                                 <div>
-                                    <h2 className="font-heading mb-3 text-[clamp(2rem,4vw,3rem)] leading-[1.1] tracking-wider text-white uppercase">
+                                    <h2
+                                        id="home-volunteer-heading"
+                                        className="font-heading mb-3 text-[clamp(2rem,4vw,3rem)] leading-[1.1] tracking-wider text-white uppercase"
+                                    >
                                         {volunteerSectionHeader.title}
                                     </h2>
                                     <p className="mb-7 max-w-125 text-[1.05rem] leading-relaxed text-white/80">

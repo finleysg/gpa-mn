@@ -5,6 +5,7 @@ type SectionHeaderProps = {
     description?: string
     align?: "left" | "center"
     className?: string
+    headingId?: string
 }
 
 export function SectionHeader({
@@ -12,10 +13,14 @@ export function SectionHeader({
     description,
     align = "left",
     className,
+    headingId,
 }: SectionHeaderProps) {
     return (
         <div className={cn(align === "center" && "text-center", className)}>
-            <h2 className="font-heading text-foreground mb-4 text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.1] tracking-wider uppercase">
+            <h2
+                id={headingId}
+                className="font-heading text-foreground mb-4 text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.1] tracking-wider uppercase"
+            >
                 {title}
             </h2>
             {description && (

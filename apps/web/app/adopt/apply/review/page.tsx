@@ -55,9 +55,16 @@ export default async function ReviewPage() {
                     if (!config) return null
 
                     return (
-                        <section key={key} className="space-y-3">
+                        <section
+                            key={key}
+                            aria-labelledby={`review-section-${key}`}
+                            className="space-y-3"
+                        >
                             <div className="flex items-center justify-between">
-                                <h2 className="font-heading text-2xl tracking-wide">
+                                <h2
+                                    id={`review-section-${key}`}
+                                    className="font-heading text-2xl tracking-wide"
+                                >
                                     {config.title}
                                 </h2>
                                 <Link

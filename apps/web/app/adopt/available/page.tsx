@@ -23,7 +23,10 @@ export default async function AvailableDogsPage() {
                 description="Each of these gentle souls is looking for their forever home. Browse our available dogs and find your perfect match."
             />
 
-            <section className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]">
+            <section
+                aria-label="Available greyhounds"
+                className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
+            >
                 <div className="mx-auto max-w-300">
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {dogs.map((dog, i) => (
