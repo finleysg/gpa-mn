@@ -5,10 +5,10 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { mainNav } from "@/app/_data/navigation"
 import { SearchIcon } from "lucide-react"
-import { CommandDialog, CommandInput, CommandList, CommandEmpty } from "@repo/ui/components/command"
 import { cn } from "@repo/ui/lib/utils"
 import { ThemeToggle } from "./theme-toggle"
 import { MobileNav } from "./mobile-nav"
+import { SearchPalette } from "./search-palette"
 
 export function SiteHeader() {
     const [scrolled, setScrolled] = useState(false)
@@ -87,17 +87,7 @@ export function SiteHeader() {
                             <span className="text-xs">⌘</span>K
                         </kbd>
                     </button>
-                    <CommandDialog
-                        open={searchOpen}
-                        onOpenChange={setSearchOpen}
-                        title="Search"
-                        description="Search the site"
-                    >
-                        <CommandInput placeholder="Search…" />
-                        <CommandList>
-                            <CommandEmpty>No results found.</CommandEmpty>
-                        </CommandList>
-                    </CommandDialog>
+                    <SearchPalette open={searchOpen} onOpenChange={setSearchOpen} />
                     <ThemeToggle />
                     <Link
                         href="/adopt/available"

@@ -38,7 +38,9 @@ const webPathMap: Record<ContentType, string[]> = {
 }
 
 async function revalidateWebPaths(contentType: ContentType) {
-    await revalidateWeb(webPathMap[contentType])
+    const tags =
+        contentType === "page" || contentType === "volunteerRole" ? ["search-manifest"] : []
+    await revalidateWeb(webPathMap[contentType], tags)
 }
 
 function slugify(title: string): string {

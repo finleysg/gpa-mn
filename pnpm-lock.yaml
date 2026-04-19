@@ -73,7 +73,7 @@ importers:
         version: 3.20.4
       better-auth:
         specifier: ^1.5.5
-        version: 1.5.5(drizzle-kit@0.31.9)(drizzle-orm@0.45.1(kysely@0.28.12)(mysql2@3.18.2(@types/node@25.3.2)))(mongodb@7.1.0)(mysql2@3.18.2(@types/node@25.3.2))(next@16.1.6(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@25.3.2)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.3))
+        version: 1.5.5(drizzle-kit@0.31.9)(drizzle-orm@0.45.1(kysely@0.28.12)(mysql2@3.18.2(@types/node@25.3.2)))(mongodb@7.1.0)(mysql2@3.18.2(@types/node@25.3.2))(next@16.1.6(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@25.3.2)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.3))
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -177,6 +177,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      fuse.js:
+        specifier: ^7.1.0
+        version: 7.3.0
       lucide-react:
         specifier: ^0.575.0
         version: 0.575.0(react@19.2.4)
@@ -4104,6 +4107,10 @@ packages:
 
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
+
+  fuse.js@7.3.0:
+    resolution: {integrity: sha512-plz8RVjfcDedTGfVngWH1jmJvBvAwi1v2jecfDerbEnMcmOYUEEwKFTHbNoCiYyzaK2Ws8lABkTCcRSqCY1q4w==}
+    engines: {node: '>=10'}
 
   generate-function@2.3.1:
     resolution: {integrity: sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==}
@@ -9198,7 +9205,7 @@ snapshots:
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
 
-  better-auth@1.5.5(drizzle-kit@0.31.9)(drizzle-orm@0.45.1(kysely@0.28.12)(mysql2@3.18.2(@types/node@25.3.2)))(mongodb@7.1.0)(mysql2@3.18.2(@types/node@25.3.2))(next@16.1.6(@babel/core@7.29.0)(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@25.3.2)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.3)):
+  better-auth@1.5.5(drizzle-kit@0.31.9)(drizzle-orm@0.45.1(kysely@0.28.12)(mysql2@3.18.2(@types/node@25.3.2)))(mongodb@7.1.0)(mysql2@3.18.2(@types/node@25.3.2))(next@16.1.6(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(vitest@3.2.4(@types/debug@4.1.12)(@types/node@25.3.2)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.31.1)(tsx@4.21.0)(yaml@2.8.3)):
     dependencies:
       '@better-auth/core': 1.5.5(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.2(zod@4.3.6))(jose@6.2.1)(kysely@0.28.12)(nanostores@1.2.0)
       '@better-auth/drizzle-adapter': 1.5.5(@better-auth/core@1.5.5(@better-auth/utils@0.3.1)(@better-fetch/fetch@1.1.21)(better-call@1.3.2(zod@4.3.6))(jose@6.2.1)(kysely@0.28.12)(nanostores@1.2.0))(@better-auth/utils@0.3.1)(drizzle-orm@0.45.1(kysely@0.28.12)(mysql2@3.18.2(@types/node@25.3.2)))
@@ -10003,6 +10010,8 @@ snapshots:
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
+
+  fuse.js@7.3.0: {}
 
   generate-function@2.3.1:
     dependencies:

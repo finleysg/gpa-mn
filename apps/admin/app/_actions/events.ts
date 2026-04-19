@@ -40,7 +40,7 @@ export async function createEventAction(formData: FormData) {
 
     const result = await dbCreateEvent(data)
     revalidatePath("/events")
-    await revalidateWeb(["/events"])
+    await revalidateWeb(["/events"], ["search-manifest"])
     redirect(`/events/${result.id}`)
 }
 
@@ -54,19 +54,19 @@ export async function updateEventAction(id: number, formData: FormData) {
 
     await dbUpdateEvent(id, data)
     revalidatePath("/events")
-    await revalidateWeb(["/events"])
+    await revalidateWeb(["/events"], ["search-manifest"])
     return { success: true as const }
 }
 
 export async function archiveEventAction(id: number) {
     await dbArchiveEvent(id)
     revalidatePath("/events")
-    await revalidateWeb(["/events"])
+    await revalidateWeb(["/events"], ["search-manifest"])
     redirect("/events")
 }
 
 export async function restoreEventAction(id: number) {
     await dbRestoreEvent(id)
     revalidatePath("/events")
-    await revalidateWeb(["/events"])
+    await revalidateWeb(["/events"], ["search-manifest"])
 }
