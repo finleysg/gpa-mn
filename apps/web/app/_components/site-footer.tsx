@@ -71,7 +71,7 @@ export function SiteFooter() {
 
                     {/* Quick Links */}
                     <div>
-                        <h4 className="font-heading mb-4 text-xl tracking-wider">Quick Links</h4>
+                        <h3 className="font-heading mb-4 text-xl tracking-wider">Quick Links</h3>
                         <ul className="flex flex-col gap-2.5">
                             {footerNav.quickLinks.map((item) => (
                                 <li key={item.href}>
@@ -88,7 +88,7 @@ export function SiteFooter() {
 
                     {/* Resources */}
                     <div>
-                        <h4 className="font-heading mb-4 text-xl tracking-wider">Resources</h4>
+                        <h3 className="font-heading mb-4 text-xl tracking-wider">Resources</h3>
                         <ul className="flex flex-col gap-2.5">
                             {footerNav.resources.map((item) => (
                                 <li key={item.href}>
@@ -105,7 +105,7 @@ export function SiteFooter() {
 
                     {/* Contact */}
                     <div>
-                        <h4 className="font-heading mb-4 text-xl tracking-wider">Contact Us</h4>
+                        <h3 className="font-heading mb-4 text-xl tracking-wider">Contact Us</h3>
                         <div className="flex flex-col gap-2.5">
                             <a
                                 href="tel:763-785-4000"
@@ -123,9 +123,9 @@ export function SiteFooter() {
                             </a>
                         </div>
                         <div className="my-4 h-px bg-white/8" />
-                        <h5 className="mb-2 text-sm font-semibold text-white/80">
+                        <h4 className="mb-2 text-sm font-semibold text-white/80">
                             Subscribe to our Newsletter
-                        </h5>
+                        </h4>
                         <NewsletterForm variant="footer" />
                     </div>
                 </div>

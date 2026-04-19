@@ -79,6 +79,7 @@ export function SiteHeader() {
                     <button
                         type="button"
                         onClick={() => setSearchOpen(true)}
+                        aria-label="Search"
                         className="border-input bg-muted/50 text-muted-foreground hover:bg-accent hover:text-accent-foreground inline-flex items-center gap-2 rounded-full border px-2.5 py-2 text-sm transition-colors md:px-4"
                     >
                         <SearchIcon className="size-4" />
