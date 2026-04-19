@@ -29,6 +29,10 @@ interface FieldRendererProps {
 export function FieldRenderer({ field, value, onChange, error, namePrefix }: FieldRendererProps) {
     const fieldName = namePrefix ? `${namePrefix}.${field.name}` : field.name
     const stringValue = value != null ? String(value) : ""
+    const errorId = error ? `${fieldName}-error` : undefined
+    const helpId = field.helpText ? `${fieldName}-help` : undefined
+    const describedBy = [helpId, errorId].filter(Boolean).join(" ") || undefined
+    const invalid = Boolean(error)
 
     return (
         <div className="space-y-2">
@@ -38,11 +42,19 @@ export function FieldRenderer({ field, value, onChange, error, namePrefix }: Fie
                     {field.required && <span className="text-destructive ml-1">*</span>}
                 </Label>
             )}
-            {field.helpText && <p className="text-muted-foreground text-sm">{field.helpText}</p>}
+            {field.helpText && (
+                <p id={helpId} className="text-muted-foreground text-sm">
+                    {field.helpText}
+                </p>
+            )}
 
-            {renderField(field, fieldName, value, stringValue, onChange)}
+            {renderField(field, fieldName, value, stringValue, onChange, invalid, describedBy)}
 
-            {error && <p className="text-destructive text-sm">{error}</p>}
+            {error && (
+                <p id={errorId} className="text-destructive text-sm">
+                    {error}
+                </p>
+            )}
         </div>
     )
 }
@@ -53,6 +65,8 @@ function renderField(
     value: unknown,
     stringValue: string,
     onChange: (name: string, value: unknown) => void,
+    invalid: boolean,
+    describedBy: string | undefined,
 ) {
     switch (field.type) {
         case "text":
@@ -66,6 +80,8 @@ function renderField(
                     value={stringValue}
                     onChange={(e) => onChange(field.name, e.target.value)}
                     placeholder={field.placeholder}
+                    aria-invalid={invalid || undefined}
+                    aria-describedby={describedBy}
                 />
             )
 
@@ -82,6 +98,8 @@ function renderField(
                     min={field.min}
                     max={field.max}
                     placeholder={field.placeholder}
+                    aria-invalid={invalid || undefined}
+                    aria-describedby={describedBy}
                 />
             )
 
@@ -93,6 +111,8 @@ function renderField(
                     value={stringValue}
                     onChange={(e) => onChange(field.name, e.target.value)}
                     placeholder={field.placeholder}
+                    aria-invalid={invalid || undefined}
+                    aria-describedby={describedBy}
                 />
             )
 
@@ -102,6 +122,8 @@ function renderField(
                     name={fieldName}
                     value={stringValue}
                     onValueChange={(v) => onChange(field.name, v)}
+                    aria-invalid={invalid || undefined}
+                    aria-describedby={describedBy}
                 >
                     {field.options?.map((opt) => (
                         <div key={opt.value} className="flex items-center gap-2">
@@ -121,7 +143,12 @@ function renderField(
                     value={stringValue}
                     onValueChange={(v) => onChange(field.name, v)}
                 >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger
+                        id={fieldName}
+                        className="w-full"
+                        aria-invalid={invalid || undefined}
+                        aria-describedby={describedBy}
+                    >
                         <SelectValue placeholder={field.placeholder ?? "Select..."} />
                     </SelectTrigger>
                     <SelectContent>
@@ -141,12 +168,21 @@ function renderField(
                     fieldName={fieldName}
                     value={value}
                     onChange={onChange}
+                    invalid={invalid}
+                    describedBy={describedBy}
                 />
             )
 
         case "scale":
             return (
-                <ScaleInput field={field} fieldName={fieldName} value={value} onChange={onChange} />
+                <ScaleInput
+                    field={field}
+                    fieldName={fieldName}
+                    value={value}
+                    onChange={onChange}
+                    invalid={invalid}
+                    describedBy={describedBy}
+                />
             )
 
         case "repeating":
@@ -156,6 +192,8 @@ function renderField(
                     fieldName={fieldName}
                     value={value}
                     onChange={onChange}
+                    invalid={invalid}
+                    describedBy={describedBy}
                 />
             )
 
@@ -169,16 +207,24 @@ function CheckboxGroup({
     fieldName,
     value,
     onChange,
+    invalid,
+    describedBy,
 }: {
     field: FieldDef
     fieldName: string
     value: unknown
     onChange: (name: string, value: unknown) => void
+    invalid: boolean
+    describedBy: string | undefined
 }) {
     const selected = Array.isArray(value) ? (value as string[]) : []
 
     return (
-        <fieldset className="space-y-2">
+        <fieldset
+            className="space-y-2"
+            aria-invalid={invalid || undefined}
+            aria-describedby={describedBy}
+        >
             <legend className="text-sm font-medium">
                 {field.label}
                 {field.required && <span className="text-destructive ml-1">*</span>}
@@ -211,11 +257,15 @@ function ScaleInput({
     fieldName,
     value,
     onChange,
+    invalid,
+    describedBy,
 }: {
     field: FieldDef
     fieldName: string
     value: unknown
     onChange: (name: string, value: unknown) => void
+    invalid: boolean
+    describedBy: string | undefined
 }) {
     const min = field.scaleMin ?? 1
     const max = field.scaleMax ?? 5
@@ -223,7 +273,11 @@ function ScaleInput({
     const points = Array.from({ length: max - min + 1 }, (_, i) => min + i)
 
     return (
-        <fieldset className="space-y-2">
+        <fieldset
+            className="space-y-2"
+            aria-invalid={invalid || undefined}
+            aria-describedby={describedBy}
+        >
             <legend className="text-sm font-medium">
                 {field.label}
                 {field.required && <span className="text-destructive ml-1">*</span>}
@@ -265,11 +319,15 @@ function RepeatingField({
     fieldName,
     value,
     onChange,
+    invalid,
+    describedBy,
 }: {
     field: FieldDef
     fieldName: string
     value: unknown
     onChange: (name: string, value: unknown) => void
+    invalid: boolean
+    describedBy: string | undefined
 }) {
     const entries = Array.isArray(value) ? (value as Record<string, unknown>[]) : []
     const minEntries = field.minEntries ?? 0
@@ -300,7 +358,11 @@ function RepeatingField({
     }
 
     return (
-        <fieldset className="space-y-3">
+        <fieldset
+            className="space-y-3"
+            aria-invalid={invalid || undefined}
+            aria-describedby={describedBy}
+        >
             <legend className="text-sm font-medium">
                 {field.label}
                 {field.required && <span className="text-destructive ml-1">*</span>}

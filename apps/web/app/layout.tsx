@@ -114,8 +114,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     enableSystem
                     disableTransitionOnChange
                 >
+                    <a
+                        href="#main-content"
+                        className="bg-background text-foreground focus:ring-ring sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:px-4 focus:py-2 focus:ring-2"
+                    >
+                        Skip to main content
+                    </a>
                     <ConditionalHeader />
-                    <main>{children}</main>
+                    <main id="main-content">{children}</main>
                     <ConditionalFooter />
                 </ThemeProvider>
                 <JsonLd data={[organizationJsonLd, websiteJsonLd]} />

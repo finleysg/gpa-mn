@@ -147,13 +147,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                             content={event.longDescription}
                             className="text-muted-foreground prose prose-lg mb-8 max-w-none text-lg leading-relaxed"
                         />
-
-                        <a
-                            href="#"
-                            className="bg-primary hover:bg-primary/90 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-white shadow-[0_4px_16px_rgba(156,47,48,0.25)] transition-colors"
-                        >
-                            Register / Learn More
-                        </a>
                     </div>
 
                     {/* Details sidebar */}

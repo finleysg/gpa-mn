@@ -74,8 +74,9 @@ export function DogImageCarousel({ images, name }: { images: DogImage[]; name: s
                     size="icon"
                     className="bg-background/80 absolute top-1/2 left-3 -translate-y-1/2 rounded-full backdrop-blur-sm"
                     onClick={() => scroll("left")}
+                    aria-label="Previous image"
                 >
-                    <ArrowLeft className="h-4 w-4" />
+                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 </Button>
             )}
 
@@ -85,8 +86,9 @@ export function DogImageCarousel({ images, name }: { images: DogImage[]; name: s
                     size="icon"
                     className="bg-background/80 absolute top-1/2 right-3 -translate-y-1/2 rounded-full backdrop-blur-sm"
                     onClick={() => scroll("right")}
+                    aria-label="Next image"
                 >
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Button>
             )}
         </div>
