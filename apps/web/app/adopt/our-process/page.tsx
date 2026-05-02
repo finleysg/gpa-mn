@@ -96,7 +96,7 @@ export default async function OurProcessPage() {
                 label="Ready?"
                 title="Ready to Start Your Journey?"
                 description="Fill out an application form. If you need more time, you can start your application now and come back to it later."
-                primaryAction={{ label: "Apply Now", href: "/adopt/apply" }}
+                primaryAction={{ label: "Apply Now", href: "/apply-original" }}
                 secondaryAction={{ label: "Contact Us", href: "/about/contact" }}
             />
         </>
