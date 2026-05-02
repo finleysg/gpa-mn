@@ -78,12 +78,20 @@ export default async function VolunteerPage() {
                                             className="prose text-muted-foreground max-w-150 text-[1.05rem] leading-relaxed [&>p]:mb-4 [&>ul]:mt-0 [&>ul]:space-y-1"
                                         />
                                     )}
-                                    <div className="mt-8">
+                                    <div className="mt-8 flex flex-wrap gap-3">
                                         <Link
                                             href="/foster-apply-original"
                                             className="bg-primary hover:bg-primary/90 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-white shadow-[0_4px_16px_rgba(156,47,48,0.25)] transition-colors"
                                         >
                                             Apply to Foster
+                                        </Link>
+                                        <Link
+                                            href="https://docs.google.com/forms/d/e/1FAIpQLSdgZniCJuJChSgypfjJkh3Z3GQA4lCAgWewLZIrfxpK_4T8mg/viewform"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="border-primary text-primary hover:bg-primary/5 inline-flex items-center gap-2 rounded-full border-2 bg-transparent px-8 py-3.5 font-semibold transition-colors"
+                                        >
+                                            Foster Dog Update
                                         </Link>
                                     </div>
                                 </div>
