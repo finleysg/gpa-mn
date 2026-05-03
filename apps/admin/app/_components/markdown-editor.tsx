@@ -5,6 +5,7 @@ import { useEditor, useEditorState, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Link from "@tiptap/extension-link"
 import Underline from "@tiptap/extension-underline"
+import Image from "@tiptap/extension-image"
 import { Table, TableRow, TableCell, TableHeader } from "@tiptap/extension-table"
 import { Markdown } from "tiptap-markdown"
 import {
@@ -33,6 +34,10 @@ import {
     TableColumnsSplit,
     TableRowsSplit,
     Trash2,
+    ImageIcon,
+    AlignLeft,
+    AlignRight,
+    AlignCenter,
     X,
 } from "lucide-react"
 import { cn } from "@repo/ui/lib/utils"
@@ -48,12 +53,38 @@ import {
 } from "@repo/ui/components/tooltip"
 import type { Editor } from "@tiptap/react"
 import { Admonition, type AdmonitionType } from "../_lib/tiptap/admonition"
+import {
+    InlineImageDialog,
+    type InlineImageAlign,
+    type InlineImageSize,
+} from "./inline-image-dialog"
+
+export interface MarkdownEditorImageContext {
+    photoType: "event" | "content"
+    parentId: number
+    s3PublicUrl: string
+}
 
 interface MarkdownEditorProps {
     name: string
     label?: string
     value: string
     onChange?: (md: string) => void
+    imageContext?: MarkdownEditorImageContext
+}
+
+function parseImageTitle(title: string | null | undefined): {
+    align: InlineImageAlign
+    size: InlineImageSize
+} {
+    const tokens = (title ?? "").toLowerCase().split(/\s+/)
+    const align = (["left", "right", "center", "none"] as const).find((a) => tokens.includes(a))
+    const size = (["small", "medium", "large"] as const).find((s) => tokens.includes(s))
+    return { align: align ?? "none", size: size ?? "medium" }
+}
+
+function formatImageTitle(align: InlineImageAlign, size: InlineImageSize): string {
+    return `${align} ${size}`
 }
 
 function ToolbarButton({
@@ -224,11 +255,36 @@ function AdmonitionDropdown({ editor }: { editor: Editor }) {
     )
 }
 
-function Toolbar({ editor }: { editor: Editor }) {
+function Toolbar({
+    editor,
+    imageContext,
+    onInsertImage,
+}: {
+    editor: Editor
+    imageContext?: MarkdownEditorImageContext
+    onInsertImage?: () => void
+}) {
     const isInTable = useEditorState({
         editor,
         selector: (ctx) => ctx.editor.isActive("table"),
     })
+
+    const imageState = useEditorState({
+        editor,
+        selector: (ctx) => {
+            if (!ctx.editor.isActive("image")) return null
+            const attrs = ctx.editor.getAttributes("image") as { title?: string | null }
+            return parseImageTitle(attrs.title)
+        },
+    })
+
+    function setImageTitle(align: InlineImageAlign, size: InlineImageSize) {
+        editor
+            .chain()
+            .focus()
+            .updateAttributes("image", { title: formatImageTitle(align, size) })
+            .run()
+    }
 
     function handleLinkToggle() {
         if (editor.isActive("link")) {
@@ -313,6 +369,61 @@ function Toolbar({ editor }: { editor: Editor }) {
                     <CodeSquare className="size-4" />
                 </ToolbarButton>
                 <AdmonitionDropdown editor={editor} />
+                {imageContext && (
+                    <>
+                        <div className="bg-border mx-0.5 h-5 w-px" />
+                        <ToolbarButton onClick={() => onInsertImage?.()} title="Insert image">
+                            <ImageIcon className="size-4" />
+                        </ToolbarButton>
+                        {imageState && (
+                            <>
+                                <ToolbarButton
+                                    active={imageState.align === "left"}
+                                    onClick={() => setImageTitle("left", imageState.size)}
+                                    title="Float left"
+                                >
+                                    <AlignLeft className="size-4" />
+                                </ToolbarButton>
+                                <ToolbarButton
+                                    active={imageState.align === "center"}
+                                    onClick={() => setImageTitle("center", imageState.size)}
+                                    title="Center"
+                                >
+                                    <AlignCenter className="size-4" />
+                                </ToolbarButton>
+                                <ToolbarButton
+                                    active={imageState.align === "right"}
+                                    onClick={() => setImageTitle("right", imageState.size)}
+                                    title="Float right"
+                                >
+                                    <AlignRight className="size-4" />
+                                </ToolbarButton>
+                                <div className="bg-border mx-0.5 h-5 w-px" />
+                                <ToolbarButton
+                                    active={imageState.size === "small"}
+                                    onClick={() => setImageTitle(imageState.align, "small")}
+                                    title="Small"
+                                >
+                                    <span className="text-xs">S</span>
+                                </ToolbarButton>
+                                <ToolbarButton
+                                    active={imageState.size === "medium"}
+                                    onClick={() => setImageTitle(imageState.align, "medium")}
+                                    title="Medium"
+                                >
+                                    <span className="text-xs">M</span>
+                                </ToolbarButton>
+                                <ToolbarButton
+                                    active={imageState.size === "large"}
+                                    onClick={() => setImageTitle(imageState.align, "large")}
+                                    title="Large"
+                                >
+                                    <span className="text-xs">L</span>
+                                </ToolbarButton>
+                            </>
+                        )}
+                    </>
+                )}
                 <div className="bg-border mx-0.5 h-5 w-px" />
                 <ToolbarButton
                     onClick={() =>
@@ -387,9 +498,16 @@ function Toolbar({ editor }: { editor: Editor }) {
     )
 }
 
-export function MarkdownEditor({ name, label, value, onChange }: MarkdownEditorProps) {
+export function MarkdownEditor({
+    name,
+    label,
+    value,
+    onChange,
+    imageContext,
+}: MarkdownEditorProps) {
     const [markdownValue, setMarkdownValue] = useState(value)
     const [wysiwyg, setWysiwyg] = useState(true)
+    const [imageDialogOpen, setImageDialogOpen] = useState(false)
 
     const editor = useEditor({
         immediatelyRender: false,
@@ -397,6 +515,7 @@ export function MarkdownEditor({ name, label, value, onChange }: MarkdownEditorP
             StarterKit,
             Link.configure({ openOnClick: false }),
             Underline,
+            Image.configure({ inline: false, allowBase64: false }),
             Table.configure({ resizable: false }),
             TableRow,
             TableCell,
@@ -440,7 +559,11 @@ export function MarkdownEditor({ name, label, value, onChange }: MarkdownEditorP
             {wysiwyg ? (
                 editor && (
                     <div className="focus-within:border-ring focus-within:ring-ring/50 rounded-md focus-within:ring-[3px]">
-                        <Toolbar editor={editor} />
+                        <Toolbar
+                            editor={editor}
+                            imageContext={imageContext}
+                            onInsertImage={() => setImageDialogOpen(true)}
+                        />
                         <EditorContent
                             editor={editor}
                             className="border-input prose prose-sm min-h-50 max-w-none rounded-b-md border bg-transparent px-3 py-2 text-base shadow-xs outline-none md:text-sm [&_.tiptap:focus]:outline-none"
@@ -459,6 +582,19 @@ export function MarkdownEditor({ name, label, value, onChange }: MarkdownEditorP
             )}
 
             <input type="hidden" name={name} value={markdownValue} />
+
+            {imageContext && editor && (
+                <InlineImageDialog
+                    open={imageDialogOpen}
+                    onOpenChange={setImageDialogOpen}
+                    photoType={imageContext.photoType}
+                    parentId={imageContext.parentId}
+                    s3PublicUrl={imageContext.s3PublicUrl}
+                    onInsert={({ src, alt, title }) => {
+                        editor.chain().focus().setImage({ src, alt, title }).run()
+                    }}
+                />
+            )}
         </div>
     )
 }

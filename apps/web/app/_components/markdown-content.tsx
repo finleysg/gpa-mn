@@ -15,6 +15,7 @@ const sanitizeSchema = {
             ["dataType", "note", "warning", "tip", "danger"],
             "className",
         ],
+        img: [...(defaultSchema.attributes?.img ?? []), "title"],
     },
 }
 
@@ -28,9 +29,29 @@ function isExternal(href: string | undefined): boolean {
     }
 }
 
+const ALIGN_CLASSES: Record<string, string> = {
+    left: "float-left mr-5 mb-3 clear-left max-sm:float-none max-sm:mr-0 max-sm:mx-auto max-sm:block",
+    right: "float-right ml-5 mb-3 clear-right max-sm:float-none max-sm:ml-0 max-sm:mx-auto max-sm:block",
+    center: "block mx-auto my-4",
+    none: "inline-block align-middle",
+}
+
+const SIZE_CLASSES: Record<string, string> = {
+    small: "w-[180px]",
+    medium: "w-[280px] max-sm:w-[220px]",
+    large: "w-[420px] max-sm:w-full",
+}
+
+function parseImageTitle(title: string | null | undefined): { align: string; size: string } {
+    const tokens = (title ?? "").toLowerCase().split(/\s+/).filter(Boolean)
+    const align = tokens.find((t) => t in ALIGN_CLASSES) ?? "none"
+    const size = tokens.find((t) => t in SIZE_CLASSES) ?? "medium"
+    return { align, size }
+}
+
 export function MarkdownContent({ content, className }: { content: string; className?: string }) {
     return (
-        <div className={`markdown-content ${className ?? ""}`}>
+        <div className={`markdown-content overflow-auto ${className ?? ""}`}>
             <ReactMarkdown
                 remarkPlugins={[remarkGfm, remarkDirective, remarkAdmonition]}
                 rehypePlugins={[[rehypeSanitize, sanitizeSchema]]}
@@ -45,6 +66,19 @@ export function MarkdownContent({ content, className }: { content: string; class
                             )
                         }
                         return <a href={href}>{children}</a>
+                    },
+                    img({ src, alt, title }) {
+                        if (!src) return null
+                        const { align, size } = parseImageTitle(title)
+                        const classes = `${ALIGN_CLASSES[align]} ${SIZE_CLASSES[size]} h-auto rounded-lg`
+                        return (
+                            <img
+                                src={typeof src === "string" ? src : undefined}
+                                alt={alt ?? ""}
+                                className={classes}
+                                loading="lazy"
+                            />
+                        )
                     },
                 }}
             >

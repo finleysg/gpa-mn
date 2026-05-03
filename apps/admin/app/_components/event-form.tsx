@@ -45,6 +45,7 @@ type ActionResult = { errors: string[] } | { success: true } | undefined
 interface EventFormProps {
     event?: Event
     action: (formData: FormData) => Promise<ActionResult>
+    s3PublicUrl?: string
 }
 
 function getWeekdayHint(dateStr: string): string | null {
@@ -65,7 +66,7 @@ function nearestDateForDay(currentDateStr: string, targetDay: number): string {
     return format(target, "yyyy-MM-dd")
 }
 
-export function EventForm({ event, action }: EventFormProps) {
+export function EventForm({ event, action, s3PublicUrl }: EventFormProps) {
     const [state, formAction] = useActionState(
         async (_prev: ActionResult, formData: FormData) => action(formData),
         undefined,
@@ -230,6 +231,11 @@ export function EventForm({ event, action }: EventFormProps) {
                 name="longDescription"
                 label="Long Description"
                 value={event?.longDescription ?? ""}
+                imageContext={
+                    event && s3PublicUrl
+                        ? { photoType: "event", parentId: event.id, s3PublicUrl }
+                        : undefined
+                }
             />
 
             <PaypalConfigSection
