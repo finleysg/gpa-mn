@@ -9,6 +9,7 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { Switch } from "@repo/ui/components/switch"
 import { MarkdownEditor } from "./markdown-editor"
+import { PaypalConfigSection } from "./paypal-config-section"
 import {
     Select,
     SelectContent,
@@ -16,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@repo/ui/components/select"
-import type { events } from "@repo/database"
+import type { events, PaypalOption } from "@repo/database"
 
 type Event = typeof events.$inferSelect
 
@@ -229,6 +230,13 @@ export function EventForm({ event, action }: EventFormProps) {
                 name="longDescription"
                 label="Long Description"
                 value={event?.longDescription ?? ""}
+            />
+
+            <PaypalConfigSection
+                initialButtonId={event?.paypalButtonId}
+                initialButtonLabel={event?.paypalButtonLabel}
+                initialButtonStyle={event?.paypalButtonStyle}
+                initialOptions={event?.paypalOptions as PaypalOption[] | null | undefined}
             />
 
             <div className="flex gap-3">

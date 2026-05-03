@@ -8,6 +8,7 @@ import {
     getContentItemBySlug,
     getPageBySectionAndSlug,
 } from "@repo/database"
+import type { PaypalOption } from "@repo/database"
 import type {
     SectionHeaderData,
     PageHeaderData,
@@ -49,6 +50,10 @@ export type WebEvent = {
     showUpcoming: boolean
     image?: string
     mobileImage?: string
+    paypalButtonId: string | null
+    paypalButtonLabel: string | null
+    paypalButtonStyle: "cart" | "buynow" | "donate" | null
+    paypalOptions: PaypalOption[] | null
 }
 
 type DbEvent = Awaited<ReturnType<typeof dbGetEvents>>[number]
@@ -113,6 +118,10 @@ async function toWebEvent(event: DbEvent): Promise<WebEvent> {
         }),
         image,
         mobileImage,
+        paypalButtonId: event.paypalButtonId,
+        paypalButtonLabel: event.paypalButtonLabel,
+        paypalButtonStyle: event.paypalButtonStyle,
+        paypalOptions: event.paypalOptions,
     }
 }
 

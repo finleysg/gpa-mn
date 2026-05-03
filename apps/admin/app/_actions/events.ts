@@ -6,7 +6,7 @@ import {
     archiveEvent as dbArchiveEvent,
     restoreEvent as dbRestoreEvent,
 } from "@repo/database"
-import type { events } from "@repo/database"
+import type { events, PaypalOption } from "@repo/database"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { validateEventData } from "./validate-event"
@@ -14,8 +14,27 @@ import { revalidateWeb } from "../_lib/revalidate-web"
 
 type EventInsert = typeof events.$inferInsert
 
+function parsePaypalOptions(raw: string | null): PaypalOption[] | null {
+    if (!raw) return null
+    try {
+        const parsed = JSON.parse(raw)
+        if (!Array.isArray(parsed)) return null
+        return parsed as PaypalOption[]
+    } catch {
+        return null
+    }
+}
+
 function parseEventFormData(formData: FormData): EventInsert {
     const endDate = formData.get("endDate") as string
+    const paypalButtonId = (formData.get("paypalButtonId") as string)?.trim() || null
+    const paypalButtonLabel = (formData.get("paypalButtonLabel") as string)?.trim() || null
+    const paypalButtonStyle =
+        (formData.get("paypalButtonStyle") as EventInsert["paypalButtonStyle"]) || null
+    const paypalOptions = paypalButtonId
+        ? parsePaypalOptions(formData.get("paypalOptions") as string)
+        : null
+
     return {
         title: formData.get("title") as string,
         startDate: formData.get("startDate") as string,
@@ -27,6 +46,10 @@ function parseEventFormData(formData: FormData): EventInsert {
         description: formData.get("description") as string,
         longDescription: formData.get("longDescription") as string,
         showUpcoming: formData.get("showUpcoming") === "true",
+        paypalButtonId,
+        paypalButtonLabel: paypalButtonId ? paypalButtonLabel : null,
+        paypalButtonStyle: paypalButtonId ? paypalButtonStyle : null,
+        paypalOptions,
     }
 }
 

@@ -8,6 +8,7 @@ import { MapPin, Clock, Calendar } from "lucide-react"
 import { BlobDecoration } from "@/app/_components/blob-decoration"
 import { MarkdownContent } from "@/app/_components/markdown-content"
 import { JsonLd } from "@/app/_components/json-ld"
+import { PaypalHostedButton } from "@/app/_components/paypal-hosted-button"
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:6000"
 
@@ -156,7 +157,19 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                     </div>
 
                     {/* Details sidebar */}
-                    <div className="mt-8 md:mt-0">
+                    <div className="mt-8 space-y-6 md:mt-0">
+                        {event.paypalButtonId &&
+                            event.paypalButtonLabel &&
+                            event.paypalButtonStyle && (
+                                <div className="border-border rounded-3xl border bg-[#FAF5F0] p-6 dark:bg-[#1a1715]">
+                                    <PaypalHostedButton
+                                        buttonId={event.paypalButtonId}
+                                        label={event.paypalButtonLabel}
+                                        style={event.paypalButtonStyle}
+                                        options={event.paypalOptions}
+                                    />
+                                </div>
+                            )}
                         <div className="border-border rounded-3xl border bg-[#FAF5F0] p-6 dark:bg-[#1a1715]">
                             <h2 className="font-heading mb-4 text-xl tracking-wider uppercase">
                                 Event Details
