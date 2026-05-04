@@ -17,7 +17,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@repo/ui/components/select"
-import type { events, PaypalOption } from "@repo/database"
+import type { events } from "@repo/database"
 
 type Event = typeof events.$inferSelect
 
@@ -238,12 +238,11 @@ export function EventForm({ event, action, s3PublicUrl }: EventFormProps) {
                 }
             />
 
-            <PaypalConfigSection
-                initialButtonId={event?.paypalButtonId}
+            {/* <PaypalConfigSection
                 initialButtonLabel={event?.paypalButtonLabel}
-                initialButtonStyle={event?.paypalButtonStyle}
-                initialOptions={event?.paypalOptions as PaypalOption[] | null | undefined}
-            />
+                initialAddToCartHtml={event?.paypalAddToCartHtml}
+                initialViewCartHtml={event?.paypalViewCartHtml}
+            /> */}
 
             <div className="flex gap-3">
                 <Button type="submit">{event ? "Save Changes" : "Create Event"}</Button>

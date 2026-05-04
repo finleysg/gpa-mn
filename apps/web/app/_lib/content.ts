@@ -8,7 +8,6 @@ import {
     getContentItemBySlug,
     getPageBySectionAndSlug,
 } from "@repo/database"
-import type { PaypalOption } from "@repo/database"
 import type {
     SectionHeaderData,
     PageHeaderData,
@@ -50,10 +49,9 @@ export type WebEvent = {
     showUpcoming: boolean
     image?: string
     mobileImage?: string
-    paypalButtonId: string | null
     paypalButtonLabel: string | null
-    paypalButtonStyle: "cart" | "buynow" | "donate" | null
-    paypalOptions: PaypalOption[] | null
+    paypalAddToCartHtml: string | null
+    paypalViewCartHtml: string | null
 }
 
 type DbEvent = Awaited<ReturnType<typeof dbGetEvents>>[number]
@@ -118,10 +116,9 @@ async function toWebEvent(event: DbEvent): Promise<WebEvent> {
         }),
         image,
         mobileImage,
-        paypalButtonId: event.paypalButtonId,
         paypalButtonLabel: event.paypalButtonLabel,
-        paypalButtonStyle: event.paypalButtonStyle,
-        paypalOptions: event.paypalOptions,
+        paypalAddToCartHtml: event.paypalAddToCartHtml,
+        paypalViewCartHtml: event.paypalViewCartHtml,
     }
 }
 
@@ -148,10 +145,14 @@ export async function getHeroImages(): Promise<string[]> {
 // ── Text processing ──
 
 // Replace regular hyphens in "GPA-MN" / "gpa-mn" with non-breaking hyphens (U+2011)
-// so the browser never line-breaks the name.
+// so the browser never line-breaks the name. URLs are skipped so embedded
+// gpa-mn substrings (e.g. inside an S3 bucket hostname) aren't mangled.
 export function fixHyphens<T>(value: T): T {
     if (typeof value === "string") {
-        return value.replace(/gpa-mn/gi, (m) => m.replace("-", "\u2011")) as T
+        return value.replace(/https?:\/\/\S+|gpa-mn/gi, (match) => {
+            if (match.startsWith("http")) return match
+            return match.replace("-", "\u2011")
+        }) as T
     }
     if (Array.isArray(value)) {
         return value.map(fixHyphens) as T

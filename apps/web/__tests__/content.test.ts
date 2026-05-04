@@ -15,12 +15,15 @@ describe("fixHyphens", () => {
         expect(result).toEqual({ title: "GPA\u2011MN Event", count: 5 })
     })
 
-    it("corrupts URLs containing gpa-mn in the hostname", () => {
+    it("leaves URLs containing gpa-mn untouched", () => {
         const url = "https://gpa-mn-s3-bucket.s3.us-east-2.amazonaws.com/media/event/55.webp"
-        const result = fixHyphens(url)
-        // This test documents WHY image URLs must be kept out of fixHyphens:
-        // it replaces the hyphen in the S3 bucket hostname, breaking the URL
-        expect(result).not.toBe(url)
-        expect(result).toContain("\u2011")
+        expect(fixHyphens(url)).toBe(url)
+    })
+
+    it("substitutes prose mentions but preserves URLs in mixed strings", () => {
+        const md = 'See ![v](https://gpa-mn-s3.example.com/x.webp "left medium") on GPA-MN.'
+        expect(fixHyphens(md)).toBe(
+            'See ![v](https://gpa-mn-s3.example.com/x.webp "left medium") on GPA\u2011MN.',
+        )
     })
 })
