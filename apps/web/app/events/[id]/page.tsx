@@ -158,15 +158,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
                     {/* Details sidebar */}
                     <div className="mt-8 space-y-6 md:mt-0">
-                        {event.paypalAddToCartHtml && event.paypalButtonLabel && (
-                            <div className="border-border rounded-3xl border bg-[#FAF5F0] p-6 dark:bg-[#1a1715]">
-                                <PaypalCartButtons
-                                    label={event.paypalButtonLabel}
-                                    addToCartHtml={event.paypalAddToCartHtml}
-                                    viewCartHtml={event.paypalViewCartHtml}
-                                />
-                            </div>
-                        )}
                         <div className="border-border rounded-3xl border bg-[#FAF5F0] p-6 dark:bg-[#1a1715]">
                             <h2 className="font-heading mb-4 text-xl tracking-wider uppercase">
                                 Event Details
@@ -192,6 +183,15 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
                                 </div>
                             </div>
                         </div>
+                        {event.paypalAddToCartHtml && event.paypalButtonLabel && (
+                            <div className="border-border rounded-3xl border bg-[#FAF5F0] p-6 dark:bg-[#1a1715]">
+                                <PaypalCartButtons
+                                    label={event.paypalButtonLabel}
+                                    addToCartHtml={event.paypalAddToCartHtml}
+                                    viewCartHtml={event.paypalViewCartHtml}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>

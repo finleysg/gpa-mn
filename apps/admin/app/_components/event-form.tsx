@@ -238,11 +238,11 @@ export function EventForm({ event, action, s3PublicUrl }: EventFormProps) {
                 }
             />
 
-            {/* <PaypalConfigSection
+            <PaypalConfigSection
                 initialButtonLabel={event?.paypalButtonLabel}
                 initialAddToCartHtml={event?.paypalAddToCartHtml}
                 initialViewCartHtml={event?.paypalViewCartHtml}
-            /> */}
+            />
 
             <div className="flex gap-3">
                 <Button type="submit">{event ? "Save Changes" : "Create Event"}</Button>
