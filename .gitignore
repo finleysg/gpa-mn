@@ -34,3 +34,7 @@ yarn-error.log*
 
 # Docker
 mysql_data
+
+# Local DNS planning
+dns-cutover-plan.md
+gpa-dns.csv
