@@ -598,13 +598,15 @@ const contentData: ContentSeedItem[] = [
             },
         },
         {
-            slug: "heal-a-hound",
+            slug: "item-donations",
             sortOrder: 5,
             data: {
-                title: "Heal a Hound Fund",
+                title: "Fundraising Item Donations",
                 description:
-                    "Contribute to our special medical fund that covers extraordinary veterinary expenses for greyhounds with injuries or health conditions beyond routine care.",
-                icon: "🩺",
+                    "Have items to donate for our fundraising events (gift baskets, raffle items, gently used pet gear)? Get in touch and we'll help arrange drop-off or pickup.",
+                icon: "🎁",
+                link: "/about/contact",
+                linkLabel: "Contact Us",
             },
         },
     ].map((item) => ({ ...item, contentType: "donationOption" as const })),
@@ -795,6 +797,56 @@ Our primary obligation is to the dogs entrusted to our care. Every greyhound ado
             },
         },
     ].map((item) => ({ ...item, contentType: "lostHoundSuggestion" as const })),
+
+    // Lost hound — Act Now steps
+    ...[
+        {
+            slug: "act-now-1",
+            sortOrder: 0,
+            data: { text: "Stay calm. Greyhounds can sense panic and may run further." },
+        },
+        {
+            slug: "act-now-2",
+            sortOrder: 1,
+            data: {
+                text: "Search the immediate area — check behind bushes, under decks, and in neighboring yards.",
+            },
+        },
+        {
+            slug: "act-now-3",
+            sortOrder: 2,
+            data: { text: "Leave your front door open with food and a familiar blanket outside." },
+        },
+        {
+            slug: "act-now-4",
+            sortOrder: 3,
+            data: { text: "Ask neighbors to check their yards, garages, and sheds." },
+        },
+        {
+            slug: "act-now-5",
+            sortOrder: 4,
+            data: {
+                text: "Post to social media immediately — the MN Greyhound community is incredibly responsive.",
+            },
+        },
+        {
+            slug: "act-now-6",
+            sortOrder: 5,
+            data: {
+                text: "Contact GPA‑MN at 763-785-4000 to activate our lost hound network.",
+            },
+        },
+        {
+            slug: "act-now-7",
+            sortOrder: 6,
+            data: { text: "File a lost pet report with local animal control and nearby shelters." },
+        },
+        {
+            slug: "act-now-8",
+            sortOrder: 7,
+            data: { text: "Put up flyers with a clear photo in the surrounding neighborhood." },
+        },
+    ].map((item) => ({ ...item, contentType: "lostHoundStep" as const })),
 
     // Why greyhounds
     ...[

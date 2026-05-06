@@ -32,6 +32,7 @@ const webPathMap: Record<ContentType, string[]> = {
     beforeYouApply: ["/adopt/our-process"],
     postAdoptionSupport: ["/adopt/support"],
     lostHoundSuggestion: ["/lost-hound"],
+    lostHoundStep: ["/lost-hound"],
     whyGreyhound: ["/adopt"],
     whyChooseUs: ["/adopt/why-gpa-mn"],
     page: ["/adopt", "/volunteer", "/donate"],
@@ -91,7 +92,17 @@ function parseContentFormData(
                 icon: formData.get("icon") as string,
                 commitment: formData.get("commitment") as string,
             }
-        case "donationOption":
+        case "donationOption": {
+            const link = (formData.get("link") as string)?.trim() || undefined
+            const linkLabel = (formData.get("linkLabel") as string)?.trim() || undefined
+            return {
+                title: formData.get("title") as string,
+                description: formData.get("description") as string,
+                icon: formData.get("icon") as string,
+                ...(link ? { link } : {}),
+                ...(linkLabel ? { linkLabel } : {}),
+            }
+        }
         case "postAdoptionSupport":
         case "lostHoundSuggestion":
         case "whyGreyhound":
@@ -99,6 +110,10 @@ function parseContentFormData(
                 title: formData.get("title") as string,
                 description: formData.get("description") as string,
                 icon: formData.get("icon") as string,
+            }
+        case "lostHoundStep":
+            return {
+                text: formData.get("text") as string,
             }
         case "aboutPage":
         case "whyChooseUs":
@@ -127,11 +142,19 @@ export async function createContentAction(contentType: ContentType, formData: Fo
     const data = parseContentFormData(contentType, formData)
     const config = contentTypeConfigs[contentType]
 
-    if (!data.title) {
-        return { errors: ["Title is required"] }
+    let slug: string
+    if (contentType === "lostHoundStep") {
+        const text = (data.text as string) || ""
+        if (!text.trim()) {
+            return { errors: ["Step text is required"] }
+        }
+        slug = `step-${Date.now()}`
+    } else {
+        if (!data.title) {
+            return { errors: ["Title is required"] }
+        }
+        slug = slugify(data.title as string)
     }
-
-    const slug = slugify(data.title as string)
 
     if (contentType === "page") {
         const section = data.section as string
@@ -168,7 +191,11 @@ export async function updateContentAction(
     const changeNote = (formData.get("changeNote") as string) || undefined
     const config = contentTypeConfigs[contentType]
 
-    if (!data.title) {
+    if (contentType === "lostHoundStep") {
+        if (!(data.text as string)?.trim()) {
+            return { errors: ["Step text is required"] }
+        }
+    } else if (!data.title) {
         return { errors: ["Title is required"] }
     }
 

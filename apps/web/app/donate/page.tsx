@@ -59,7 +59,7 @@ export default async function DonatePage() {
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {donationOptions.map((method, i) => (
                             <FadeIn key={method.title} delay={i * 60}>
-                                <div className="border-border h-full rounded-3xl border bg-[#FAF5F0] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:bg-[#1a1715] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)]">
+                                <div className="border-border flex h-full flex-col rounded-3xl border bg-[#FAF5F0] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:bg-[#1a1715] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)]">
                                     <div className="mb-3 text-2xl">{method.icon}</div>
                                     <h3 className="font-heading mb-2 text-xl tracking-wider uppercase">
                                         {method.title}
@@ -68,6 +68,24 @@ export default async function DonatePage() {
                                         content={method.description}
                                         className="text-muted-foreground text-sm leading-relaxed [&>p]:mb-0"
                                     />
+                                    {method.link &&
+                                        (() => {
+                                            const isExternal = /^https?:\/\//i.test(method.link)
+                                            return (
+                                                <a
+                                                    href={method.link}
+                                                    {...(isExternal
+                                                        ? {
+                                                              target: "_blank",
+                                                              rel: "noopener noreferrer",
+                                                          }
+                                                        : {})}
+                                                    className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 inline-flex w-fit items-center justify-center rounded-full px-4 py-2 text-sm font-semibold tracking-wider uppercase transition-colors"
+                                                >
+                                                    {method.linkLabel || "Donate"}
+                                                </a>
+                                            )
+                                        })()}
                                 </div>
                             </FadeIn>
                         ))}

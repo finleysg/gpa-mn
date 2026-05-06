@@ -51,6 +51,8 @@ export interface DonationOptionData {
     title: string
     description: string
     icon: string
+    link?: string
+    linkLabel?: string
 }
 
 export interface AboutPageData {
@@ -74,6 +76,10 @@ export interface LostHoundSuggestionData {
     title: string
     description: string
     icon: string
+}
+
+export interface LostHoundStepData {
+    text: string
 }
 
 export interface WhyGreyhoundData {
@@ -107,6 +113,7 @@ export interface ContentTypeMap {
     beforeYouApply: BeforeYouApplyData
     postAdoptionSupport: PostAdoptionSupportData
     lostHoundSuggestion: LostHoundSuggestionData
+    lostHoundStep: LostHoundStepData
     whyGreyhound: WhyGreyhoundData
     whyChooseUs: WhyChooseUsData
     page: PageData
