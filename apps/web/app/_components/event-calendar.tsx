@@ -269,7 +269,10 @@ function CalendarGrid({ weeks }: { weeks: CalendarDay[][] }) {
 // ── Main component ──
 
 export function EventCalendar({ events }: { events: WebEvent[] }) {
-    const [month, setMonth] = useState(() => new Date(2026, 2)) // March 2026 to match demo data
+    const [month, setMonth] = useState(() => {
+        const now = new Date()
+        return new Date(now.getFullYear(), now.getMonth())
+    })
 
     const monthEvents = useMemo(() => getEventsForMonth(events, month), [events, month])
 
