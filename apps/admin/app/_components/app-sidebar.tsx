@@ -212,7 +212,8 @@ const navEntries: NavEntry[] = [
         requires: "Content Edit",
         children: [
             { title: "Page Header", href: "/content/page-header/lost-hound" },
-            { title: "Act Now Lists", href: "/content/section-header/lost-hound-act" },
+            { title: "Act Now Header", href: "/content/section-header/lost-hound-act" },
+            { title: "Act Now Steps", href: "/lost-hound-steps" },
             { title: "Prevention Header", href: "/content/section-header/lost-hound-prevention" },
             { title: "Prevention Suggestions", href: "/lost-hound-suggestions" },
         ],

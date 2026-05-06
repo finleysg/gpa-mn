@@ -16,6 +16,7 @@ import { AboutPageFields } from "./content-fields/about-page-fields"
 import { BeforeYouApplyFields } from "./content-fields/before-you-apply-fields"
 import { WhyChooseUsFields } from "./content-fields/why-choose-us-fields"
 import { PageFields } from "./content-fields/page-fields"
+import { LostHoundStepFields } from "./content-fields/lost-hound-step-fields"
 
 type ActionResult = { errors: string[] } | { success: true } | undefined
 
@@ -40,6 +41,7 @@ const fieldComponents: Record<
     beforeYouApply: BeforeYouApplyFields,
     postAdoptionSupport: DonationOptionFields,
     lostHoundSuggestion: DonationOptionFields,
+    lostHoundStep: LostHoundStepFields,
     whyGreyhound: DonationOptionFields,
     whyChooseUs: WhyChooseUsFields,
     page: PageFields,

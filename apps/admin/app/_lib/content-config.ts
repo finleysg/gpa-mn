@@ -106,6 +106,13 @@ export const contentTypeConfigs: Record<ContentType, ContentTypeConfig> = {
             { key: "icon", label: "Icon" },
         ],
     },
+    lostHoundStep: {
+        contentType: "lostHoundStep",
+        slug: "lost-hound-steps",
+        singular: "Act Now Step",
+        plural: "Act Now Steps",
+        tableColumns: [{ key: "text", label: "Step text" }],
+    },
     whyGreyhound: {
         contentType: "whyGreyhound",
         slug: "why-greyhounds",

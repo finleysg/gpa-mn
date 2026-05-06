@@ -1,6 +1,11 @@
 import type { Metadata } from "next"
 import { Phone, AlertTriangle } from "lucide-react"
-import { getLostHoundSuggestions, getPageHeader, getSectionHeader } from "@/app/_lib/content"
+import {
+    getLostHoundSteps,
+    getLostHoundSuggestions,
+    getPageHeader,
+    getSectionHeader,
+} from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { SectionHeader } from "@/app/_components/section-header"
 import { FadeIn } from "@/app/_components/fade-in"
@@ -16,24 +21,15 @@ export const metadata: Metadata = {
     alternates: { canonical: "/lost-hound" },
 }
 
-const immediateSteps = [
-    "Stay calm. Greyhounds can sense panic and may run further.",
-    "Search the immediate area — check behind bushes, under decks, and in neighboring yards.",
-    "Leave your front door open with food and a familiar blanket outside.",
-    "Ask neighbors to check their yards, garages, and sheds.",
-    "Post to social media immediately — the MN Greyhound community is incredibly responsive.",
-    "Contact GPA‑MN at 763-785-4000 to activate our lost hound network.",
-    "File a lost pet report with local animal control and nearby shelters.",
-    "Put up flyers with a clear photo in the surrounding neighborhood.",
-]
-
 export default async function LostHoundPage() {
-    const [preventionTips, pageHeader, stepsHeader, preventionHeader] = await Promise.all([
-        getLostHoundSuggestions(),
-        getPageHeader("Lost Hound"),
-        getSectionHeader("Lost Hound — Act Now"),
-        getSectionHeader("Lost Hound — Prevention"),
-    ])
+    const [immediateSteps, preventionTips, pageHeader, stepsHeader, preventionHeader] =
+        await Promise.all([
+            getLostHoundSteps(),
+            getLostHoundSuggestions(),
+            getPageHeader("Lost Hound"),
+            getSectionHeader("Lost Hound — Act Now"),
+            getSectionHeader("Lost Hound — Prevention"),
+        ])
 
     return (
         <>
@@ -89,7 +85,7 @@ export default async function LostHoundPage() {
                                         {i + 1}
                                     </span>
                                     <span className="text-muted-foreground pt-1 leading-relaxed">
-                                        {step}
+                                        {step.text}
                                     </span>
                                 </li>
                             ))}

@@ -18,6 +18,7 @@ import type {
     BeforeYouApplyData,
     PostAdoptionSupportData,
     LostHoundSuggestionData,
+    LostHoundStepData,
     WhyGreyhoundData,
     WhyChooseUsData,
     PageData,
@@ -254,6 +255,11 @@ export async function getPostAdoptionSupport(): Promise<PostAdoptionSupportData[
 export async function getLostHoundSuggestions(): Promise<LostHoundSuggestionData[]> {
     const results = await getLatestVersions("lostHoundSuggestion")
     return extractData<LostHoundSuggestionData>(results)
+}
+
+export async function getLostHoundSteps(): Promise<LostHoundStepData[]> {
+    const results = await getLatestVersions("lostHoundStep")
+    return extractData<LostHoundStepData>(results)
 }
 
 export async function getAboutPage(): Promise<AboutPageData | undefined> {
