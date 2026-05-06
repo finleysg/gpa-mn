@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { getWebsiteVisibleRolesWithUsers } from "@repo/database"
@@ -32,7 +33,17 @@ export default async function AboutPage() {
                 highlight={pageHeader.highlight}
                 description={pageHeader.description}
                 variant={pageHeader.variant}
-            />
+            >
+                <div className="mt-4 flex justify-center">
+                    <Image
+                        src="/images/events/NGAendorsementLogo.png"
+                        alt="National Greyhound Association Endorsement"
+                        width={240}
+                        height={240}
+                        className="h-auto w-40 md:w-56"
+                    />
+                </div>
+            </PageHero>
 
             {/* Overview */}
             <section
@@ -106,8 +117,14 @@ export default async function AboutPage() {
                         align="center"
                         className="mb-12"
                     />
-                    <div className="flex justify-center">
+                    <div className="grid gap-6 sm:grid-cols-2">
                         {[
+                            {
+                                href: "/adopt/why-gpa-mn",
+                                title: "Why Choose GPA-MN",
+                                desc: "What sets us apart as an NGA-endorsed, all-volunteer organization matching greyhounds to the right homes.",
+                                icon: "🐾",
+                            },
                             {
                                 href: "/about/contact",
                                 title: "Contact Us",
@@ -115,10 +132,10 @@ export default async function AboutPage() {
                                 icon: "📬",
                             },
                         ].map((link) => (
-                            <FadeIn key={link.href} className="w-full max-w-sm">
+                            <FadeIn key={link.href}>
                                 <Link
                                     href={link.href}
-                                    className="bg-card border-border block rounded-3xl border p-8 text-center shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
+                                    className="bg-card border-border block h-full rounded-3xl border p-8 text-center shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
                                 >
                                     <div className="mb-4 text-3xl">{link.icon}</div>
                                     <h3 className="font-heading mb-2 text-2xl tracking-wider uppercase">
