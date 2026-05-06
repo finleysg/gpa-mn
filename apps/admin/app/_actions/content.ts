@@ -93,14 +93,12 @@ function parseContentFormData(
                 commitment: formData.get("commitment") as string,
             }
         case "donationOption": {
-            const link = (formData.get("link") as string)?.trim() || undefined
-            const linkLabel = (formData.get("linkLabel") as string)?.trim() || undefined
+            const embedHtml = (formData.get("embedHtml") as string)?.trim() || undefined
             return {
                 title: formData.get("title") as string,
                 description: formData.get("description") as string,
                 icon: formData.get("icon") as string,
-                ...(link ? { link } : {}),
-                ...(linkLabel ? { linkLabel } : {}),
+                ...(embedHtml ? { embedHtml } : {}),
             }
         }
         case "postAdoptionSupport":

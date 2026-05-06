@@ -51,8 +51,7 @@ export interface DonationOptionData {
     title: string
     description: string
     icon: string
-    link?: string
-    linkLabel?: string
+    embedHtml?: string
 }
 
 export interface AboutPageData {

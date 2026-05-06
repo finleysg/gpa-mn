@@ -605,8 +605,6 @@ const contentData: ContentSeedItem[] = [
                 description:
                     "Have items to donate for our fundraising events (gift baskets, raffle items, gently used pet gear)? Get in touch and we'll help arrange drop-off or pickup.",
                 icon: "🎁",
-                link: "/about/contact",
-                linkLabel: "Contact Us",
             },
         },
     ].map((item) => ({ ...item, contentType: "donationOption" as const })),
