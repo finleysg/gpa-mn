@@ -47,7 +47,7 @@ export default async function WhyGpaMnPage() {
                     size={400}
                     className="-bottom-24 -left-24 opacity-25 dark:opacity-6"
                 />
-                <div className="relative z-10 mx-auto grid max-w-200 items-center gap-10 md:grid-cols-[1fr_auto]">
+                <div className="relative z-10 mx-auto grid max-w-200 items-center justify-items-center gap-10 md:grid-cols-[1fr_auto] md:justify-items-stretch">
                     <div className="text-center md:text-left">
                         <h1
                             id="why-gpa-mn-heading"
@@ -69,13 +69,13 @@ export default async function WhyGpaMnPage() {
                             </p>
                         )}
                     </div>
-                    <div className="hidden md:block">
+                    <div>
                         <Image
                             src="/images/events/NGAendorsementLogo.png"
                             alt="National Greyhound Association Endorsement"
                             width={240}
                             height={240}
-                            className="h-auto w-56"
+                            className="h-auto w-40 md:w-56"
                         />
                     </div>
                 </div>
