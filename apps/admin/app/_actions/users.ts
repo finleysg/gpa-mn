@@ -280,3 +280,39 @@ export async function updateAdminLoginAction(
     revalidatePath("/users")
     return { success: true, message: "Admin login updated." }
 }
+
+// --- Send Password Setup / Reset Email ---
+
+export type SendPasswordEmailState = {
+    error?: string
+    success?: boolean
+    message?: string
+}
+
+export async function sendPasswordEmailAction(
+    userId: string,
+    _prev: SendPasswordEmailState,
+    _formData: FormData,
+): Promise<SendPasswordEmailState> {
+    await requireUserAdmin()
+
+    const targetUser = await getUser(userId)
+    if (!targetUser) {
+        return { error: "User not found." }
+    }
+
+    if (targetUser.deactivatedAt) {
+        return { error: "Cannot send email to a deactivated user." }
+    }
+
+    const hasPassword = await userHasPassword(userId)
+
+    await auth.api.requestPasswordReset({
+        body: { email: targetUser.email, redirectTo: "/reset-password" },
+    })
+
+    return {
+        success: true,
+        message: hasPassword ? "Password reset email sent." : "Password setup email sent.",
+    }
+}

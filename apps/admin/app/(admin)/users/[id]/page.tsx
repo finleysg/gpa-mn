@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation"
-import { getUser, getRoles, userHasRolePermissions } from "@repo/database"
+import { getUser, getRoles, userHasPassword, userHasRolePermissions } from "@repo/database"
 import { requirePermission } from "@/app/_lib/require-section-access"
 import { Badge } from "@repo/ui/components/badge"
 import { AlertTriangle } from "lucide-react"
 import { EditRolesForm } from "./edit-roles-form"
 import { AdminLoginToggle } from "./admin-login-toggle"
+import { PasswordEmailAction } from "./password-email-action"
 
 export default async function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
     await requirePermission("User Edit")
@@ -13,7 +14,10 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
 
     if (!user) notFound()
 
-    const hasRolePermissions = await userHasRolePermissions(user.id)
+    const [hasRolePermissions, hasPassword] = await Promise.all([
+        userHasRolePermissions(user.id),
+        userHasPassword(user.id),
+    ])
     const cannotLogIn = Boolean(user.deactivatedAt) || !user.adminLogin
     const showLoginGap = hasRolePermissions && cannotLogIn
 
@@ -82,6 +86,12 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
             <div className="mt-8">
                 <AdminLoginToggle userId={user.id} currentValue={user.adminLogin} />
             </div>
+
+            {!user.deactivatedAt && (
+                <div className="mt-8">
+                    <PasswordEmailAction userId={user.id} hasPassword={hasPassword} />
+                </div>
+            )}
         </div>
     )
 }
