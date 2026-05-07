@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 
 const CART_SCRIPT_SRC = "https://www.paypalobjects.com/ncp/sb/cart/cart.js"
-const CART_MERCHANT_ID = "PCRP7PJ54YDV6"
+const CART_MERCHANT_ID = "HBCXN9CGBFZLA"
 
 interface PaypalCartButtonsProps {
     label: string
