@@ -22,7 +22,10 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:6000"
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+if (!siteUrl) {
+    throw new Error("NEXT_PUBLIC_SITE_URL is required")
+}
 const siteName = "GPA-MN"
 const defaultTitle = "GPA-MN | Greyhound Pets of America - Minnesota"
 const defaultDescription =
