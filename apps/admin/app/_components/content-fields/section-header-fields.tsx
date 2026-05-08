@@ -25,8 +25,13 @@ export function SectionHeaderFields({ data }: SectionHeaderFieldsProps) {
                     id="location"
                     name="location"
                     defaultValue={(data?.location as string) ?? ""}
-                    placeholder="e.g. Homepage — Events section"
+                    readOnly
+                    className="bg-muted text-muted-foreground cursor-not-allowed"
                 />
+                <p className="text-muted-foreground text-xs">
+                    Identifier used by the public site to find this header. Managed in code; not
+                    editable.
+                </p>
             </div>
 
             <MarkdownEditor
