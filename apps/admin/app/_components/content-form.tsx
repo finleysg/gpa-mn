@@ -14,6 +14,7 @@ import { VolunteerRoleFields } from "./content-fields/volunteer-role-fields"
 import { DonationOptionFields } from "./content-fields/donation-option-fields"
 import { AboutPageFields } from "./content-fields/about-page-fields"
 import { BeforeYouApplyFields } from "./content-fields/before-you-apply-fields"
+import { RequiredReadingFields } from "./content-fields/required-reading-fields"
 import { WhyChooseUsFields } from "./content-fields/why-choose-us-fields"
 import { PageFields } from "./content-fields/page-fields"
 import { LostHoundStepFields } from "./content-fields/lost-hound-step-fields"
@@ -39,6 +40,7 @@ const fieldComponents: Record<
     donationOption: DonationOptionFields,
     aboutPage: AboutPageFields,
     beforeYouApply: BeforeYouApplyFields,
+    requiredReading: RequiredReadingFields,
     postAdoptionSupport: DonationOptionFields,
     lostHoundSuggestion: DonationOptionFields,
     lostHoundStep: LostHoundStepFields,

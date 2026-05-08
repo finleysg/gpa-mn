@@ -86,6 +86,17 @@ export const contentTypeConfigs: Record<ContentType, ContentTypeConfig> = {
             { key: "title", label: "Title" },
         ],
     },
+    requiredReading: {
+        contentType: "requiredReading",
+        slug: "required-reading",
+        singular: "Required Reading Book",
+        plural: "Required Reading",
+        tableColumns: [
+            { key: "order", label: "Order" },
+            { key: "title", label: "Title" },
+            { key: "author", label: "Author" },
+        ],
+    },
     postAdoptionSupport: {
         contentType: "postAdoptionSupport",
         slug: "post-adoption-support",

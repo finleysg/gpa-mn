@@ -65,6 +65,14 @@ export interface BeforeYouApplyData {
     text: string
 }
 
+export interface RequiredReadingData {
+    title: string
+    author: string
+    description: string
+    purchaseUrl: string
+    order: number
+}
+
 export interface PostAdoptionSupportData {
     title: string
     description: string
@@ -110,6 +118,7 @@ export interface ContentTypeMap {
     donationOption: DonationOptionData
     aboutPage: AboutPageData
     beforeYouApply: BeforeYouApplyData
+    requiredReading: RequiredReadingData
     postAdoptionSupport: PostAdoptionSupportData
     lostHoundSuggestion: LostHoundSuggestionData
     lostHoundStep: LostHoundStepData

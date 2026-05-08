@@ -16,6 +16,7 @@ import type {
     DonationOptionData,
     AboutPageData,
     BeforeYouApplyData,
+    RequiredReadingData,
     PostAdoptionSupportData,
     LostHoundSuggestionData,
     LostHoundStepData,
@@ -274,6 +275,12 @@ export async function getAboutPage(): Promise<AboutPageData | undefined> {
 export async function getBeforeYouApply(): Promise<BeforeYouApplyData | undefined> {
     const results = await getLatestVersions("beforeYouApply")
     return extractSingle<BeforeYouApplyData>(results)
+}
+
+export async function getRequiredReading(): Promise<RequiredReadingData[]> {
+    const results = await getLatestVersions("requiredReading")
+    const books = extractData<RequiredReadingData>(results)
+    return books.sort((a, b) => a.order - b.order)
 }
 
 export async function getWhyChooseUs(): Promise<WhyChooseUsData | undefined> {

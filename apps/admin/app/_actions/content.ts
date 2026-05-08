@@ -30,6 +30,7 @@ const webPathMap: Record<ContentType, string[]> = {
     donationOption: ["/donate"],
     aboutPage: ["/about"],
     beforeYouApply: ["/adopt/our-process"],
+    requiredReading: ["/adopt/our-process"],
     postAdoptionSupport: ["/adopt/support"],
     lostHoundSuggestion: ["/lost-hound"],
     lostHoundStep: ["/lost-hound"],
@@ -91,6 +92,14 @@ function parseContentFormData(
                 description: formData.get("description") as string,
                 icon: formData.get("icon") as string,
                 commitment: formData.get("commitment") as string,
+            }
+        case "requiredReading":
+            return {
+                title: formData.get("title") as string,
+                author: formData.get("author") as string,
+                description: formData.get("description") as string,
+                purchaseUrl: formData.get("purchaseUrl") as string,
+                order: Number(formData.get("order") ?? 0),
             }
         case "donationOption": {
             const embedHtml = (formData.get("embedHtml") as string)?.trim() || undefined

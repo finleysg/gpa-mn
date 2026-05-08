@@ -4,6 +4,7 @@ import {
     getPageHeader,
     getSectionHeader,
     getBeforeYouApply,
+    getRequiredReading,
 } from "@/app/_lib/content"
 import { PageHero } from "@/app/_components/page-hero"
 import { ProcessStep } from "@/app/_components/process-step"
@@ -23,12 +24,14 @@ export const metadata: Metadata = {
 }
 
 export default async function OurProcessPage() {
-    const [adoptionSteps, pageHeader, stepsHeader, beforeYouApply] = await Promise.all([
-        getAdoptionSteps(),
-        getPageHeader("Adopt / Our Process"),
-        getSectionHeader("Adopt / Our Process — Steps"),
-        getBeforeYouApply(),
-    ])
+    const [adoptionSteps, pageHeader, stepsHeader, beforeYouApply, requiredReading] =
+        await Promise.all([
+            getAdoptionSteps(),
+            getPageHeader("Adopt / Our Process"),
+            getSectionHeader("Adopt / Our Process — Steps"),
+            getBeforeYouApply(),
+            getRequiredReading(),
+        ])
 
     return (
         <>
@@ -65,6 +68,53 @@ export default async function OurProcessPage() {
                     </div>
                 </div>
             </section>
+
+            {/* Required reading */}
+            {requiredReading.length > 0 && (
+                <section
+                    aria-labelledby="required-reading-heading"
+                    className="bg-card px-5 py-20 md:py-24"
+                >
+                    <div className="mx-auto max-w-300">
+                        <SectionHeader
+                            title="Required Reading"
+                            description="Books we recommend every prospective adopter read to better understand greyhounds and their needs."
+                            headingId="required-reading-heading"
+                            align="center"
+                            className="mb-12"
+                        />
+
+                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {requiredReading.map((book, i) => (
+                                <FadeIn key={book.title} delay={i * 60}>
+                                    <article className="border-border flex h-full flex-col rounded-3xl border bg-[#FAF5F0] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:bg-[#1a1715] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)]">
+                                        <div className="mb-3 text-2xl" aria-hidden="true">
+                                            📖
+                                        </div>
+                                        <h3 className="font-heading mb-1 text-xl tracking-wider uppercase">
+                                            {book.title}
+                                        </h3>
+                                        <p className="text-muted-foreground mb-3 text-sm italic">
+                                            by {book.author}
+                                        </p>
+                                        <p className="text-muted-foreground mb-6 flex-1 text-sm leading-relaxed">
+                                            {book.description}
+                                        </p>
+                                        <a
+                                            href={book.purchaseUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex items-center justify-center self-start rounded-full px-5 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                                        >
+                                            Buy on Amazon
+                                        </a>
+                                    </article>
+                                </FadeIn>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Important notes */}
             <section
