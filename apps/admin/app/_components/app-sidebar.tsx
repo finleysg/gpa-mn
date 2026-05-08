@@ -155,6 +155,10 @@ const navEntries: NavEntry[] = [
                     { title: "Page Header", href: "/content/page-header/adopt-process" },
                     { title: "Steps Header", href: "/content/section-header/adopt-process-steps" },
                     { title: "Adoption Steps List", href: "/adoption-steps" },
+                    {
+                        title: "Required Reading Header",
+                        href: "/content/section-header/adopt-process-required-reading",
+                    },
                     { title: "Required Reading", href: "/required-reading" },
                     { title: "Before You Apply", href: "/before-you-apply" },
                 ],

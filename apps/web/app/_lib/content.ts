@@ -220,6 +220,15 @@ export async function getSectionHeader(location: string): Promise<SectionHeaderD
     return fixHyphens(match.version.data as SectionHeaderData)
 }
 
+export async function getSectionHeaderOptional(
+    location: string,
+): Promise<SectionHeaderData | undefined> {
+    const results = await getAllSectionHeaders()
+    const match = results.find((r) => (r.version.data as SectionHeaderData).location === location)
+    if (!match) return undefined
+    return fixHyphens(match.version.data as SectionHeaderData)
+}
+
 export async function getPageHeaders(): Promise<PageHeaderData[]> {
     const results = await getAllPageHeaders()
     return extractData<PageHeaderData>(results)

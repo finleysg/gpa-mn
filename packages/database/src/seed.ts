@@ -220,6 +220,16 @@ const contentData: ContentSeedItem[] = [
             },
         },
         {
+            slug: "adopt-process-required-reading",
+            sortOrder: 16,
+            data: {
+                title: "Required Reading",
+                description:
+                    "Books we recommend every prospective adopter read to better understand greyhounds and their needs.",
+                location: "Adopt / Our Process — Required Reading",
+            },
+        },
+        {
             slug: "adopt-support-resources",
             sortOrder: 12,
             data: {

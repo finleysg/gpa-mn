@@ -3,6 +3,7 @@ import {
     getAdoptionSteps,
     getPageHeader,
     getSectionHeader,
+    getSectionHeaderOptional,
     getBeforeYouApply,
     getRequiredReading,
 } from "@/app/_lib/content"
@@ -24,14 +25,26 @@ export const metadata: Metadata = {
 }
 
 export default async function OurProcessPage() {
-    const [adoptionSteps, pageHeader, stepsHeader, beforeYouApply, requiredReading] =
-        await Promise.all([
-            getAdoptionSteps(),
-            getPageHeader("Adopt / Our Process"),
-            getSectionHeader("Adopt / Our Process — Steps"),
-            getBeforeYouApply(),
-            getRequiredReading(),
-        ])
+    const [
+        adoptionSteps,
+        pageHeader,
+        stepsHeader,
+        beforeYouApply,
+        requiredReading,
+        requiredReadingHeader,
+    ] = await Promise.all([
+        getAdoptionSteps(),
+        getPageHeader("Adopt / Our Process"),
+        getSectionHeader("Adopt / Our Process — Steps"),
+        getBeforeYouApply(),
+        getRequiredReading(),
+        getSectionHeaderOptional("Adopt / Our Process — Required Reading"),
+    ])
+
+    const requiredReadingGridClass =
+        requiredReading.length > 4
+            ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            : "grid gap-6 sm:grid-cols-2"
 
     return (
         <>
@@ -77,14 +90,17 @@ export default async function OurProcessPage() {
                 >
                     <div className="mx-auto max-w-300">
                         <SectionHeader
-                            title="Required Reading"
-                            description="Books we recommend every prospective adopter read to better understand greyhounds and their needs."
+                            title={requiredReadingHeader?.title ?? "Required Reading"}
+                            description={
+                                requiredReadingHeader?.description ??
+                                "Books we recommend every prospective adopter read to better understand greyhounds and their needs."
+                            }
                             headingId="required-reading-heading"
                             align="center"
                             className="mb-12"
                         />
 
-                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className={requiredReadingGridClass}>
                             {requiredReading.map((book, i) => (
                                 <FadeIn key={book.title} delay={i * 60}>
                                     <article className="border-border flex h-full flex-col rounded-3xl border bg-[#FAF5F0] p-6 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:bg-[#1a1715] dark:shadow-[0_2px_12px_rgba(0,0,0,0.1)]">
