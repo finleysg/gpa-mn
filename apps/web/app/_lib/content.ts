@@ -48,6 +48,8 @@ export type WebEvent = {
     description: string
     longDescription: string
     showUpcoming: boolean
+    featured: boolean
+    featuredOrder: number
     image?: string
     mobileImage?: string
     paypalButtonLabel: string | null
@@ -114,6 +116,8 @@ async function toWebEvent(event: DbEvent): Promise<WebEvent> {
             description: event.description,
             longDescription: event.longDescription,
             showUpcoming: event.showUpcoming,
+            featured: event.featured,
+            featuredOrder: event.featuredOrder,
         }),
         image,
         mobileImage,

@@ -24,6 +24,8 @@ export const events = mysqlTable("events", {
     longDescription: text().notNull(),
     archived: boolean().notNull().default(false),
     showUpcoming: boolean().notNull().default(true),
+    featured: boolean().notNull().default(false),
+    featuredOrder: int().notNull().default(0),
     paypalButtonLabel: varchar({ length: 80 }),
     paypalAddToCartHtml: text(),
     paypalViewCartHtml: text(),

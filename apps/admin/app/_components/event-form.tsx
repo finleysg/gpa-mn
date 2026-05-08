@@ -72,6 +72,7 @@ export function EventForm({ event, action, s3PublicUrl }: EventFormProps) {
         undefined,
     )
     const [showUpcoming, setShowUpcoming] = useState(event?.showUpcoming ?? true)
+    const [featured, setFeatured] = useState(event?.featured ?? false)
     const [recurrence, setRecurrence] = useState<string>(event?.recurrence ?? "once")
     const [startDate, setStartDate] = useState(event?.startDate ?? "")
     const startDateRef = useRef<HTMLInputElement>(null)
@@ -124,6 +125,13 @@ export function EventForm({ event, action, s3PublicUrl }: EventFormProps) {
                     <input type="hidden" name="showUpcoming" value={String(showUpcoming)} />
                     <Label htmlFor="showUpcoming" className="whitespace-nowrap">
                         Show in Upcoming
+                    </Label>
+                </div>
+                <div className="flex items-center gap-2 pb-2">
+                    <Switch id="featured" checked={featured} onCheckedChange={setFeatured} />
+                    <input type="hidden" name="featured" value={String(featured)} />
+                    <Label htmlFor="featured" className="whitespace-nowrap">
+                        Featured on Home
                     </Label>
                 </div>
             </div>

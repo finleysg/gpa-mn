@@ -215,7 +215,8 @@ export default async function HomePage() {
 
                     <div className="-mx-5 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0 md:pb-0">
                         {events
-                            .filter((e) => e.showUpcoming)
+                            .filter((e) => e.featured)
+                            .sort((a, b) => a.featuredOrder - b.featuredOrder)
                             .slice(0, 4)
                             .map((event, i) => (
                                 <FadeIn
