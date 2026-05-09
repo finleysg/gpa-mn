@@ -98,17 +98,10 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
                             {dog.bio}
                         </p>
 
-                        {dog.adoptionPending ? (
+                        {dog.adoptionPending && (
                             <span className="bg-muted text-muted-foreground inline-flex cursor-not-allowed items-center gap-2 rounded-full px-8 py-3.5 font-semibold">
                                 Adoption Pending
                             </span>
-                        ) : (
-                            <Link
-                                href="/adopt/our-process"
-                                className="bg-primary hover:bg-primary/90 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-semibold text-white shadow-[0_4px_16px_rgba(156,47,48,0.25)] transition-colors"
-                            >
-                                Start Your Application
-                            </Link>
                         )}
                     </div>
 
