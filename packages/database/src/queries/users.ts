@@ -3,7 +3,7 @@ import { db } from "../index"
 import { account, user } from "../schema/auth"
 import { permission, role, rolePermission, userRole } from "../schema/roles"
 
-export async function getUsers() {
+export async function getUsers({ deactivated = false }: { deactivated?: boolean } = {}) {
     const rows = await db
         .select({
             id: user.id,
@@ -19,6 +19,7 @@ export async function getUsers() {
         .from(user)
         .leftJoin(userRole, eq(user.id, userRole.userId))
         .leftJoin(role, eq(userRole.roleId, role.id))
+        .where(deactivated ? isNotNull(user.deactivatedAt) : isNull(user.deactivatedAt))
 
     const usersMap = new Map<
         string,

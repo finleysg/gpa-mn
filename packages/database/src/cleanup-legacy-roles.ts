@@ -1,7 +1,7 @@
 import "dotenv/config"
 import { drizzle } from "drizzle-orm/mysql2"
 import { inArray } from "drizzle-orm"
-import { invitationRole, role, rolePermission, userRole } from "./schema/roles"
+import { role, rolePermission, userRole } from "./schema/roles"
 
 const LEGACY_ROLE_NAMES = ["Content Admin", "User Admin"]
 
@@ -21,16 +21,13 @@ async function cleanupLegacyRoles() {
     const ids = legacyRoles.map((r) => r.id)
 
     await db.delete(userRole).where(inArray(userRole.roleId, ids))
-    await db.delete(invitationRole).where(inArray(invitationRole.roleId, ids))
     await db.delete(rolePermission).where(inArray(rolePermission.roleId, ids))
     await db.delete(role).where(inArray(role.id, ids))
 
     console.log(
         `Removed ${legacyRoles.length} legacy roles: ${legacyRoles
             .map((r) => r.name)
-            .join(
-                ", ",
-            )}. Related user_role, invitation_role, and role_permission rows also cleaned.`,
+            .join(", ")}. Related user_role and role_permission rows also cleaned.`,
     )
     process.exit(0)
 }

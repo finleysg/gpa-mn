@@ -188,30 +188,6 @@ export async function sendChangeEmailVerification({ to, url }: { to: string; url
     })
 }
 
-export async function sendInviteEmail({
-    to,
-    inviterName,
-    token,
-}: {
-    to: string
-    inviterName: string
-    token: string
-}) {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
-    const acceptUrl = `${siteUrl}/accept-invite?token=${token}`
-
-    await sendEmail({
-        to,
-        subject: "You've been invited to GPA-MN Admin",
-        html: emailLayout(`
-            <h2 style="font-size:24px;font-weight:bold;color:#18181b;margin-bottom:16px">You've been invited to GPA-MN Admin</h2>
-            <p style="font-size:16px;line-height:26px;color:#3f3f46">${escapeHtml(inviterName)} has invited you to join the GPA-MN admin panel.</p>
-            ${buttonHtml("Create your account", acceptUrl)}
-            <p style="font-size:14px;color:#71717a">This invitation expires in 7 days.</p>
-        `),
-    })
-}
-
 // --- Application emails ---
 
 export async function sendMagicLinkEmail({

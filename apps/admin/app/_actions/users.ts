@@ -3,10 +3,6 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import {
-    createInvitation,
-    getInvitations,
-    revokeInvitation,
-    updateInvitationToken,
     setUserRoles,
     countSuperAdmins,
     deactivateUser,
@@ -20,7 +16,6 @@ import {
 } from "@repo/database"
 import { getPermissionContext, getSessionOrRedirect, hasPermission } from "@/app/lib/auth-utils"
 import { auth } from "@/app/lib/auth"
-import { sendInviteEmail } from "@/app/_lib/email"
 import { revalidateWeb } from "@/app/_lib/revalidate-web"
 
 async function requireUserAdmin() {
@@ -30,68 +25,6 @@ async function requireUserAdmin() {
         throw new Error("Unauthorized")
     }
     return session
-}
-
-export type InviteUserState = {
-    error?: string
-    success?: boolean
-}
-
-export async function inviteUserAction(
-    _prev: InviteUserState,
-    formData: FormData,
-): Promise<InviteUserState> {
-    const session = await requireUserAdmin()
-
-    const email = (formData.get("email") as string)?.trim().toLowerCase()
-    const roleIds = formData.getAll("roleIds") as string[]
-
-    if (!email) {
-        return { error: "Email is required." }
-    }
-
-    if (roleIds.length === 0) {
-        return { error: "At least one role is required." }
-    }
-
-    const existingUser = await getUserByEmail(email)
-    if (existingUser) {
-        return { error: "A user with this email already exists." }
-    }
-
-    const token = crypto.randomUUID()
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-
-    await createInvitation(email, roleIds, session.user.id, token, expiresAt)
-    await sendInviteEmail({ to: email, inviterName: session.user.name, token })
-
-    revalidatePath("/users/invitations")
-    redirect("/users/invitations")
-}
-
-export async function resendInviteAction(invitationId: string) {
-    const session = await requireUserAdmin()
-
-    const invitations = await getInvitations()
-    const invite = invitations.find((i) => i.id === invitationId)
-
-    if (!invite || invite.status !== "pending") {
-        throw new Error("Invitation not found or already used")
-    }
-
-    const newToken = crypto.randomUUID()
-    const newExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-
-    await updateInvitationToken(invitationId, newToken, newExpiresAt)
-    await sendInviteEmail({ to: invite.email, inviterName: session.user.name, token: newToken })
-
-    revalidatePath("/users/invitations")
-}
-
-export async function revokeInviteAction(invitationId: string) {
-    await requireUserAdmin()
-    await revokeInvitation(invitationId)
-    revalidatePath("/users/invitations")
 }
 
 export type UpdateRolesState = {
@@ -154,6 +87,7 @@ export async function deactivateUserAction(userId: string) {
     await deactivateUser(userId)
     await updateUserAdminLogin(userId, false)
     revalidatePath("/users")
+    revalidatePath("/users/deactivated")
     revalidatePath(`/users/${userId}`)
     await revalidateWeb(["/about"])
 }
@@ -162,6 +96,7 @@ export async function reactivateUserAction(userId: string) {
     await requireUserAdmin()
     await reactivateUser(userId)
     revalidatePath("/users")
+    revalidatePath("/users/deactivated")
     revalidatePath(`/users/${userId}`)
     await revalidateWeb(["/about"])
 }
@@ -184,13 +119,20 @@ export async function createUserAction(
     const email = (formData.get("email") as string)?.trim().toLowerCase()
     const phone = (formData.get("phone") as string)?.trim() || null
     const roleIds = formData.getAll("roleIds") as string[]
-    const sendInvitation = formData.get("sendInvitation") === "true"
+    const tempPassword = (formData.get("tempPassword") as string) || ""
 
     if (!name || !email) {
         return { error: "Name and email are required." }
     }
 
-    // Check for duplicate email
+    // If a temp password is provided, the user will be able to log in.
+    // If blank, the user is a data-only record with no usable login (admin
+    // can enable login later from the user detail page).
+    const enableAdminLogin = tempPassword.length > 0
+    if (enableAdminLogin && tempPassword.length < 8) {
+        return { error: "Temporary password must be at least 8 characters." }
+    }
+
     const existingUser = await getUserByEmail(email)
     if (existingUser) {
         return {
@@ -199,11 +141,10 @@ export async function createUserAction(
         }
     }
 
-    // Create user + account via Better Auth with an unknowable temporary password
-    const tempPassword = crypto.randomUUID() + crypto.randomUUID()
+    const password = enableAdminLogin ? tempPassword : crypto.randomUUID() + crypto.randomUUID()
 
     const result = await auth.api.signUpEmail({
-        body: { name, email, password: tempPassword },
+        body: { name, email, password },
     })
 
     if (!result?.user) {
@@ -212,24 +153,14 @@ export async function createUserAction(
 
     const userId = result.user.id
 
-    // Update additional fields
     if (phone) {
         await updateUserPhone(userId, phone)
     }
-    if (sendInvitation) {
+    if (enableAdminLogin) {
         await updateUserAdminLogin(userId, true)
     }
-
-    // Assign roles
     if (roleIds.length > 0) {
         await setUserRoles(userId, roleIds, session.user.id)
-    }
-
-    // If admin login enabled, send "set your password" email
-    if (sendInvitation) {
-        await auth.api.requestPasswordReset({
-            body: { email, redirectTo: "/reset-password" },
-        })
     }
 
     revalidatePath("/users")

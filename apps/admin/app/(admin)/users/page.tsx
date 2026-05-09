@@ -12,9 +12,8 @@ import {
 } from "@repo/ui/components/table"
 import { Badge } from "@repo/ui/components/badge"
 import { AlertTriangle, Plus } from "lucide-react"
-import { deactivateUserAction, reactivateUserAction } from "@/app/_actions/users"
+import { deactivateUserAction } from "@/app/_actions/users"
 import { DeactivateButton } from "./_components/deactivate-button"
-import { ReactivateButton } from "./_components/reactivate-button"
 
 export default async function UsersPage() {
     await requirePermission("User Edit")
@@ -30,20 +29,15 @@ export default async function UsersPage() {
                 <div className="flex items-center gap-4">
                     <h1 className="text-2xl font-bold">Users</h1>
                     <Button variant="outline" size="sm" asChild>
-                        <Link href="/users/invitations">Invitations</Link>
+                        <Link href="/users/deactivated">Deactivated</Link>
                     </Button>
                 </div>
-                <div className="flex gap-2">
-                    <Button asChild>
-                        <Link href="/users/create">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Create User
-                        </Link>
-                    </Button>
-                    <Button variant="outline" asChild>
-                        <Link href="/users/invite">Invite User</Link>
-                    </Button>
-                </div>
+                <Button asChild>
+                    <Link href="/users/create">
+                        <Plus className="mr-2 h-4 w-4" />
+                        Create User
+                    </Link>
+                </Button>
             </div>
 
             <Table>
@@ -52,7 +46,6 @@ export default async function UsersPage() {
                         <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Roles</TableHead>
-                        <TableHead>Status</TableHead>
                         <TableHead>Created</TableHead>
                         <TableHead className="w-30">Actions</TableHead>
                     </TableRow>
@@ -60,13 +53,9 @@ export default async function UsersPage() {
                 <TableBody>
                     {users.map((user) => {
                         const hasRolePermissions = permissionedSet.has(user.id)
-                        const cannotLogIn = Boolean(user.deactivatedAt) || !user.adminLogin
-                        const showLoginGap = hasRolePermissions && cannotLogIn
+                        const showLoginGap = hasRolePermissions && !user.adminLogin
                         return (
-                            <TableRow
-                                key={user.id}
-                                className={user.deactivatedAt ? "opacity-50" : undefined}
-                            >
+                            <TableRow key={user.id}>
                                 <TableCell>
                                     <Link
                                         href={`/users/${user.id}`}
@@ -97,13 +86,6 @@ export default async function UsersPage() {
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    {user.deactivatedAt ? (
-                                        <Badge variant="outline">Deactivated</Badge>
-                                    ) : (
-                                        <Badge>Active</Badge>
-                                    )}
-                                </TableCell>
-                                <TableCell>
                                     {new Date(user.createdAt).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell>
@@ -111,16 +93,10 @@ export default async function UsersPage() {
                                         <Button variant="ghost" size="sm" asChild>
                                             <Link href={`/users/${user.id}`}>Edit</Link>
                                         </Button>
-                                        {user.deactivatedAt ? (
-                                            <ReactivateButton
-                                                action={reactivateUserAction.bind(null, user.id)}
-                                            />
-                                        ) : (
-                                            <DeactivateButton
-                                                name={user.name}
-                                                action={deactivateUserAction.bind(null, user.id)}
-                                            />
-                                        )}
+                                        <DeactivateButton
+                                            name={user.name}
+                                            action={deactivateUserAction.bind(null, user.id)}
+                                        />
                                     </div>
                                 </TableCell>
                             </TableRow>
@@ -129,7 +105,7 @@ export default async function UsersPage() {
                     {users.length === 0 && (
                         <TableRow>
                             <TableCell
-                                colSpan={6}
+                                colSpan={5}
                                 className="text-muted-foreground py-8 text-center"
                             >
                                 No users yet.

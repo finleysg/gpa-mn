@@ -88,31 +88,3 @@ export const userRole = mysqlTable(
     },
     (t) => [unique().on(t.userId, t.roleId)],
 )
-
-export const invitation = mysqlTable("invitation", {
-    id: varchar({ length: 36 }).primaryKey(),
-    email: varchar({ length: 255 }).notNull(),
-    token: varchar({ length: 255 }).notNull().unique(),
-    expiresAt: timestamp().notNull(),
-    invitedBy: varchar({ length: 36 })
-        .notNull()
-        .references(() => user.id),
-    status: varchar({ length: 20 }).notNull().default("pending"),
-    acceptedAt: timestamp(),
-    createdAt: timestamp().notNull().defaultNow(),
-    updatedAt: timestamp().notNull().defaultNow().onUpdateNow(),
-})
-
-export const invitationRole = mysqlTable(
-    "invitation_role",
-    {
-        id: varchar({ length: 36 }).primaryKey(),
-        invitationId: varchar({ length: 36 })
-            .notNull()
-            .references(() => invitation.id),
-        roleId: varchar({ length: 36 })
-            .notNull()
-            .references(() => role.id),
-    },
-    (t) => [unique().on(t.invitationId, t.roleId)],
-)

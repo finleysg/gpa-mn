@@ -15,7 +15,6 @@ import {
     Heart,
     Home,
     LogOut,
-    Mail,
     PawPrint,
     Settings,
     Shield,
@@ -102,7 +101,6 @@ function canAccess(
 
 const adminEntries: NavEntry[] = [
     { title: "All Users", href: "/users", icon: Users, requires: "User Edit" },
-    { title: "Invitations", href: "/users/invitations", icon: Mail, requires: "User Edit" },
     { title: "Roles", href: "/roles", icon: Shield, requires: "User Edit" },
 ]
 

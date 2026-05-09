@@ -1,12 +1,11 @@
 "use client"
 
-import { useActionState, useState } from "react"
+import { useActionState } from "react"
 import Link from "next/link"
 import { createUserAction, type CreateUserState } from "@/app/_actions/users"
 import { Button } from "@repo/ui/components/button"
 import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
-import { Switch } from "@repo/ui/components/switch"
 
 interface CreateUserFormProps {
     roles: { id: string; name: string }[]
@@ -14,7 +13,6 @@ interface CreateUserFormProps {
 
 export function CreateUserForm({ roles }: CreateUserFormProps) {
     const [state, action, pending] = useActionState<CreateUserState, FormData>(createUserAction, {})
-    const [sendInvitation, setSendInvitation] = useState(false)
 
     return (
         <form action={action} className="max-w-md space-y-6">
@@ -45,17 +43,19 @@ export function CreateUserForm({ roles }: CreateUserFormProps) {
                 </div>
             </div>
 
-            <div className="flex items-center gap-3">
-                <Switch
-                    id="sendInvitation"
-                    checked={sendInvitation}
-                    onCheckedChange={setSendInvitation}
-                    disabled={pending}
+            <div className="space-y-2">
+                <Label htmlFor="tempPassword">Temporary password (optional)</Label>
+                <Input
+                    id="tempPassword"
+                    name="tempPassword"
+                    type="text"
+                    minLength={8}
+                    autoComplete="off"
                 />
-                <input type="hidden" name="sendInvitation" value={String(sendInvitation)} />
-                <Label htmlFor="sendInvitation">
-                    Send invitation (enables admin login and sends password setup email)
-                </Label>
+                <p className="text-muted-foreground text-xs">
+                    Leave blank to create a data-only user with no admin login. If set, share it
+                    with the user out-of-band; they can change it after signing in.
+                </p>
             </div>
 
             {state.error && (
