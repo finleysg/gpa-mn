@@ -29,10 +29,11 @@ export const mainNav: NavItem[] = [
 export const footerNav = {
     quickLinks: [
         { label: "Adopt", href: "/adopt" },
-        { label: "Available Dogs", href: "/adopt/available" },
-        { label: "Donate", href: "/donate" },
         { label: "Volunteer", href: "/volunteer" },
+        { label: "Donate", href: "/donate" },
         { label: "Events", href: "/events" },
+        { label: "About", href: "/about" },
+        { label: "Lost Hound!", href: "/lost-hound" },
     ],
     resources: [
         { label: "Our Process", href: "/adopt/our-process" },
