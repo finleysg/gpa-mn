@@ -26,6 +26,19 @@ export default async function AboutPage() {
         getWebsiteVisibleRolesWithUsers(),
     ])
 
+    const peopleMap = new Map<string, { id: string; name: string; roles: string[] }>()
+    for (const role of visibleRoles) {
+        for (const u of role.users) {
+            const existing = peopleMap.get(u.id)
+            if (existing) {
+                existing.roles.push(role.name)
+            } else {
+                peopleMap.set(u.id, { id: u.id, name: u.name, roles: [role.name] })
+            }
+        }
+    }
+    const people = Array.from(peopleMap.values()).sort((a, b) => a.name.localeCompare(b.name))
+
     return (
         <>
             <PageHero
@@ -68,7 +81,7 @@ export default async function AboutPage() {
             </section>
 
             {/* Team */}
-            {visibleRoles.length > 0 && (
+            {people.length > 0 && (
                 <section
                     aria-labelledby="about-team-heading"
                     className="bg-[#FAF5F0] px-5 py-20 md:py-24 dark:bg-[#1a1715]"
@@ -80,23 +93,16 @@ export default async function AboutPage() {
                             align="center"
                             className="mb-12"
                         />
-                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                            {visibleRoles.map((role, i) => (
-                                <FadeIn key={role.id} delay={i * 60}>
+                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                            {people.map((person, i) => (
+                                <FadeIn key={person.id} delay={i * 40}>
                                     <div className="bg-card border-border rounded-2xl border p-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)]">
-                                        <h3 className="font-heading mb-4 text-lg tracking-wider uppercase">
-                                            {role.name}
+                                        <h3 className="font-heading mb-2 text-lg tracking-wider uppercase">
+                                            {person.name}
                                         </h3>
-                                        <ul className="space-y-2">
-                                            {role.users.map((user) => (
-                                                <li
-                                                    key={user.id}
-                                                    className="text-muted-foreground text-sm"
-                                                >
-                                                    {user.name}
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <p className="text-muted-foreground text-sm">
+                                            {person.roles.join(" · ")}
+                                        </p>
                                     </div>
                                 </FadeIn>
                             ))}
