@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 
-const CART_SCRIPT_SRC = "https://www.paypalobjects.com/ncp/sb/cart/cart.js"
+const CART_SCRIPT_SRC = "https://www.paypalobjects.com/ncp/cart/cart.js"
 const CART_MERCHANT_ID = "HBCXN9CGBFZLA"
 
 interface PaypalCartButtonsProps {
