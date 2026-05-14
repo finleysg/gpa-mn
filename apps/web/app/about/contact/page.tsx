@@ -93,9 +93,13 @@ export default function ContactPage() {
                                         <MapPin className="text-primary size-5" />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-semibold">Service Area</p>
+                                        <p className="text-sm font-semibold">Mailing Address</p>
                                         <p className="text-muted-foreground">
-                                            Twin Cities Metro, Minnesota
+                                            GPA-MN
+                                            <br />
+                                            PO Box 18312
+                                            <br />
+                                            Minneapolis, MN 55418
                                         </p>
                                     </div>
                                 </div>
