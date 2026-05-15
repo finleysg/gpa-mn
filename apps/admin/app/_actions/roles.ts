@@ -91,13 +91,25 @@ export async function updateRoleAction(
 
     const name = (formData.get("name") as string)?.trim()
     const description = (formData.get("description") as string)?.trim() || null
+    const displayOrderRaw = (formData.get("displayOrder") as string)?.trim()
 
     if (!name) {
         return { error: "Role name is required." }
     }
 
+    let displayOrder: number | undefined
+    if (displayOrderRaw) {
+        const parsed = Number(displayOrderRaw)
+        if (!Number.isInteger(parsed)) {
+            return { error: "Display order must be a whole number." }
+        }
+        displayOrder = parsed
+    } else {
+        displayOrder = 0
+    }
+
     try {
-        await updateRole(roleId, { name, description })
+        await updateRole(roleId, { name, description, displayOrder })
     } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to update role"
         if (message.toLowerCase().includes("duplicate")) {

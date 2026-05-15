@@ -52,6 +52,7 @@ export default async function RoleDetailPage({ params }: { params: Promise<{ id:
                             roleId={role.id}
                             defaultName={role.name}
                             defaultDescription={role.description ?? ""}
+                            defaultDisplayOrder={role.displayOrder}
                         />
                     </section>
 

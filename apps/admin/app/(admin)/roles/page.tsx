@@ -39,6 +39,7 @@ export default async function RolesPage() {
                         <TableHead>Users</TableHead>
                         <TableHead>Permissions</TableHead>
                         <TableHead>Website Visible</TableHead>
+                        <TableHead>Display Order</TableHead>
                         <TableHead className="w-32">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -63,6 +64,9 @@ export default async function RolesPage() {
                                     roleId={role.id}
                                     currentValue={role.websiteVisible}
                                 />
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">
+                                {role.displayOrder}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-1">

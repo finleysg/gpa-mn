@@ -5,7 +5,7 @@ import { permission, role, rolePermission, userRole } from "../schema/roles"
 import type { PermissionName } from "../schema/roles"
 
 export async function getRoles() {
-    return db.select().from(role).orderBy(role.name)
+    return db.select().from(role).orderBy(role.displayOrder, role.name)
 }
 
 export async function getRolesWithUsage() {
@@ -15,6 +15,7 @@ export async function getRolesWithUsage() {
             name: role.name,
             description: role.description,
             websiteVisible: role.websiteVisible,
+            displayOrder: role.displayOrder,
             system: role.system,
             userCount: sql<number>`count(distinct ${userRole.userId})`,
             permissionCount: sql<number>`count(distinct ${rolePermission.permissionId})`,
@@ -23,7 +24,7 @@ export async function getRolesWithUsage() {
         .leftJoin(userRole, eq(userRole.roleId, role.id))
         .leftJoin(rolePermission, eq(rolePermission.roleId, role.id))
         .groupBy(role.id)
-        .orderBy(role.name)
+        .orderBy(role.displayOrder, role.name)
     return rows
 }
 
@@ -49,7 +50,7 @@ export async function createRole(input: {
 
 export async function updateRole(
     id: string,
-    input: { name?: string; description?: string | null },
+    input: { name?: string; description?: string | null; displayOrder?: number },
 ) {
     await db.update(role).set(input).where(eq(role.id, id))
 }
@@ -219,6 +220,7 @@ export async function getWebsiteVisibleRolesWithUsers() {
         .select({
             roleId: role.id,
             roleName: role.name,
+            roleDisplayOrder: role.displayOrder,
             userId: user.id,
             userName: user.name,
         })
@@ -226,11 +228,16 @@ export async function getWebsiteVisibleRolesWithUsers() {
         .innerJoin(userRole, eq(role.id, userRole.roleId))
         .innerJoin(user, and(eq(userRole.userId, user.id), isNull(user.deactivatedAt)))
         .where(eq(role.websiteVisible, true))
-        .orderBy(role.name, user.name)
+        .orderBy(role.displayOrder, role.name, user.name)
 
     const rolesMap = new Map<
         string,
-        { id: string; name: string; users: { id: string; name: string }[] }
+        {
+            id: string
+            name: string
+            displayOrder: number
+            users: { id: string; name: string }[]
+        }
     >()
 
     for (const row of rows) {
@@ -238,6 +245,7 @@ export async function getWebsiteVisibleRolesWithUsers() {
             rolesMap.set(row.roleId, {
                 id: row.roleId,
                 name: row.roleName,
+                displayOrder: row.roleDisplayOrder,
                 users: [],
             })
         }

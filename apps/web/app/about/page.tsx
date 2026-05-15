@@ -26,18 +26,31 @@ export default async function AboutPage() {
         getWebsiteVisibleRolesWithUsers(),
     ])
 
-    const peopleMap = new Map<string, { id: string; name: string; roles: string[] }>()
+    const peopleMap = new Map<
+        string,
+        { id: string; name: string; roles: string[]; sortOrder: number }
+    >()
     for (const role of visibleRoles) {
         for (const u of role.users) {
             const existing = peopleMap.get(u.id)
             if (existing) {
                 existing.roles.push(role.name)
+                if (role.displayOrder < existing.sortOrder) {
+                    existing.sortOrder = role.displayOrder
+                }
             } else {
-                peopleMap.set(u.id, { id: u.id, name: u.name, roles: [role.name] })
+                peopleMap.set(u.id, {
+                    id: u.id,
+                    name: u.name,
+                    roles: [role.name],
+                    sortOrder: role.displayOrder,
+                })
             }
         }
     }
-    const people = Array.from(peopleMap.values()).sort((a, b) => a.name.localeCompare(b.name))
+    const people = Array.from(peopleMap.values()).sort(
+        (a, b) => a.sortOrder - b.sortOrder || a.name.localeCompare(b.name),
+    )
 
     return (
         <>
