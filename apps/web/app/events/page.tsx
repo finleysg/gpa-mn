@@ -39,6 +39,7 @@ export default async function EventsPage() {
                     <div className="-mx-5 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 md:mx-0 md:flex-wrap md:justify-center md:overflow-visible md:px-0 md:pb-0">
                         {events
                             .filter((e) => e.showUpcoming)
+                            .sort((a, b) => a.nextOccurrenceIso.localeCompare(b.nextOccurrenceIso))
                             .map((event, i) => (
                                 <FadeIn
                                     key={event.id}

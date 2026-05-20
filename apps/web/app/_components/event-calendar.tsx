@@ -39,6 +39,10 @@ const DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "frid
 
 function parseEventDates(event: WebEvent, displayMonth: Date): Date[] {
     const dateStr = event.date
+    const eventStart = parse(event.startDateIso, "yyyy-MM-dd", new Date())
+    // Recurring occurrences before the event's startDate aren't real — the
+    // recurrence pattern hadn't begun yet.
+    const onOrAfterStart = (d: Date) => d >= eventStart
 
     // Weekly: "Every Monday", "Every Sunday", etc.
     const weeklyMatch = dateStr.match(/^Every (\w+)$/i)
@@ -47,7 +51,9 @@ function parseEventDates(event: WebEvent, displayMonth: Date): Date[] {
         if (dayIndex >= 0) {
             const start = startOfMonth(displayMonth)
             const end = endOfMonth(displayMonth)
-            return eachDayOfInterval({ start, end }).filter((d) => getDay(d) === dayIndex)
+            return eachDayOfInterval({ start, end })
+                .filter((d) => getDay(d) === dayIndex)
+                .filter(onOrAfterStart)
         }
     }
 
@@ -56,7 +62,7 @@ function parseEventDates(event: WebEvent, displayMonth: Date): Date[] {
     if (monthlyDateMatch) {
         const dayOfMonth = parseInt(monthlyDateMatch[1]!, 10)
         const candidate = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), dayOfMonth)
-        if (candidate.getMonth() === displayMonth.getMonth()) {
+        if (candidate.getMonth() === displayMonth.getMonth() && onOrAfterStart(candidate)) {
             return [candidate]
         }
         return []
@@ -74,7 +80,7 @@ function parseEventDates(event: WebEvent, displayMonth: Date): Date[] {
                 (d) => getDay(d) === dayIndex,
             )
             const target = matchingDays[nth - 1]
-            return target ? [target] : []
+            return target && onOrAfterStart(target) ? [target] : []
         }
     }
 
@@ -105,6 +111,7 @@ function getEventsForMonth(events: WebEvent[], month: Date): ParsedEvent[] {
             dates: parseEventDates(event, month),
         }))
         .filter((e) => e.dates.some((d) => isSameMonth(d, month)))
+        .sort((a, b) => (a.dates[0]?.getTime() ?? 0) - (b.dates[0]?.getTime() ?? 0))
 }
 
 // ── Build calendar grid ──
@@ -303,12 +310,17 @@ export function EventCalendar({ events }: { events: WebEvent[] }) {
 
             {/* Mobile: list only */}
             <div className="space-y-3 md:hidden">
-                {events.map((event) => (
-                    <EventListItem
-                        key={event.id}
-                        event={{ ...event, dates: parseEventDates(event, new Date()) }}
-                    />
-                ))}
+                {[...events]
+                    .sort((a, b) => a.nextOccurrenceIso.localeCompare(b.nextOccurrenceIso))
+                    .map((event) => (
+                        <EventListItem
+                            key={event.id}
+                            event={{
+                                ...event,
+                                dates: [parse(event.nextOccurrenceIso, "yyyy-MM-dd", new Date())],
+                            }}
+                        />
+                    ))}
             </div>
         </div>
     )

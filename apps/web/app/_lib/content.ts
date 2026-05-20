@@ -1,4 +1,4 @@
-import { parse, format, isSameMonth } from "date-fns"
+import { parse, format, isSameMonth, startOfToday } from "date-fns"
 import {
     getLatestVersions,
     getEvents as dbGetEvents,
@@ -51,6 +51,7 @@ export type WebEvent = {
     showUpcoming: boolean
     featured: boolean
     featuredOrder: number
+    nextOccurrenceIso: string
     image?: string
     mobileImage?: string
     paypalButtonLabel: string | null
@@ -93,6 +94,53 @@ function buildDisplayDate(event: DbEvent): string {
     return format(start, "MMMM d, yyyy")
 }
 
+// Returns the next occurrence of an event on or after today. Recurring events
+// store the recurrence origin in startDate, which is usually far in the past;
+// this projects that to the next real-world occurrence so events sort by when
+// they actually happen, not when the recurrence began.
+export function computeNextOccurrence(event: DbEvent, today: Date = startOfToday()): Date {
+    const start = parse(event.startDate, "yyyy-MM-dd", new Date())
+
+    if (event.recurrence === "weekly") {
+        const targetDow = start.getDay()
+        const daysUntil = (targetDow - today.getDay() + 7) % 7
+        const next = new Date(today)
+        next.setDate(today.getDate() + daysUntil)
+        return next
+    }
+
+    if (event.recurrence === "monthly_by_date") {
+        const dayOfMonth = start.getDate()
+        const candidate = new Date(today.getFullYear(), today.getMonth(), dayOfMonth)
+        if (candidate < today) {
+            return new Date(today.getFullYear(), today.getMonth() + 1, dayOfMonth)
+        }
+        return candidate
+    }
+
+    if (event.recurrence === "monthly_by_weekday") {
+        const targetDow = start.getDay()
+        const weekNumber = Math.ceil(start.getDate() / 7)
+        const findNth = (year: number, month: number): Date | null => {
+            const matches: Date[] = []
+            for (let d = 1; d <= 31; d++) {
+                const candidate = new Date(year, month, d)
+                if (candidate.getMonth() !== month) break
+                if (candidate.getDay() === targetDow) matches.push(candidate)
+            }
+            return matches[weekNumber - 1] ?? null
+        }
+        const thisMonth = findNth(today.getFullYear(), today.getMonth())
+        if (thisMonth && thisMonth >= today) return thisMonth
+        const nextMonth = findNth(today.getFullYear(), today.getMonth() + 1)
+        return nextMonth ?? start
+    }
+
+    // "once": use the stored date even if it's in the past, so admin-flagged
+    // upcoming events still have a stable sort key.
+    return start
+}
+
 async function toWebEvent(event: DbEvent): Promise<WebEvent> {
     const [eventPhotos, mobilePhoto] = await Promise.all([
         getPhotos("event", event.id),
@@ -119,6 +167,7 @@ async function toWebEvent(event: DbEvent): Promise<WebEvent> {
             showUpcoming: event.showUpcoming,
             featured: event.featured,
             featuredOrder: event.featuredOrder,
+            nextOccurrenceIso: format(computeNextOccurrence(event), "yyyy-MM-dd"),
         }),
         image,
         mobileImage,
