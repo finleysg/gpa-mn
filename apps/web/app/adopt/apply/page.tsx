@@ -3,6 +3,9 @@ import { getApplicationFromCookie } from "./_actions/application"
 import { MagicLinkForm } from "./_components/magic-link-form"
 
 export default async function ApplyPage() {
+    redirect("/apply-original")
+
+    /*
     // Existing cookie → redirect
     const application = await getApplicationFromCookie()
     if (application) {
@@ -27,4 +30,5 @@ export default async function ApplyPage() {
             </div>
         </div>
     )
+    */
 }
