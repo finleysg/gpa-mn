@@ -53,18 +53,17 @@ export default async function DogDetailPage({ params }: { params: Promise<{ id: 
                 <div className="mx-auto max-w-300 px-5">
                     {dog.images.length > 1 ? (
                         <DogImageCarousel images={dog.images} name={dog.name} />
-                    ) : (
-                        <div className="relative h-64 overflow-hidden rounded-4xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] md:h-96 dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]">
-                            <Image
-                                src={dog.image}
-                                alt={dog.name}
-                                fill
-                                priority
-                                className="object-cover"
-                                sizes="(max-width: 1200px) 100vw, 1200px"
-                            />
-                        </div>
-                    )}
+                    ) : dog.images[0] ? (
+                        <Image
+                            src={dog.images[0].url}
+                            alt={dog.name}
+                            width={dog.images[0].width}
+                            height={dog.images[0].height}
+                            priority
+                            sizes="(max-width: 768px) 100vw, 1200px"
+                            className="w-full rounded-4xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] md:h-96 md:object-cover dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
+                        />
+                    ) : null}
                 </div>
             </section>
 

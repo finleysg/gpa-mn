@@ -45,24 +45,22 @@ export function DogImageCarousel({ images, name }: { images: DogImage[]; name: s
         <div className="relative">
             <div
                 ref={scrollRef}
-                className="scrollbar-none flex gap-3 overflow-x-auto overflow-y-hidden"
-                style={{ height: MAX_HEIGHT }}
+                className="scrollbar-none flex flex-col gap-3 md:h-96 md:flex-row md:overflow-x-auto md:overflow-y-hidden"
             >
                 {images.map((img) => {
                     const aspect = img.width / img.height
-                    const height = Math.min(img.height, MAX_HEIGHT)
-                    const width = Math.round(height * aspect)
+                    const desktopHeight = Math.min(img.height, MAX_HEIGHT)
+                    const desktopWidth = Math.round(desktopHeight * aspect)
 
                     return (
                         <Image
                             key={img.id}
                             src={img.url}
                             alt={name}
-                            width={width}
-                            height={height}
-                            className="shrink-0 rounded-3xl"
-                            style={{ height: MAX_HEIGHT, width: "auto" }}
-                            sizes={`${width}px`}
+                            width={img.width}
+                            height={img.height}
+                            sizes={`(max-width: 768px) 100vw, ${desktopWidth}px`}
+                            className="w-full rounded-3xl md:h-96 md:w-auto md:shrink-0"
                         />
                     )
                 })}
