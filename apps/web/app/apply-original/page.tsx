@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { JotFormEmbed } from "@/app/_components/jotform-embed"
 
 export const metadata: Metadata = {
     title: "Adoption Application | GPA-MN",
@@ -9,21 +10,10 @@ export const metadata: Metadata = {
 export default function ApplyOriginalPage() {
     return (
         <div className="container mx-auto px-4 py-8">
-            <iframe
+            <JotFormEmbed
+                formId="31196708017151"
                 title="GPA MN Adoption Application 08.14.25"
-                src="https://form.jotform.com/31196708017151"
-                allow="geolocation; microphone; camera; fullscreen; payment"
-                name="31196708017151"
-                id="31196708017151"
-                scrolling="no"
-                style={{
-                    width: "10px",
-                    minWidth: "100%",
-                    display: "block",
-                    overflow: "hidden",
-                    height: "8113px",
-                    border: "none",
-                }}
+                initialHeight={8113}
             />
         </div>
     )
