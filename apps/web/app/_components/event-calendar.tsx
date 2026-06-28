@@ -11,6 +11,7 @@ import {
     startOfMonth,
     endOfMonth,
     startOfWeek,
+    addDays,
     addMonths,
     subMonths,
     getDay,
@@ -120,12 +121,12 @@ function buildCalendarDays(month: Date, parsedEvents: ParsedEvent[]): CalendarDa
     const monthStart = startOfMonth(month)
     const calStart = startOfWeek(monthStart) // Sunday
 
-    // Generate exactly 42 days (6 weeks)
+    // Generate exactly 42 days (6 weeks). Use addDays (calendar-aware) rather
+    // than adding 86_400_000ms — a fixed-ms step lands on the wrong day across
+    // DST transitions (e.g. the 25-hour fall-back day repeats).
     const days: Date[] = []
-    let cursor = calStart
     for (let i = 0; i < 42; i++) {
-        days.push(new Date(cursor))
-        cursor = new Date(cursor.getTime() + 86400000)
+        days.push(addDays(calStart, i))
     }
 
     const weeks: CalendarDay[][] = []
